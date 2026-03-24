@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Financeira Multi-Empresas</title>
+
+    <!-- Fonte moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #0f172a;
+            --bg-main: #020617;
+            --bg-card: #020617;
+            --bg-card-soft: #0b1220;
+            --border-subtle: #1e293b;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-soft: rgba(59,130,246,0.14);
+            --positive: #22c55e;
+            --negative: #ef4444;
+            --text-main: #e5e7eb;
+            --text-soft: #9ca3af;
+            --text-muted: #6b7280;
+            --input-bg: #020617;
+            --input-border: #1e293b;
+            --table-header: #020617;
+            --accent: #6366f1;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* Barra de topo */
+        .topbar {
+            width: 100%;
+            border-bottom: 1px solid #1f2937;
+            background: rgba(15,23,42,0.95);
+            backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .topbar-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 30%, #60a5fa 0, #2563eb 40%, #1d4ed8 70%, #020617 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 24px rgba(37,99,235,0.6);
+        }
+
+        .logo-mark span {
+            font-size: 14px;
+            font-weight: 700;
+            color: #e5f2ff;
+        }
+
+        .logo-text-main {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .logo-text-sub {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .status-pill {
+            border-radius: 999px;
+            padding: 4px 10px;
+            border: 1px solid #1f2937;
+            background: rgba(15,23,42,0.9);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 10px rgba(34,197,94,0.7);
+        }
+
+        /* Seletor de Empresa */
+        .company-selector-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 20px;
+        }
+        .company-selector-group label {
+            font-size: 12px;
+            color: var(--text-soft);
+            white-space: nowrap;
+        }
+        .company-selector-group select {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-main);
+            border-radius: 9px;
+            padding: 6px 8px;
+            font-size: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            min-width: 120px;
+        }
+        .company-selector-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
+        }
+        .btn-add-company {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 6px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            white-space: nowrap;
+        }
+        .btn-add-company:hover {
+            background: var(--primary-dark);
+        }
+
+
+        /* Container geral */
+        .page {
+            max-width: 1120px;
+            margin: 18px auto 32px;
+            padding: 0 16px 32px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .page-title-block h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .page-title-block p {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .date-badge {
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid #1f2937;
+            background: rgba(15,23,42,0.85);
+            font-size: 11px;
+            color: var(--text-soft);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .date-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #38bdf8;
+        }
+
+        /* Cards de resumo */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0,1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: radial-gradient(circle at top left, rgba(37,99,235,0.22) 0, rgba(15,23,42,0.95) 52%, rgba(15,23,42,1) 100%);
+            border-radius: 14px;
+            padding: 12px 14px 14px;
+            border: 1px solid rgba(51,65,85,0.9);
+            box-shadow:
+                0 18px 40px rgba(15,23,42,0.8),
+                0 0 0 1px rgba(15,23,42,0.95);
+        }
+
+        .summary-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .summary-main {
+            margin-top: 6px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .summary-sub {
+            margin-top: 4px;
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        .summary-tag {
+            display: inline-flex;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 10px;
+            border: 1px solid rgba(148,163,184,0.4);
+            color: var(--text-soft);
+            background: rgba(15,23,42,0.9);
+        }
+
+        .summary-main.positive { color: var(--positive); }
+        .summary-main.negative { color: var(--negative); }
+
+        /* Layout principal: formulário + tabela */
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        /* Card formulário */
+        .card {
+            background: radial-gradient(circle at top left, rgba(148,163,184,0.14) 0, rgba(15,23,42,1) 55%, rgba(15,23,42,1) 100%);
+            border-radius: 14px;
+            padding: 16px 16px 18px;
+            border: 1px solid rgba(51,65,85,0.9);
+            box-shadow:
+                0 18px 40px rgba(15,23,42,0.8),
+                0 0 0 1px rgba(15,23,42,0.95);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .card-subtitle {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        .card-badge {
+            font-size: 10px;
+            color: var(--text-muted);
+            border-radius: 999px;
+            padding: 3px 8px;
+            border: 1px solid rgba(51,65,85,0.9);
+            background: rgba(15,23,42,0.9);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 10px;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        label {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        input[type="date"],
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-main);
+            border-radius: 9px;
+            padding: 7px 9px;
+            font-size: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #4b5563;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
+            background: #020617;
+        }
+
+        .form-group-full {
+            grid-column: 1 / -1;
+        }
+
+        .payment-methods-section {
+            margin-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 10px;
+        }
+
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .payment-method-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 9px;
+            padding: 5px 9px;
+        }
+
+        .payment-method-item label {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-main);
+            flex-grow: 1;
+        }
+
+        .payment-method-item input[type="checkbox"] {
+            margin: 0;
+            accent-color: var(--primary);
+            width: 14px;
+            height: 14px;
+        }
+
+        .payment-method-item input[type="number"] {
+            width: 80px;
+            padding: 4px 6px;
+            font-size: 11px;
+            background: #0f172a;
+            border-color: #334155;
+            border-radius: 6px;
+        }
+
+        .submit-btn {
+            margin-top: 12px;
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow:
+                0 12px 28px rgba(37,99,235,0.6),
+                0 0 0 1px rgba(15,23,42,0.9);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.05);
+            box-shadow:
+                0 16px 40px rgba(37,99,235,0.7),
+                0 0 0 1px rgba(15,23,42,1);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+            box-shadow:
+                0 8px 18px rgba(37,99,235,0.9),
+                0 0 0 1px rgba(15,23,42,1);
+        }
+
+        /* Card direita: ações + tabela */
+        .card-ghost {
+            background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,1));
+            border-radius: 14px;
+            padding: 14px;
+            border: 1px solid rgba(51,65,85,0.9);
+            box-shadow:
+                0 18px 40px rgba(15,23,42,0.8),
+                0 0 0 1px rgba(15,23,42,0.95);
+        }
+
+        .filter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .filter-group label {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        .filter-group input[type="date"] {
+            padding: 7px 9px;
+            font-size: 12px;
+            border-radius: 9px;
+        }
+
+        .filter-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 7px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            height: 32px; /* Align with inputs */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-button:hover {
+            background: var(--primary-dark);
+        }
+
+        .actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            margin-top: 10px; /* Separar dos filtros */
+        }
+
+        .btn-outline,
+        .btn-soft {
+            flex: 1;
+            min-width: 120px;
+            border-radius: 999px;
+            padding: 7px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            border: 1px solid var(--border-subtle);
+            background: rgba(15,23,42,0.9);
+            color: var(--text-soft);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+        }
+
+        .btn-outline:hover,
+        .btn-soft:hover {
+            border-color: var(--primary);
+            color: var(--text-main);
+            transform: translateY(-1px);
+        }
+
+        .btn-soft {
+            background: rgba(37,99,235,0.12);
+            border-color: rgba(37,99,235,0.7);
+            color: #bfdbfe;
+        }
+
+        .table-wrapper {
+            margin-top: 4px;
+            border-radius: 12px;
+            border: 1px solid #1f2937;
+            background: radial-gradient(circle at top left, rgba(15,23,42,1) 0, #020617 60%, #020617 100%);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, rgba(15,23,42,1), rgba(15,23,42,0.92));
+        }
+
+        th, td {
+            padding: 7px 8px;
+            border-bottom: 1px solid #1f2937;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            font-weight: 500;
+            color: var(--text-soft);
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(15,23,42,0.68);
+        }
+
+        tbody tr:nth-child(odd) {
+            background: rgba(15,23,42,0.92);
+        }
+
+        tbody tr:hover {
+            background: rgba(37,99,235,0.16);
+        }
+
+        .amount-positive {
+            color: var(--positive);
+            font-weight: 500;
+        }
+
+        .amount-negative {
+            color: var(--negative);
+            font-weight: 500;
+        }
+
+        .tag-payment {
+            border-radius: 999px;
+            padding: 2px 6px;
+            font-size: 10px;
+            border: 1px solid rgba(148,163,184,0.5);
+            color: var(--text-soft);
+            background: rgba(15,23,42,0.95);
+            display: inline-block;
+            margin-right: 4px;
+            margin-bottom: 2px; /* Para melhor espaçamento em várias tags */
+        }
+
+        .btn-action {
+            border-radius: 999px;
+            padding: 3px 7px;
+            font-size: 10px;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-soft);
+            background: rgba(15,23,42,0.9);
+            cursor: pointer;
+            transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+            margin-right: 4px;
+        }
+        .btn-action:hover {
+            border-color: var(--primary);
+            color: var(--text-main);
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            border-color: rgba(248,113,113,0.8);
+            color: #fecaca;
+            background: rgba(127,29,29,0.16);
+        }
+
+        .btn-delete:hover {
+            background: rgba(248,113,113,0.2);
+            border-color: #f87171;
+            transform: translateY(-1px);
+        }
+
+        .balance-strip {
+            margin-top: 10px;
+            border-radius: 11px;
+            padding: 9px 11px;
+            background: radial-gradient(circle at left, rgba(34,197,94,0.18) 0, rgba(15,23,42,1) 40%, rgba(15,23,42,1) 100%);
+            border: 1px solid rgba(51,65,85,0.9);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .balance-label {
+            color: var(--text-soft);
+        }
+
+        .balance-value {
+            font-weight: 600;
+        }
+
+        /* Seção de totais por pagamento */
+        .payment-totals-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .payment-totals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .payment-total-item {
+            background: var(--bg-card-soft);
+            border: 1px solid var(--border-subtle);
+            border-radius: 9px;
+            padding: 8px 10px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .payment-total-item .label {
+            color: var(--text-soft);
+        }
+
+        .payment-total-item .value {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+
+        /* Responsivo */
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .summary-grid {
+                grid-template-columns: minmax(0,1fr);
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-group {
+                min-width: unset;
+            }
+            .filter-button {
+                width: 100%;
+            }
+            .company-selector-group {
+                margin-left: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .company-selector-group select, .btn-add-company {
+                flex-grow: 1;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .topbar-inner {
+                padding: 10px 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .logo-group {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            .topbar-right {
+                width: 100%;
+                justify-content: center;
+            }
+            .page {
+                padding: 0 12px 24px;
+            }
+            .card,
+            .card-ghost {
+                padding: 13px 12px 14px;
+            }
+            .form-grid {
+                grid-template-columns: minmax(0,1fr);
+            }
+            .payment-methods-grid {
+                grid-template-columns: minmax(0,1fr);
+            }
+            .actions-row {
+                flex-direction: column;
+            }
+            .payment-totals-grid {
+                grid-template-columns: minmax(0,1fr);
+            }
+        }
+
+        /* Tabela responsiva em mobile: vira "cards" */
+        @media (max-width: 640px) {
+            .table-wrapper {
+                border-radius: 10px;
+                overflow: hidden;
+            }
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+            thead {
+                display: none;
+            }
+            tbody tr {
+                border-bottom: 1px solid #1f2937;
+                margin-bottom: 6px;
+            }
+            tbody tr:last-child {
+                margin-bottom: 0;
+            }
+            td {
+                border-bottom: 1px solid #111827;
+                padding: 6px 9px 6px 46%;
+                position: relative;
+                text-align: right;
+                white-space: normal;
+            }
+            td:last-child {
+                border-bottom: none;
+            }
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 9px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-weight: 500;
+                color: var(--text-soft);
+                text-align: left;
+                font-size: 10px;
+            }
+        }
+
+        /* Impressão */
+        @media print {
+            body {
+                background: #ffffff;
+            }
+            .topbar,
+            .card,
+            .actions-row,
+            .date-badge,
+            .summary-grid,
+            .filter-section,
+            .payment-totals-section,
+            .btn-action,
+            .company-selector-group { /* Esconde o seletor de empresa na impressão */
+                display: none !important;
+            }
+            .page {
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
+            }
+            .card-ghost {
+                box-shadow: none;
+                border-radius: 0;
+                border: none;
+                padding: 0;
+            }
+            .table-wrapper {
+                border-radius: 0;
+                border: 1px solid #d1d5db;
+            }
+            table {
+                font-size: 11px;
+            }
+            th,
+            td {
+                border-color: #d1d5db !important;
+                background: #ffffff !important;
+                color: #111827 !important;
+            }
+            .balance-strip {
+                border-radius: 0;
+                border: 1px solid #d1d5db;
+                background: #f9fafb;
+                color: #111827;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Topo -->
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="logo-group">
+                <div class="logo-mark">
+                    <span>GF</span>
+                </div>
+                <div>
+                    <div class="logo-text-main">Gestão Financeira</div>
+                    <div class="logo-text-sub">Controle de entradas e saídas</div>
+                </div>
+            </div>
+
+            <div class="company-selector-group">
+                <label for="currentCompany">Empresa:</label>
+                <select id="currentCompany"></select>
+                <button class="btn-add-company" onclick="addCompany()">+ Nova Empresa</button>
+            </div>
+
+            <div class="topbar-right">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span>online</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <div class="page-title-block">
+                <h1>Dashboard financeiro</h1>
+                <p>Cadastre transações, acompanhe saldo e exporte seus dados.</p>
+            </div>
+            <div class="date-badge">
+                <span class="date-dot"></span>
+                <span id="todayLabel"></span>
+            </div>
+        </div>
+
+        <!-- Cards de resumo -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">Entradas no período</div>
+                <div class="summary-main positive" id="summaryEntradas">R$ 0,00</div>
+                <div class="summary-sub" id="summaryEntradasCount">0 lançamentos</div>
+                <div class="summary-tag">Recebimentos</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Saídas no período</div>
+                <div class="summary-main negative" id="summarySaidas">R$ 0,00</div>
+                <div class="summary-sub" id="summarySaidasCount">0 lançamentos</div>
+                <div class="summary-tag">Pagamentos</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Saldo consolidado</div>
+                <div class="summary-main" id="summarySaldo">R$ 0,00</div>
+                <div class="summary-sub" id="summarySaldoInfo">Aguardando lançamentos</div>
+                <div class="summary-tag">Visão geral</div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <!-- Card formulário -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title" id="formTitle">Nova transação</div>
+                        <div class="card-subtitle">Preencha os dados e clique em salvar</div>
+                    </div>
+                    <span class="card-badge">Registro manual</span>
+                </div>
+
+                <form id="transactionForm">
+                    <input type="hidden" id="transactionId" value="">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="date">Data</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Tipo</label>
+                            <select id="type" required>
+                                <option value="entrada">Entrada</option>
+                                <option value="saida">Saída</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label for="description">Descrição</label>
+                            <input type="text" id="description" placeholder="Ex: Venda produto X, pagamento de aluguel" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantidade</label>
+                            <input type="number" id="quantity" value="1" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="value">Valor unitário (R$)</label>
+                            <input type="number" id="value" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label for="responsible">Responsável</label>
+                            <input type="text" id="responsible" placeholder="Ex: João, Maria" required>
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label for="notes">Observações (opcional)</label>
+                            <textarea id="notes" rows="2" placeholder="Detalhes adicionais sobre a transação"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="payment-methods-section">
+                        <div class="card-title" style="margin-bottom: 10px;">Valores por forma de pagamento/recebimento</div>
+                        <div class="payment-methods-grid">
+                            <div class="payment-method-item">
+                                <input type="checkbox" id="checkDinheiro" name="paymentMethodCheck" value="Dinheiro">
+                                <label for="checkDinheiro">Dinheiro</label>
+                                <input type="number" id="valueDinheiro" step="0.01" min="0" value="0.00" disabled>
+                            </div>
+                            <div class="payment-method-item">
+                                <input type="checkbox" id="checkPix" name="paymentMethodCheck" value="Pix">
+                                <label for="checkPix">Pix</label>
+                                <input type="number" id="valuePix" step="0.01" min="0" value="0.00" disabled>
+                            </div>
+                            <div class="payment-method-item">
+                                <input type="checkbox" id="checkCartaoDebito" name="paymentMethodCheck" value="Cartão Débito">
+                                <label for="checkCartaoDebito">Cartão Débito</label>
+                                <input type="number" id="valueCartaoDebito" step="0.01" min="0" value="0.00" disabled>
+                            </div>
+                            <div class="payment-method-item">
+                                <input type="checkbox" id="checkCartaoCredito" name="paymentMethodCheck" value="Cartão Crédito">
+                                <label for="checkCartaoCredito">Cartão Crédito</label>
+                                <input type="number" id="valueCartaoCredito" step="0.01" min="0" value="0.00" disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitButton">Salvar transação</button>
+                    <button type="button" class="submit-btn btn-outline" id="cancelEditButton" style="display: none; margin-top: 8px;" onclick="resetForm()">Cancelar Edição</button>
+                </form>
+            </div>
+
+            <!-- Card direita: ações + tabela -->
+            <div class="card-ghost">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">Extrato de transações</div>
+                        <div class="card-subtitle">Visualize e gerencie seus lançamentos</div>
+                    </div>
+                    <span class="card-badge">Dados da empresa atual</span>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label for="filterDateStart">Data Início</label>
+                        <input type="date" id="filterDateStart">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterDateEnd">Data Fim</label>
+                        <input type="date" id="filterDateEnd">
+                    </div>
+                    <button class="filter-button" onclick="applyFilters()">Aplicar Filtro</button>
+                    <button class="filter-button btn-outline" onclick="clearFilters()">Limpar Filtro</button>
+                </div>
+
+                <div class="actions-row">
+                    <button class="btn-soft" onclick="printReport()">Imprimir relatório</button>
+                    <button class="btn-soft" onclick="exportToCsv()">Exportar para CSV</button>
+                    <button class="btn-outline" onclick="exportData()">Fazer backup (JSON)</button>
+                    <button class="btn-outline" onclick="importDataPrompt()">Restaurar backup</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                                <th>Qtd</th>
+                                <th>V. unitário</th>
+                                <th>Total</th>
+                                <th>Responsável</th>
+                                <th>Pagamento</th>
+                                <th>Observações</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsTableBody">
+                            <!-- Linhas via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="balance-strip">
+                    <span class="balance-label">Saldo total do período</span>
+                    <span class="balance-value" id="totalBalance">R$ 0,00</span>
+                </div>
+
+                <div class="payment-totals-section">
+                    <div class="card-title" style="margin-bottom: 10px;">Totais por forma de pagamento (período)</div>
+                    <div class="payment-totals-grid">
+                        <div class="payment-total-item">
+                            <span class="label">Dinheiro:</span>
+                            <span class="value" id="totalDinheiro">R$ 0,00</span>
+                        </div>
+                        <div class="payment-total-item">
+                            <span class="label">Pix:</span>
+                            <span class="value" id="totalPix">R$ 0,00</span>
+                        </div>
+                        <div class="payment-total-item">
+                            <span class="label">Cartão Débito:</span>
+                            <span class="value" id="totalCartaoDebito">R$ 0,00</span>
+                        </div>
+                        <div class="payment-total-item">
+                            <span class="label">Cartão Crédito:</span>
+                            <span class="value" id="totalCartaoCredito">R$ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let companies = []; // Lista de empresas cadastradas
+        let currentCompanyId = null; // ID da empresa atualmente selecionada
+        let transactions = []; // Transações da empresa atual
+        let filteredTransactions = []; // Transações filtradas da empresa atual
+        let editingTransactionId = null; // Para controlar qual transação está sendo editada
+
+        const paymentMethodCheckboxes = document.querySelectorAll('input[name="paymentMethodCheck"]');
+        const paymentValueInputs = {
+            Dinheiro: document.getElementById('valueDinheiro'),
+            Pix: document.getElementById('valuePix'),
+            'Cartão Débito': document.getElementById('valueCartaoDebito'),
+            'Cartão Crédito': document.getElementById('valueCartaoCredito')
+        };
+
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // --- Funções de Gerenciamento de Empresas ---
+        function loadCompanies() {
+            const storedCompanies = localStorage.getItem('companies');
+            if (storedCompanies) {
+                try {
+                    companies = JSON.parse(storedCompanies);
+                } catch {
+                    companies = [];
+                }
+            }
+            if (companies.length === 0) {
+                // Se não houver empresas, cria uma padrão
+                companies.push({ id: Date.now(), name: 'Minha Empresa' });
+                saveCompanies();
+            }
+            currentCompanyId = localStorage.getItem('currentCompanyId') || companies[0].id;
+            if (!companies.some(c => c.id == currentCompanyId)) { // Garante que o ID atual ainda existe
+                currentCompanyId = companies[0].id;
+            }
+        }
+
+        function saveCompanies() {
+            localStorage.setItem('companies', JSON.stringify(companies));
+            localStorage.setItem('currentCompanyId', currentCompanyId);
+        }
+
+        function renderCompanySelector() {
+            const select = document.getElementById('currentCompany');
+            select.innerHTML = '';
+            companies.forEach(company => {
+                const option = document.createElement('option');
+                option.value = company.id;
+                option.textContent = company.name;
+                select.appendChild(option);
+            });
+            select.value = currentCompanyId;
+            select.onchange = (e) => {
+                currentCompanyId = parseInt(e.target.value);
+                saveCompanies();
+                loadTransactions(); // Carrega as transações da nova empresa
+                applyFilters(); // Re-renderiza tudo
+                resetForm(); // Limpa o formulário
+            };
+        }
+
+        function addCompany() {
+            const companyName = prompt('Digite o nome da nova empresa:');
+            if (companyName && companyName.trim() !== '') {
+                const newCompany = { id: Date.now(), name: companyName.trim() };
+                companies.push(newCompany);
+                saveCompanies();
+                renderCompanySelector();
+                currentCompanyId = newCompany.id; // Seleciona a nova empresa
+                saveCompanies();
+                loadTransactions(); // Carrega as transações da nova empresa (que estará vazia)
+                applyFilters(); // Re-renderiza tudo
+                resetForm(); // Limpa o formulário
+            }
+        }
+
+        // --- Funções de Gerenciamento de Transações (agora por empresa) ---
+        function getTransactionsKey() {
+            return `transactions_${currentCompanyId}`;
+        }
+
+        function loadTransactions() {
+            const stored = localStorage.getItem(getTransactionsKey());
+            if (stored) {
+                try {
+                    transactions = JSON.parse(stored);
+                } catch {
+                    transactions = [];
+                }
+            } else {
+                transactions = [];
+            }
+        }
+
+        function saveTransactions() {
+            localStorage.setItem(getTransactionsKey(), JSON.stringify(transactions));
+        }
+
+        function applyFilters() {
+            const startDate = document.getElementById('filterDateStart').value;
+            const endDate = document.getElementById('filterDateEnd').value;
+
+            filteredTransactions = transactions.filter(t => {
+                const transactionDate = new Date(t.date + 'T00:00:00'); // Garante comparação de data sem hora
+                let match = true;
+
+                if (startDate) {
+                    const start = new Date(startDate + 'T00:00:00');
+                    match = match && (transactionDate >= start);
+                }
+                if (endDate) {
+                    const end = new Date(endDate + 'T00:00:00');
+                    match = match && (transactionDate <= end);
+                }
+                return match;
+            });
+            renderTransactions();
+        }
+
+        function clearFilters() {
+            document.getElementById('filterDateStart').value = '';
+            document.getElementById('filterDateEnd').value = '';
+            filteredTransactions = [...transactions]; // Volta a exibir todas as transações
+            renderTransactions();
+        }
+
+        function updateSummary(dataToSummarize) {
+            let entradas = 0, saidas = 0, entradasCount = 0, saidasCount = 0;
+            let totalDinheiro = 0, totalPix = 0, totalCartaoDebito = 0, totalCartaoCredito = 0;
+
+            dataToSummarize.forEach(t => {
+                if (t.type === 'entrada') {
+                    entradas += t.totalAbs;
+                    entradasCount++;
+                } else {
+                    saidas += t.totalAbs;
+                    saidasCount++;
+                }
+
+                // Soma os totais por forma de pagamento
+                if (t.paymentDetails) {
+                    totalDinheiro += t.paymentDetails['Dinheiro'] || 0;
+                    totalPix += t.paymentDetails['Pix'] || 0;
+                    totalCartaoDebito += t.paymentDetails['Cartão Débito'] || 0;
+                    totalCartaoCredito += t.paymentDetails['Cartão Crédito'] || 0;
+                }
+            });
+
+            const saldo = entradas - saidas;
+
+            document.getElementById('summaryEntradas').textContent = formatCurrency(entradas);
+            document.getElementById('summarySaidas').textContent = formatCurrency(saidas);
+            document.getElementById('summarySaldo').textContent = formatCurrency(saldo);
+
+            document.getElementById('summaryEntradasCount').textContent =
+                `${entradasCount} lançamento${entradasCount === 1 ? '' : 's'}`;
+            document.getElementById('summarySaidasCount').textContent =
+                `${saidasCount} lançamento${saidasCount === 1 ? '' : 's'}`;
+
+            const info = document.getElementById('summarySaldoInfo');
+            if (dataToSummarize.length === 0) {
+                info.textContent = 'Aguardando lançamentos';
+            } else if (saldo >= 0) {
+                info.textContent = 'Saldo positivo no período';
+            } else {
+                info.textContent = 'Atenção: saldo negativo';
+            }
+
+            // Atualiza os totais por forma de pagamento
+            document.getElementById('totalDinheiro').textContent = formatCurrency(totalDinheiro);
+            document.getElementById('totalPix').textContent = formatCurrency(totalPix);
+            document.getElementById('totalCartaoDebito').textContent = formatCurrency(totalCartaoDebito);
+            document.getElementById('totalCartaoCredito').textContent = formatCurrency(totalCartaoCredito);
+        }
+
+        function renderTransactions() {
+            const tbody = document.getElementById('transactionsTableBody');
+            tbody.innerHTML = '';
+            let totalBalance = 0;
+
+            const dataToRender = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+
+            dataToRender.forEach(t => {
+                const tr = document.createElement('tr');
+
+                const dateCell = document.createElement('td');
+                dateCell.dataset.label = 'Data';
+                dateCell.textContent = new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR');
+                tr.appendChild(dateCell);
+
+                const typeCell = document.createElement('td');
+                typeCell.dataset.label = 'Tipo';
+                typeCell.textContent = t.type === 'entrada' ? 'Entrada' : 'Saída';
+                tr.appendChild(typeCell);
+
+                const descCell = document.createElement('td');
+                descCell.dataset.label = 'Descrição';
+                descCell.textContent = t.description;
+                tr.appendChild(descCell);
+
+                const qtyCell = document.createElement('td');
+                qtyCell.dataset.label = 'Qtd';
+                qtyCell.textContent = t.quantity;
+                tr.appendChild(qtyCell);
+
+                const valueCell = document.createElement('td');
+                valueCell.dataset.label = 'V. unitário';
+                valueCell.textContent = formatCurrency(t.value);
+                tr.appendChild(valueCell);
+
+                const totalCell = document.createElement('td');
+                totalCell.dataset.label = 'Total';
+                totalCell.textContent = formatCurrency(t.totalAbs * (t.type === 'saida' ? -1 : 1));
+                totalCell.className = t.type === 'entrada' ? 'amount-positive' : 'amount-negative';
+                tr.appendChild(totalCell);
+
+                const respCell = document.createElement('td');
+                respCell.dataset.label = 'Responsável';
+                respCell.textContent = t.responsible;
+                tr.appendChild(respCell);
+
+                const payCell = document.createElement('td');
+                payCell.dataset.label = 'Pagamento';
+                payCell.innerHTML = '';
+                // Exibe as formas de pagamento e seus valores
+                for (const method in t.paymentDetails) {
+                    if (t.paymentDetails[method] > 0) {
+                        const span = document.createElement('span');
+                        span.className = 'tag-payment';
+                        span.textContent = `${method}: ${formatCurrency(t.paymentDetails[method])}`;
+                        payCell.appendChild(span);
+                    }
+                }
+                tr.appendChild(payCell);
+
+                const notesCell = document.createElement('td');
+                notesCell.dataset.label = 'Observações';
+                notesCell.textContent = t.notes || '';
+                tr.appendChild(notesCell);
+
+                const actionCell = document.createElement('td');
+                actionCell.dataset.label = 'Ações';
+
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Editar';
+                editButton.className = 'btn-action';
+                editButton.onclick = () => editTransaction(t.id);
+                actionCell.appendChild(editButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Excluir';
+                deleteButton.className = 'btn-action btn-delete';
+                deleteButton.onclick = () => deleteTransaction(t.id);
+                actionCell.appendChild(deleteButton);
+
+                tr.appendChild(actionCell);
+
+                totalBalance += t.type === 'entrada' ? t.totalAbs : -t.totalAbs;
+
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('totalBalance').textContent = formatCurrency(totalBalance);
+            updateSummary(dataToRender);
+        }
+
+        function deleteTransaction(id) {
+            if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
+            transactions = transactions.filter(t => t.id !== id);
+            saveTransactions();
+            applyFilters(); // Re-aplica o filtro para atualizar a tabela e o resumo
+            resetForm(); // Garante que o formulário não está em modo de edição de uma transação excluída
+        }
+
+        function editTransaction(id) {
+            const transactionToEdit = transactions.find(t => t.id === id);
+            if (!transactionToEdit) return;
+
+            // Preenche o formulário com os dados da transação
+            document.getElementById('transactionId').value = transactionToEdit.id;
+            document.getElementById('date').value = transactionToEdit.date;
+            document.getElementById('type').value = transactionToEdit.type;
+            document.getElementById('description').value = transactionToEdit.description;
+            document.getElementById('quantity').value = transactionToEdit.quantity;
+            document.getElementById('value').value = transactionToEdit.value;
+            document.getElementById('responsible').value = transactionToEdit.responsible;
+            document.getElementById('notes').value = transactionToEdit.notes || '';
+
+            // Limpa e preenche os campos de pagamento
+            paymentMethodCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                const valueInput = paymentValueInputs[checkbox.value];
+                if (valueInput) {
+                    valueInput.value = '0.00';
+                    valueInput.disabled = true;
+                }
+            });
+
+            if (transactionToEdit.paymentDetails) {
+                for (const method in transactionToEdit.paymentDetails) {
+                    const checkbox = document.querySelector(`input[name="paymentMethodCheck"][value="${method}"]`);
+                    const valueInput = paymentValueInputs[method];
+                    if (checkbox && valueInput) {
+                        checkbox.checked = true;
+                        valueInput.value = transactionToEdit.paymentDetails[method].toFixed(2);
+                        valueInput.disabled = false;
+                    }
+                }
+            }
+
+            // Altera o estado do formulário para edição
+            document.getElementById('formTitle').textContent = 'Editar Transação';
+            document.getElementById('submitButton').textContent = 'Atualizar Transação';
+            document.getElementById('cancelEditButton').style.display = 'block';
+            editingTransactionId = id;
+
+            // Rola para o topo para focar no formulário
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('transactionForm').reset();
+            document.getElementById('transactionId').value = '';
+            document.getElementById('date').valueAsDate = new Date(); // Reseta a data para hoje
+
+            // Limpa e desabilita os campos de valor de pagamento
+            paymentMethodCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                const valueInput = paymentValueInputs[checkbox.value];
+                if (valueInput) {
+                    valueInput.value = '0.00';
+                    valueInput.disabled = true;
+                }
+            });
+
+            document.getElementById('formTitle').textContent = 'Nova transação';
+            document.getElementById('submitButton').textContent = 'Salvar transação';
+            document.getElementById('cancelEditButton').style.display = 'none';
+            editingTransactionId = null;
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        function exportData() { // Exporta para JSON (backup)
+            const dataStr = JSON.stringify(transactions, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const currentCompanyName = companies.find(c => c.id == currentCompanyId)?.name || 'empresa_desconhecida';
+            a.download = `backup_financeiro_${currentCompanyName}_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('Backup salvo com sucesso!');
+        }
+
+        function importDataPrompt() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = event => {
+                    try {
+                        const imported = JSON.parse(event.target.result);
+                        if (!Array.isArray(imported)) throw new Error('Formato inválido');
+                        if (confirm('Isso substituirá todos os dados atuais da empresa selecionada. Deseja continuar?')) {
+                            transactions = imported;
+                            saveTransactions();
+                            applyFilters(); // Re-aplica o filtro para atualizar a tabela e o resumo
+                            alert('Dados restaurados com sucesso!');
+                        }
+                    } catch (error) {
+                        alert('Erro ao ler o arquivo JSON. Verifique se o arquivo está no formato correto.');
+                        console.error(error);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function exportToCsv() {
+            const dataToExport = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+            if (dataToExport.length === 0) {
+                alert('Não há dados para exportar.');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            const headers = [
+                "Data", "Tipo", "Descrição", "Quantidade", "Valor Unitário", "Total", "Responsável",
+                "Dinheiro", "Pix", "Cartão Débito", "Cartão Crédito", "Observações"
+            ];
+            csvContent += headers.join(";") + "\r\n"; // Usando ponto e vírgula como separador para Excel BR
+
+            dataToExport.forEach(t => {
+                const row = [
+                    new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR'),
+                    t.type === 'entrada' ? 'Entrada' : 'Saída',
+                    `"${t.description.replace(/"/g, '""')}"`, // Escapa aspas duplas
+                    t.quantity.toString().replace('.', ','), // Formato BR para números
+                    t.value.toFixed(2).replace('.', ','),
+                    (t.totalAbs * (t.type === 'saida' ? -1 : 1)).toFixed(2).replace('.', ','),
+                    `"${t.responsible.replace(/"/g, '""')}"`,
+                    (t.paymentDetails['Dinheiro'] || 0).toFixed(2).replace('.', ','),
+                    (t.paymentDetails['Pix'] || 0).toFixed(2).replace('.', ','),
+                    (t.paymentDetails['Cartão Débito'] || 0).toFixed(2).replace('.', ','),
+                    (t.paymentDetails['Cartão Crédito'] || 0).toFixed(2).replace('.', ','),
+                    `"${(t.notes || '').replace(/"/g, '""')}"`
+                ];
+                csvContent += row.join(";") + "\r\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            const currentCompanyName = companies.find(c => c.id == currentCompanyId)?.name || 'empresa_desconhecida';
+            link.setAttribute("download", `extrato_financeiro_${currentCompanyName}_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert('Dados exportados para CSV com sucesso!');
+        }
+
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            // Data hoje no topo
+            const now = new Date();
+            document.getElementById('todayLabel').textContent =
+                now.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric' });
+
+            // Data padrão no formulário
+            document.getElementById('date').valueAsDate = now;
+
+            loadCompanies();
+            renderCompanySelector();
+            loadTransactions();
+            filteredTransactions = [...transactions]; // Inicializa filteredTransactions com todas as transações
+            renderTransactions();
+
+            // Event listeners para habilitar/desabilitar campos de valor de pagamento
+            paymentMethodCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    const valueInput = paymentValueInputs[event.target.value];
+                    if (valueInput) {
+                        valueInput.disabled = !event.target.checked;
+                        if (!event.target.checked) {
+                            valueInput.value = '0.00'; // Zera o valor se desmarcado
+                        }
+                    }
+                });
+            });
+
+            document.getElementById('transactionForm').addEventListener('submit', e => {
+                e.preventDefault();
+
+                const id = document.getElementById('transactionId').value;
+                const date = document.getElementById('date').value;
+                const type = document.getElementById('type').value;
+                const description = document.getElementById('description').value.trim();
+                const quantity = parseFloat(document.getElementById('quantity').value);
+                const value = parseFloat(document.getElementById('value').value);
+                const responsible = document.getElementById('responsible').value.trim();
+                const notes = document.getElementById('notes').value.trim();
+
+                const paymentDetails = {};
+                let totalPaymentAmount = 0;
+
+                paymentMethodCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        const method = checkbox.value;
+                        const paymentValue = parseFloat(paymentValueInputs[method].value) || 0;
+                        paymentDetails[method] = paymentValue;
+                        totalPaymentAmount += paymentValue;
+                    }
+                });
+
+                const calculatedTotal = quantity * value;
+
+                if (totalPaymentAmount === 0) {
+                    alert('Selecione e informe o valor para pelo menos uma forma de pagamento/recebimento.');
+                    return;
+                }
+
+                if (Math.abs(totalPaymentAmount - calculatedTotal) > 0.001) { // Tolerância para float
+                    alert(`O valor total da transação (${formatCurrency(calculatedTotal)}) não corresponde à soma dos valores das formas de pagamento (${formatCurrency(totalPaymentAmount)}). Por favor, ajuste.`);
+                    return;
+                }
+
+                const newTransaction = {
+                    id: id ? parseInt(id) : Date.now(), // Usa ID existente ou gera um novo
+                    date,
+                    type,
+                    description,
+                    quantity,
+                    value,
+                    totalAbs: calculatedTotal, // sempre positivo
+                    responsible,
+                    notes,
+                    paymentDetails // Armazena os detalhes de pagamento
+                };
+
+                if (editingTransactionId) {
+                    // Modo de edição: encontra e substitui a transação
+                    const index = transactions.findIndex(t => t.id === editingTransactionId);
+                    if (index !== -1) {
+                        transactions[index] = newTransaction;
+                    }
+                } else {
+                    // Modo de nova transação
+                    transactions.push(newTransaction);
+                }
+
+                saveTransactions();
+                applyFilters(); // Re-aplica o filtro para atualizar a tabela e o resumo
+                resetForm(); // Limpa o formulário e volta para o modo de nova transação
+            });
+        });
+    </script>
+</body>
+</html>
