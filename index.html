@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão Financeira Multi-Empresas</title>
+    <title>Gestão Financeira Multi-Empresas (Firebase)</title>
 
     <!-- Fonte moderna -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 
     <style>
         :root {
@@ -606,52 +610,28 @@
             padding: 3px 7px;
             font-size: 10px;
             border: 1px solid var(--border-subtle);
-            color: var(--text-soft);
             background: rgba(15,23,42,0.9);
+            color: var(--text-soft);
             cursor: pointer;
-            transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
             margin-right: 4px;
         }
+
         .btn-action:hover {
+            background: rgba(37,99,235,0.1);
             border-color: var(--primary);
-            color: var(--text-main);
-            transform: translateY(-1px);
+            color: var(--primary);
         }
 
-        .btn-delete {
-            border-color: rgba(248,113,113,0.8);
-            color: #fecaca;
-            background: rgba(127,29,29,0.16);
+        .btn-action.btn-delete {
+            color: var(--negative);
+            border-color: rgba(239,68,68,0.5);
+        }
+        .btn-action.btn-delete:hover {
+            background: rgba(239,68,68,0.1);
+            border-color: var(--negative);
         }
 
-        .btn-delete:hover {
-            background: rgba(248,113,113,0.2);
-            border-color: #f87171;
-            transform: translateY(-1px);
-        }
-
-        .balance-strip {
-            margin-top: 10px;
-            border-radius: 11px;
-            padding: 9px 11px;
-            background: radial-gradient(circle at left, rgba(34,197,94,0.18) 0, rgba(15,23,42,1) 40%, rgba(15,23,42,1) 100%);
-            border: 1px solid rgba(51,65,85,0.9);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-        }
-
-        .balance-label {
-            color: var(--text-soft);
-        }
-
-        .balance-value {
-            font-weight: 600;
-        }
-
-        /* Seção de totais por pagamento */
         .payment-totals-section {
             margin-top: 20px;
             padding-top: 15px;
@@ -660,46 +640,66 @@
 
         .payment-totals-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 10px;
-            margin-top: 10px;
         }
 
         .payment-total-item {
             background: var(--bg-card-soft);
             border: 1px solid var(--border-subtle);
-            border-radius: 9px;
-            padding: 8px 10px;
-            font-size: 11px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 12px;
         }
 
-        .payment-total-item .label {
-            color: var(--text-soft);
+        .payment-total-item span:first-child {
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
         }
 
-        .payment-total-item .value {
+        .payment-total-item span:last-child {
             font-weight: 600;
             color: var(--text-main);
         }
 
-
-        /* Responsivo */
-        @media (max-width: 900px) {
-            .main-grid {
-                grid-template-columns: minmax(0, 1fr);
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .topbar-inner {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 10px 16px;
             }
-        }
-
-        @media (max-width: 700px) {
-            .summary-grid {
-                grid-template-columns: minmax(0,1fr);
+            .logo-group {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 10px;
             }
+            .company-selector-group {
+                width: 100%;
+                justify-content: center;
+                margin-left: 0;
+                margin-bottom: 10px;
+            }
+            .topbar-right {
+                width: 100%;
+                justify-content: center;
+            }
+
             .page-header {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+            .page-title-block {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-grid {
+                grid-template-columns: 1fr;
             }
             .filter-section {
                 flex-direction: column;
@@ -707,176 +707,184 @@
             }
             .filter-group {
                 min-width: unset;
-            }
-            .filter-button {
                 width: 100%;
-            }
-            .company-selector-group {
-                margin-left: 0;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .company-selector-group select, .btn-add-company {
-                flex-grow: 1;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .topbar-inner {
-                padding: 10px 12px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .logo-group {
-                width: 100%;
-                justify-content: center;
-                margin-bottom: 10px;
-            }
-            .topbar-right {
-                width: 100%;
-                justify-content: center;
-            }
-            .page {
-                padding: 0 12px 24px;
-            }
-            .card,
-            .card-ghost {
-                padding: 13px 12px 14px;
-            }
-            .form-grid {
-                grid-template-columns: minmax(0,1fr);
-            }
-            .payment-methods-grid {
-                grid-template-columns: minmax(0,1fr);
             }
             .actions-row {
                 flex-direction: column;
+                align-items: stretch;
             }
-            .payment-totals-grid {
-                grid-template-columns: minmax(0,1fr);
+            .btn-outline, .btn-soft {
+                min-width: unset;
+                width: 100%;
             }
-        }
 
-        /* Tabela responsiva em mobile: vira "cards" */
-        @media (max-width: 640px) {
             .table-wrapper {
+                overflow-x: auto; /* Permite rolagem horizontal em tabelas grandes */
+            }
+
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                border: 1px solid var(--border-subtle);
+                margin-bottom: 10px;
                 border-radius: 10px;
                 overflow: hidden;
             }
-            table,
-            thead,
-            tbody,
-            th,
-            td,
-            tr {
-                display: block;
-            }
-            thead {
-                display: none;
-            }
-            tbody tr {
-                border-bottom: 1px solid #1f2937;
-                margin-bottom: 6px;
-            }
-            tbody tr:last-child {
-                margin-bottom: 0;
-            }
+
             td {
-                border-bottom: 1px solid #111827;
-                padding: 6px 9px 6px 46%;
+                border: none;
                 position: relative;
+                padding-left: 50%;
                 text-align: right;
                 white-space: normal;
             }
+
+            td:before {
+                position: absolute;
+                top: 0;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 500;
+                color: var(--text-soft);
+                content: attr(data-label);
+            }
+
             td:last-child {
                 border-bottom: none;
             }
-            td::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 9px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-weight: 500;
-                color: var(--text-soft);
-                text-align: left;
-                font-size: 10px;
+
+            .payment-methods-grid {
+                grid-template-columns: 1fr;
+            }
+            .payment-total-item {
+                text-align: center;
             }
         }
 
-        /* Impressão */
+        /* Estilos de impressão */
         @media print {
             body {
-                background: #ffffff;
+                background: #fff;
+                color: #000;
+                font-size: 10pt;
             }
-            .topbar,
-            .card,
-            .actions-row,
-            .date-badge,
-            .summary-grid,
-            .filter-section,
-            .payment-totals-section,
-            .btn-action,
-            .company-selector-group { /* Esconde o seletor de empresa na impressão */
+            .topbar, .main-grid .card:first-child, .actions-row, .filter-section, .btn-action {
                 display: none !important;
             }
             .page {
                 margin: 0;
                 padding: 0;
-                max-width: 100%;
+                max-width: none;
+            }
+            .page-header {
+                display: block;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .page-title-block h1 {
+                color: #000;
+                font-size: 18pt;
+            }
+            .page-title-block p, .date-badge {
+                color: #555;
+                font-size: 10pt;
+            }
+            .summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            .summary-card {
+                background: #f0f0f0;
+                border: 1px solid #ccc;
+                box-shadow: none;
+                padding: 8px;
+                border-radius: 5px;
+            }
+            .summary-label, .summary-sub {
+                color: #333;
+            }
+            .summary-main.positive { color: #008000; }
+            .summary-main.negative { color: #ff0000; }
+
+            .main-grid {
+                grid-template-columns: 1fr;
             }
             .card-ghost {
-                box-shadow: none;
-                border-radius: 0;
+                background: #fff;
                 border: none;
+                box-shadow: none;
                 padding: 0;
             }
             .table-wrapper {
-                border-radius: 0;
-                border: 1px solid #d1d5db;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                overflow: visible;
             }
             table {
-                font-size: 11px;
+                font-size: 9pt;
             }
-            th,
-            td {
-                border-color: #d1d5db !important;
-                background: #ffffff !important;
-                color: #111827 !important;
+            th, td {
+                border-color: #eee;
+                padding: 5px 7px;
+                white-space: normal;
             }
-            .balance-strip {
-                border-radius: 0;
-                border: 1px solid #d1d5db;
-                background: #f9fafb;
-                color: #111827;
+            thead {
+                background: #e0e0e0;
+            }
+            tbody tr:nth-child(even) {
+                background: #f9f9f9;
+            }
+            tbody tr:nth-child(odd) {
+                background: #fff;
+            }
+            .payment-totals-section {
+                border-top: 1px solid #ccc;
+                margin-top: 15px;
+                padding-top: 10px;
+            }
+            .payment-totals-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+            .payment-total-item {
+                background: #f0f0f0;
+                border: 1px solid #ccc;
+                box-shadow: none;
+                padding: 8px;
+                border-radius: 5px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Topo -->
     <div class="topbar">
         <div class="topbar-inner">
             <div class="logo-group">
-                <div class="logo-mark">
-                    <span>GF</span>
-                </div>
+                <div class="logo-mark"><span>F</span></div>
                 <div>
                     <div class="logo-text-main">Gestão Financeira</div>
-                    <div class="logo-text-sub">Controle de entradas e saídas</div>
+                    <div class="logo-text-sub">Multi-Empresas</div>
                 </div>
             </div>
-
             <div class="company-selector-group">
                 <label for="currentCompany">Empresa:</label>
                 <select id="currentCompany"></select>
                 <button class="btn-add-company" onclick="addCompany()">+ Nova Empresa</button>
             </div>
-
             <div class="topbar-right">
                 <div class="status-pill">
-                    <span class="status-dot"></span>
-                    <span>online</span>
+                    <span class="status-dot"></span> Online
                 </div>
             </div>
         </div>
@@ -885,50 +893,40 @@
     <div class="page">
         <div class="page-header">
             <div class="page-title-block">
-                <h1>Dashboard financeiro</h1>
-                <p>Cadastre transações, acompanhe saldo e exporte seus dados.</p>
+                <h1>Dashboard Financeiro</h1>
+                <p>Visão geral das suas finanças.</p>
             </div>
             <div class="date-badge">
-                <span class="date-dot"></span>
-                <span id="todayLabel"></span>
+                <span class="date-dot"></span> <span id="todayLabel"></span>
             </div>
         </div>
 
-        <!-- Cards de resumo -->
         <div class="summary-grid">
             <div class="summary-card">
-                <div class="summary-label">Entradas no período</div>
-                <div class="summary-main positive" id="summaryEntradas">R$ 0,00</div>
-                <div class="summary-sub" id="summaryEntradasCount">0 lançamentos</div>
-                <div class="summary-tag">Recebimentos</div>
+                <div class="summary-label">Saldo Total</div>
+                <div class="summary-main" id="totalBalance">R$ 0,00</div>
+                <div class="summary-sub">Saldo atual de todas as transações.</div>
             </div>
             <div class="summary-card">
-                <div class="summary-label">Saídas no período</div>
-                <div class="summary-main negative" id="summarySaidas">R$ 0,00</div>
-                <div class="summary-sub" id="summarySaidasCount">0 lançamentos</div>
-                <div class="summary-tag">Pagamentos</div>
+                <div class="summary-label">Entradas</div>
+                <div class="summary-main positive" id="totalEntradas">R$ 0,00</div>
+                <div class="summary-sub">Total de recebimentos no período.</div>
             </div>
             <div class="summary-card">
-                <div class="summary-label">Saldo consolidado</div>
-                <div class="summary-main" id="summarySaldo">R$ 0,00</div>
-                <div class="summary-sub" id="summarySaldoInfo">Aguardando lançamentos</div>
-                <div class="summary-tag">Visão geral</div>
+                <div class="summary-label">Saídas</div>
+                <div class="summary-main negative" id="totalSaidas">R$ 0,00</div>
+                <div class="summary-sub">Total de despesas no período.</div>
             </div>
         </div>
 
         <div class="main-grid">
-            <!-- Card formulário -->
             <div class="card">
                 <div class="card-header">
-                    <div>
-                        <div class="card-title" id="formTitle">Nova transação</div>
-                        <div class="card-subtitle">Preencha os dados e clique em salvar</div>
-                    </div>
-                    <span class="card-badge">Registro manual</span>
+                    <h2 class="card-title" id="formTitle">Nova transação</h2>
+                    <span class="card-badge">Firebase</span>
                 </div>
-
                 <form id="transactionForm">
-                    <input type="hidden" id="transactionId" value="">
+                    <input type="hidden" id="transactionId">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="date">Data</label>
@@ -943,65 +941,61 @@
                         </div>
                         <div class="form-group form-group-full">
                             <label for="description">Descrição</label>
-                            <input type="text" id="description" placeholder="Ex: Venda produto X, pagamento de aluguel" required>
+                            <input type="text" id="description" placeholder="Ex: Venda de produtos, Aluguel" required>
                         </div>
                         <div class="form-group">
                             <label for="quantity">Quantidade</label>
-                            <input type="number" id="quantity" value="1" min="1" required>
+                            <input type="number" id="quantity" value="1" min="1" step="1" required>
                         </div>
                         <div class="form-group">
-                            <label for="value">Valor unitário (R$)</label>
-                            <input type="number" id="value" step="0.01" min="0" required>
+                            <label for="value">Valor Unitário</label>
+                            <input type="number" id="value" value="0.00" min="0.01" step="0.01" required>
                         </div>
                         <div class="form-group form-group-full">
                             <label for="responsible">Responsável</label>
-                            <input type="text" id="responsible" placeholder="Ex: João, Maria" required>
+                            <input type="text" id="responsible" placeholder="Ex: Cliente A, Fornecedor B" required>
                         </div>
                         <div class="form-group form-group-full">
                             <label for="notes">Observações (opcional)</label>
-                            <textarea id="notes" rows="2" placeholder="Detalhes adicionais sobre a transação"></textarea>
+                            <textarea id="notes" rows="2" placeholder="Detalhes adicionais..."></textarea>
                         </div>
                     </div>
 
                     <div class="payment-methods-section">
-                        <div class="card-title" style="margin-bottom: 10px;">Valores por forma de pagamento/recebimento</div>
+                        <label>Valores por forma de pagamento/recebimento:</label>
                         <div class="payment-methods-grid">
                             <div class="payment-method-item">
                                 <input type="checkbox" id="checkDinheiro" name="paymentMethodCheck" value="Dinheiro">
                                 <label for="checkDinheiro">Dinheiro</label>
-                                <input type="number" id="valueDinheiro" step="0.01" min="0" value="0.00" disabled>
+                                <input type="number" id="valueDinheiro" value="0.00" min="0.00" step="0.01" disabled>
                             </div>
                             <div class="payment-method-item">
                                 <input type="checkbox" id="checkPix" name="paymentMethodCheck" value="Pix">
                                 <label for="checkPix">Pix</label>
-                                <input type="number" id="valuePix" step="0.01" min="0" value="0.00" disabled>
+                                <input type="number" id="valuePix" value="0.00" min="0.00" step="0.01" disabled>
                             </div>
                             <div class="payment-method-item">
                                 <input type="checkbox" id="checkCartaoDebito" name="paymentMethodCheck" value="Cartão Débito">
                                 <label for="checkCartaoDebito">Cartão Débito</label>
-                                <input type="number" id="valueCartaoDebito" step="0.01" min="0" value="0.00" disabled>
+                                <input type="number" id="valueCartaoDebito" value="0.00" min="0.00" step="0.01" disabled>
                             </div>
                             <div class="payment-method-item">
                                 <input type="checkbox" id="checkCartaoCredito" name="paymentMethodCheck" value="Cartão Crédito">
                                 <label for="checkCartaoCredito">Cartão Crédito</label>
-                                <input type="number" id="valueCartaoCredito" step="0.01" min="0" value="0.00" disabled>
+                                <input type="number" id="valueCartaoCredito" value="0.00" min="0.00" step="0.01" disabled>
                             </div>
                         </div>
                     </div>
 
                     <button type="submit" class="submit-btn" id="submitButton">Salvar transação</button>
-                    <button type="button" class="submit-btn btn-outline" id="cancelEditButton" style="display: none; margin-top: 8px;" onclick="resetForm()">Cancelar Edição</button>
+                    <button type="button" class="submit-btn btn-outline" id="cancelEditButton" style="display: none;" onclick="resetForm()">Cancelar Edição</button>
                 </form>
             </div>
 
-            <!-- Card direita: ações + tabela -->
             <div class="card-ghost">
                 <div class="card-header">
-                    <div>
-                        <div class="card-title">Extrato de transações</div>
-                        <div class="card-subtitle">Visualize e gerencie seus lançamentos</div>
-                    </div>
-                    <span class="card-badge">Dados da empresa atual</span>
+                    <h2 class="card-title">Extrato de Transações</h2>
+                    <span class="card-badge">Período</span>
                 </div>
 
                 <div class="filter-section">
@@ -1018,10 +1012,10 @@
                 </div>
 
                 <div class="actions-row">
-                    <button class="btn-soft" onclick="printReport()">Imprimir relatório</button>
+                    <button class="btn-outline" onclick="printReport()">Imprimir Relatório</button>
+                    <button class="btn-outline" onclick="exportData()">Backup (JSON)</button>
+                    <button class="btn-outline" onclick="importDataPrompt()">Restaurar Backup</button>
                     <button class="btn-soft" onclick="exportToCsv()">Exportar para CSV</button>
-                    <button class="btn-outline" onclick="exportData()">Fazer backup (JSON)</button>
-                    <button class="btn-outline" onclick="importDataPrompt()">Restaurar backup</button>
                 </div>
 
                 <div class="table-wrapper">
@@ -1032,7 +1026,7 @@
                                 <th>Tipo</th>
                                 <th>Descrição</th>
                                 <th>Qtd</th>
-                                <th>V. unitário</th>
+                                <th>Valor Unit.</th>
                                 <th>Total</th>
                                 <th>Responsável</th>
                                 <th>Pagamento</th>
@@ -1041,34 +1035,31 @@
                             </tr>
                         </thead>
                         <tbody id="transactionsTableBody">
-                            <!-- Linhas via JS -->
+                            <!-- Transações serão inseridas aqui pelo JavaScript -->
                         </tbody>
                     </table>
                 </div>
 
-                <div class="balance-strip">
-                    <span class="balance-label">Saldo total do período</span>
-                    <span class="balance-value" id="totalBalance">R$ 0,00</span>
-                </div>
-
                 <div class="payment-totals-section">
-                    <div class="card-title" style="margin-bottom: 10px;">Totais por forma de pagamento (período)</div>
+                    <div class="card-header">
+                        <h3 class="card-title">Totais por Forma de Pagamento</h3>
+                    </div>
                     <div class="payment-totals-grid">
                         <div class="payment-total-item">
-                            <span class="label">Dinheiro:</span>
-                            <span class="value" id="totalDinheiro">R$ 0,00</span>
+                            <span>Dinheiro</span>
+                            <span id="totalDinheiro">R$ 0,00</span>
                         </div>
                         <div class="payment-total-item">
-                            <span class="label">Pix:</span>
-                            <span class="value" id="totalPix">R$ 0,00</span>
+                            <span>Pix</span>
+                            <span id="totalPix">R$ 0,00</span>
                         </div>
                         <div class="payment-total-item">
-                            <span class="label">Cartão Débito:</span>
-                            <span class="value" id="totalCartaoDebito">R$ 0,00</span>
+                            <span>Cartão Débito</span>
+                            <span id="totalCartaoDebito">R$ 0,00</span>
                         </div>
                         <div class="payment-total-item">
-                            <span class="label">Cartão Crédito:</span>
-                            <span class="value" id="totalCartaoCredito">R$ 0,00</span>
+                            <span>Cartão Crédito</span>
+                            <span id="totalCartaoCredito">R$ 0,00</span>
                         </div>
                     </div>
                 </div>
@@ -1077,123 +1068,215 @@
     </div>
 
     <script>
-        let companies = []; // Lista de empresas cadastradas
-        let currentCompanyId = null; // ID da empresa atualmente selecionada
-        let transactions = []; // Transações da empresa atual
-        let filteredTransactions = []; // Transações filtradas da empresa atual
-        let editingTransactionId = null; // Para controlar qual transação está sendo editada
+        // Configuração do Firebase (use a sua!)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB34QUawe-Bz-NbSSgfWXeWQRIPXFvH62o",
+            authDomain: "gestaofinanceira-e086b.firebaseapp.com",
+            projectId: "gestaofinanceira-e086b",
+            storageBucket: "gestaofinanceira-e086b.firebasestorage.app",
+            messagingSenderId: "953138547535",
+            appId: "1:953138547535:web:4f7fb64696c685ec7d133a"
+        };
 
+        // Inicializa o Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Variáveis globais
+        let companies = [];
+        let currentCompanyId = null;
+        let transactions = [];
+        let filteredTransactions = [];
+        let editingTransactionId = null;
+
+        // Referências aos elementos de pagamento
         const paymentMethodCheckboxes = document.querySelectorAll('input[name="paymentMethodCheck"]');
         const paymentValueInputs = {
-            Dinheiro: document.getElementById('valueDinheiro'),
-            Pix: document.getElementById('valuePix'),
+            'Dinheiro': document.getElementById('valueDinheiro'),
+            'Pix': document.getElementById('valuePix'),
             'Cartão Débito': document.getElementById('valueCartaoDebito'),
             'Cartão Crédito': document.getElementById('valueCartaoCredito')
         };
 
+        // --- Funções Utilitárias ---
         function formatCurrency(value) {
             return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        // --- Funções de Gerenciamento de Empresas ---
-        function loadCompanies() {
-            const storedCompanies = localStorage.getItem('companies');
-            if (storedCompanies) {
-                try {
-                    companies = JSON.parse(storedCompanies);
-                } catch {
-                    companies = [];
+        function showAlert(message, type = 'info') {
+            // Implementação simples de alerta. Pode ser melhorada com um modal ou toast.
+            alert(message);
+        }
+
+        // --- Funções de Gerenciamento de Empresas (Firebase) ---
+        async function loadCompanies() {
+            try {
+                const companiesCol = await db.collection('companies').orderBy('name').get();
+                companies = companiesCol.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                if (companies.length === 0) {
+                    // Se não houver empresas, cria uma padrão
+                    await addCompany('Minha Empresa Padrão');
+                } else {
+                    // Tenta carregar a última empresa selecionada do localStorage
+                    const lastCompanyId = localStorage.getItem('currentCompanyId');
+                    currentCompanyId = companies.find(c => c.id === lastCompanyId) ? lastCompanyId : companies[0].id;
                 }
-            }
-            if (companies.length === 0) {
-                // Se não houver empresas, cria uma padrão
-                companies.push({ id: Date.now(), name: 'Minha Empresa' });
-                saveCompanies();
-            }
-            currentCompanyId = localStorage.getItem('currentCompanyId') || companies[0].id;
-            if (!companies.some(c => c.id == currentCompanyId)) { // Garante que o ID atual ainda existe
-                currentCompanyId = companies[0].id;
+                renderCompanySelector();
+                await loadTransactions(); // Carrega transações da empresa atual
+            } catch (error) {
+                console.error("Erro ao carregar empresas:", error);
+                showAlert("Erro ao carregar empresas. Verifique sua conexão e o console do navegador.", "error");
             }
         }
 
-        function saveCompanies() {
-            localStorage.setItem('companies', JSON.stringify(companies));
+        async function saveCompanies() {
+            // No Firebase, as empresas são salvas individualmente.
+            // Esta função é mais para manter o currentCompanyId no localStorage.
             localStorage.setItem('currentCompanyId', currentCompanyId);
         }
 
+        async function addCompany(defaultName = '') {
+            let companyName = defaultName;
+            if (!defaultName) {
+                companyName = prompt("Digite o nome da nova empresa:");
+                if (!companyName || companyName.trim() === "") {
+                    showAlert("Nome da empresa não pode ser vazio.", "warning");
+                    return;
+                }
+            }
+
+            try {
+                const newCompanyRef = await db.collection('companies').add({ name: companyName.trim() });
+                companies.push({ id: newCompanyRef.id, name: companyName.trim() });
+                currentCompanyId = newCompanyRef.id;
+                await saveCompanies(); // Salva o ID da empresa atual no localStorage
+                renderCompanySelector();
+                showAlert(`Empresa "${companyName.trim()}" adicionada com sucesso!`, "success");
+
+                // Limpa e recarrega as transações para a nova empresa (que estará vazia)
+                transactions = [];
+                filteredTransactions = [];
+                renderTransactions();
+                resetForm();
+            } catch (error) {
+                console.error("Erro ao adicionar empresa:", error);
+                showAlert("Erro ao adicionar empresa. Tente novamente.", "error");
+            }
+        }
+
         function renderCompanySelector() {
-            const select = document.getElementById('currentCompany');
-            select.innerHTML = '';
+            const selector = document.getElementById('currentCompany');
+            selector.innerHTML = '';
             companies.forEach(company => {
                 const option = document.createElement('option');
                 option.value = company.id;
                 option.textContent = company.name;
-                select.appendChild(option);
+                selector.appendChild(option);
             });
-            select.value = currentCompanyId;
-            select.onchange = (e) => {
-                currentCompanyId = parseInt(e.target.value);
-                saveCompanies();
-                loadTransactions(); // Carrega as transações da nova empresa
-                applyFilters(); // Re-renderiza tudo
-                resetForm(); // Limpa o formulário
+            selector.value = currentCompanyId;
+            selector.onchange = async (event) => {
+                currentCompanyId = event.target.value;
+                await saveCompanies(); // Salva a nova empresa selecionada
+                await loadTransactions(); // Carrega as transações da nova empresa
+                applyFilters(); // Re-aplica filtros para a nova empresa
+                resetForm();
             };
         }
 
-        function addCompany() {
-            const companyName = prompt('Digite o nome da nova empresa:');
-            if (companyName && companyName.trim() !== '') {
-                const newCompany = { id: Date.now(), name: companyName.trim() };
-                companies.push(newCompany);
-                saveCompanies();
-                renderCompanySelector();
-                currentCompanyId = newCompany.id; // Seleciona a nova empresa
-                saveCompanies();
-                loadTransactions(); // Carrega as transações da nova empresa (que estará vazia)
-                applyFilters(); // Re-renderiza tudo
-                resetForm(); // Limpa o formulário
-            }
-        }
-
-        // --- Funções de Gerenciamento de Transações (agora por empresa) ---
-        function getTransactionsKey() {
-            return `transactions_${currentCompanyId}`;
-        }
-
-        function loadTransactions() {
-            const stored = localStorage.getItem(getTransactionsKey());
-            if (stored) {
-                try {
-                    transactions = JSON.parse(stored);
-                } catch {
-                    transactions = [];
-                }
-            } else {
+        // --- Funções de Gerenciamento de Transações (Firebase) ---
+        async function loadTransactions() {
+            if (!currentCompanyId) {
                 transactions = [];
+                filteredTransactions = [];
+                renderTransactions();
+                return;
+            }
+            try {
+                // Busca transações para a empresa atual, ordenadas por data
+                const transactionsCol = await db.collection('companies')
+                                                .doc(currentCompanyId)
+                                                .collection('transactions')
+                                                .orderBy('date', 'desc')
+                                                .get();
+                transactions = transactionsCol.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                applyFilters(); // Aplica filtros após carregar
+            } catch (error) {
+                console.error("Erro ao carregar transações:", error);
+                showAlert("Erro ao carregar transações. Verifique sua conexão e o console do navegador.", "error");
+                transactions = []; // Limpa para evitar dados inconsistentes
+                applyFilters();
             }
         }
 
-        function saveTransactions() {
-            localStorage.setItem(getTransactionsKey(), JSON.stringify(transactions));
+        async function saveTransactionToFirestore(transactionData) {
+            if (!currentCompanyId) {
+                showAlert("Nenhuma empresa selecionada para salvar a transação.", "warning");
+                return;
+            }
+            try {
+                if (transactionData.id) {
+                    // Atualiza transação existente
+                    const { id, ...dataToUpdate } = transactionData; // Remove o ID do objeto de dados
+                    await db.collection('companies')
+                            .doc(currentCompanyId)
+                            .collection('transactions')
+                            .doc(id)
+                            .update(dataToUpdate);
+                    showAlert("Transação atualizada com sucesso!", "success");
+                } else {
+                    // Adiciona nova transação
+                    const newDocRef = await db.collection('companies')
+                                            .doc(currentCompanyId)
+                                            .collection('transactions')
+                                            .add(transactionData);
+                    transactionData.id = newDocRef.id; // Adiciona o ID gerado pelo Firestore
+                    showAlert("Transação salva com sucesso!", "success");
+                }
+                await loadTransactions(); // Recarrega todas as transações para atualizar a lista
+            } catch (error) {
+                console.error("Erro ao salvar transação:", error);
+                showAlert("Erro ao salvar transação. Tente novamente.", "error");
+            }
         }
 
+        async function deleteTransactionFromFirestore(id) {
+            if (!currentCompanyId) {
+                showAlert("Nenhuma empresa selecionada.", "warning");
+                return;
+            }
+            try {
+                await db.collection('companies')
+                        .doc(currentCompanyId)
+                        .collection('transactions')
+                        .doc(id)
+                        .delete();
+                showAlert("Transação excluída com sucesso!", "success");
+                await loadTransactions(); // Recarrega todas as transações
+            } catch (error) {
+                console.error("Erro ao excluir transação:", error);
+                showAlert("Erro ao excluir transação. Tente novamente.", "error");
+            }
+        }
+
+        // --- Funções de Filtro e Renderização ---
         function applyFilters() {
-            const startDate = document.getElementById('filterDateStart').value;
-            const endDate = document.getElementById('filterDateEnd').value;
+            const filterDateStart = document.getElementById('filterDateStart').value;
+            const filterDateEnd = document.getElementById('filterDateEnd').value;
 
             filteredTransactions = transactions.filter(t => {
-                const transactionDate = new Date(t.date + 'T00:00:00'); // Garante comparação de data sem hora
-                let match = true;
+                const transactionDate = new Date(t.date + 'T00:00:00'); // Garante comparação correta de datas
 
-                if (startDate) {
-                    const start = new Date(startDate + 'T00:00:00');
-                    match = match && (transactionDate >= start);
+                let passFilter = true;
+                if (filterDateStart) {
+                    const start = new Date(filterDateStart + 'T00:00:00');
+                    if (transactionDate < start) passFilter = false;
                 }
-                if (endDate) {
-                    const end = new Date(endDate + 'T00:00:00');
-                    match = match && (transactionDate <= end);
+                if (filterDateEnd) {
+                    const end = new Date(filterDateEnd + 'T23:59:59'); // Inclui o dia inteiro
+                    if (transactionDate > end) passFilter = false;
                 }
-                return match;
+                return passFilter;
             });
             renderTransactions();
         }
@@ -1201,109 +1284,81 @@
         function clearFilters() {
             document.getElementById('filterDateStart').value = '';
             document.getElementById('filterDateEnd').value = '';
-            filteredTransactions = [...transactions]; // Volta a exibir todas as transações
-            renderTransactions();
+            applyFilters(); // Re-aplica para mostrar todas as transações
         }
 
         function updateSummary(dataToSummarize) {
-            let entradas = 0, saidas = 0, entradasCount = 0, saidasCount = 0;
-            let totalDinheiro = 0, totalPix = 0, totalCartaoDebito = 0, totalCartaoCredito = 0;
+            let totalBalance = 0;
+            let totalEntradas = 0;
+            let totalSaidas = 0;
+            const paymentTotals = {
+                'Dinheiro': 0,
+                'Pix': 0,
+                'Cartão Débito': 0,
+                'Cartão Crédito': 0
+            };
 
             dataToSummarize.forEach(t => {
+                const amount = t.totalAbs;
                 if (t.type === 'entrada') {
-                    entradas += t.totalAbs;
-                    entradasCount++;
+                    totalBalance += amount;
+                    totalEntradas += amount;
                 } else {
-                    saidas += t.totalAbs;
-                    saidasCount++;
+                    totalBalance -= amount;
+                    totalSaidas += amount;
                 }
 
-                // Soma os totais por forma de pagamento
-                if (t.paymentDetails) {
-                    totalDinheiro += t.paymentDetails['Dinheiro'] || 0;
-                    totalPix += t.paymentDetails['Pix'] || 0;
-                    totalCartaoDebito += t.paymentDetails['Cartão Débito'] || 0;
-                    totalCartaoCredito += t.paymentDetails['Cartão Crédito'] || 0;
+                for (const method in t.paymentDetails) {
+                    if (paymentTotals.hasOwnProperty(method)) {
+                        paymentTotals[method] += t.paymentDetails[method];
+                    }
                 }
             });
 
-            const saldo = entradas - saidas;
+            document.getElementById('totalBalance').textContent = formatCurrency(totalBalance);
+            document.getElementById('totalBalance').className = `summary-main ${totalBalance >= 0 ? 'positive' : 'negative'}`;
+            document.getElementById('totalEntradas').textContent = formatCurrency(totalEntradas);
+            document.getElementById('totalSaidas').textContent = formatCurrency(totalSaidas);
 
-            document.getElementById('summaryEntradas').textContent = formatCurrency(entradas);
-            document.getElementById('summarySaidas').textContent = formatCurrency(saidas);
-            document.getElementById('summarySaldo').textContent = formatCurrency(saldo);
-
-            document.getElementById('summaryEntradasCount').textContent =
-                `${entradasCount} lançamento${entradasCount === 1 ? '' : 's'}`;
-            document.getElementById('summarySaidasCount').textContent =
-                `${saidasCount} lançamento${saidasCount === 1 ? '' : 's'}`;
-
-            const info = document.getElementById('summarySaldoInfo');
-            if (dataToSummarize.length === 0) {
-                info.textContent = 'Aguardando lançamentos';
-            } else if (saldo >= 0) {
-                info.textContent = 'Saldo positivo no período';
-            } else {
-                info.textContent = 'Atenção: saldo negativo';
-            }
-
-            // Atualiza os totais por forma de pagamento
-            document.getElementById('totalDinheiro').textContent = formatCurrency(totalDinheiro);
-            document.getElementById('totalPix').textContent = formatCurrency(totalPix);
-            document.getElementById('totalCartaoDebito').textContent = formatCurrency(totalCartaoDebito);
-            document.getElementById('totalCartaoCredito').textContent = formatCurrency(totalCartaoCredito);
+            document.getElementById('totalDinheiro').textContent = formatCurrency(paymentTotals['Dinheiro']);
+            document.getElementById('totalPix').textContent = formatCurrency(paymentTotals['Pix']);
+            document.getElementById('totalCartaoDebito').textContent = formatCurrency(paymentTotals['Cartão Débito']);
+            document.getElementById('totalCartaoCredito').textContent = formatCurrency(paymentTotals['Cartão Crédito']);
         }
 
         function renderTransactions() {
             const tbody = document.getElementById('transactionsTableBody');
-            tbody.innerHTML = '';
-            let totalBalance = 0;
+            tbody.innerHTML = ''; // Limpa a tabela antes de renderizar
 
             const dataToRender = filteredTransactions.length > 0 ? filteredTransactions : transactions;
 
+            if (dataToRender.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td colspan="10" style="text-align: center; color: var(--text-muted); padding: 20px;">Nenhuma transação encontrada para esta empresa ou período.</td>`;
+                tbody.appendChild(tr);
+                updateSummary([]); // Zera os totais se não houver dados
+                return;
+            }
+
             dataToRender.forEach(t => {
                 const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td data-label="Data">${new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+                    <td data-label="Tipo" class="${t.type === 'entrada' ? 'amount-positive' : 'amount-negative'}">${t.type === 'entrada' ? 'Entrada' : 'Saída'}</td>
+                    <td data-label="Descrição">${t.description}</td>
+                    <td data-label="Qtd">${t.quantity}</td>
+                    <td data-label="Valor Unit.">${formatCurrency(t.value)}</td>
+                    <td data-label="Total" class="${t.type === 'entrada' ? 'amount-positive' : 'amount-negative'}">${formatCurrency(t.totalAbs * (t.type === 'saida' ? -1 : 1))}</td>
+                    <td data-label="Responsável">${t.responsible}</td>
+                    <td data-label="Pagamento"></td> <!-- Preenchido abaixo -->
+                    <td data-label="Observações">${t.notes || ''}</td>
+                    <td data-label="Ações">
+                        <button class="btn-action" onclick="editTransaction('${t.id}')">Editar</button>
+                        <button class="btn-action btn-delete" onclick="deleteTransactionFromFirestore('${t.id}')">Excluir</button>
+                    </td>
+                `;
 
-                const dateCell = document.createElement('td');
-                dateCell.dataset.label = 'Data';
-                dateCell.textContent = new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR');
-                tr.appendChild(dateCell);
-
-                const typeCell = document.createElement('td');
-                typeCell.dataset.label = 'Tipo';
-                typeCell.textContent = t.type === 'entrada' ? 'Entrada' : 'Saída';
-                tr.appendChild(typeCell);
-
-                const descCell = document.createElement('td');
-                descCell.dataset.label = 'Descrição';
-                descCell.textContent = t.description;
-                tr.appendChild(descCell);
-
-                const qtyCell = document.createElement('td');
-                qtyCell.dataset.label = 'Qtd';
-                qtyCell.textContent = t.quantity;
-                tr.appendChild(qtyCell);
-
-                const valueCell = document.createElement('td');
-                valueCell.dataset.label = 'V. unitário';
-                valueCell.textContent = formatCurrency(t.value);
-                tr.appendChild(valueCell);
-
-                const totalCell = document.createElement('td');
-                totalCell.dataset.label = 'Total';
-                totalCell.textContent = formatCurrency(t.totalAbs * (t.type === 'saida' ? -1 : 1));
-                totalCell.className = t.type === 'entrada' ? 'amount-positive' : 'amount-negative';
-                tr.appendChild(totalCell);
-
-                const respCell = document.createElement('td');
-                respCell.dataset.label = 'Responsável';
-                respCell.textContent = t.responsible;
-                tr.appendChild(respCell);
-
-                const payCell = document.createElement('td');
-                payCell.dataset.label = 'Pagamento';
-                payCell.innerHTML = '';
-                // Exibe as formas de pagamento e seus valores
+                const payCell = tr.querySelector('td[data-label="Pagamento"]');
                 for (const method in t.paymentDetails) {
                     if (t.paymentDetails[method] > 0) {
                         const span = document.createElement('span');
@@ -1312,45 +1367,11 @@
                         payCell.appendChild(span);
                     }
                 }
-                tr.appendChild(payCell);
-
-                const notesCell = document.createElement('td');
-                notesCell.dataset.label = 'Observações';
-                notesCell.textContent = t.notes || '';
-                tr.appendChild(notesCell);
-
-                const actionCell = document.createElement('td');
-                actionCell.dataset.label = 'Ações';
-
-                const editButton = document.createElement('button');
-                editButton.textContent = 'Editar';
-                editButton.className = 'btn-action';
-                editButton.onclick = () => editTransaction(t.id);
-                actionCell.appendChild(editButton);
-
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Excluir';
-                deleteButton.className = 'btn-action btn-delete';
-                deleteButton.onclick = () => deleteTransaction(t.id);
-                actionCell.appendChild(deleteButton);
-
-                tr.appendChild(actionCell);
-
-                totalBalance += t.type === 'entrada' ? t.totalAbs : -t.totalAbs;
 
                 tbody.appendChild(tr);
             });
 
-            document.getElementById('totalBalance').textContent = formatCurrency(totalBalance);
             updateSummary(dataToRender);
-        }
-
-        function deleteTransaction(id) {
-            if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
-            transactions = transactions.filter(t => t.id !== id);
-            saveTransactions();
-            applyFilters(); // Re-aplica o filtro para atualizar a tabela e o resumo
-            resetForm(); // Garante que o formulário não está em modo de edição de uma transação excluída
         }
 
         function editTransaction(id) {
@@ -1424,22 +1445,43 @@
             window.print();
         }
 
-        function exportData() { // Exporta para JSON (backup)
-            const dataStr = JSON.stringify(transactions, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            const currentCompanyName = companies.find(c => c.id == currentCompanyId)?.name || 'empresa_desconhecida';
-            a.download = `backup_financeiro_${currentCompanyName}_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            alert('Backup salvo com sucesso!');
+        // Funções de Backup/Importação (agora para o Firebase)
+        // O backup JSON ainda é útil para exportar dados do Firestore para um arquivo local.
+        async function exportData() { // Exporta para JSON (backup)
+            if (!currentCompanyId) {
+                showAlert("Selecione uma empresa para fazer o backup.", "warning");
+                return;
+            }
+            try {
+                const transactionsCol = await db.collection('companies')
+                                                .doc(currentCompanyId)
+                                                .collection('transactions')
+                                                .get();
+                const dataToExport = transactionsCol.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                const dataStr = JSON.stringify(dataToExport, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const currentCompanyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa_desconhecida';
+                a.download = `backup_financeiro_${currentCompanyName}_${new Date().toISOString().slice(0,10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showAlert('Backup salvo com sucesso!', "success");
+            } catch (error) {
+                console.error("Erro ao fazer backup:", error);
+                showAlert("Erro ao fazer backup. Tente novamente.", "error");
+            }
         }
 
-        function importDataPrompt() {
+        async function importDataPrompt() {
+            if (!currentCompanyId) {
+                showAlert("Selecione uma empresa para restaurar o backup.", "warning");
+                return;
+            }
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = 'application/json';
@@ -1448,18 +1490,36 @@
                 if (!file) return;
 
                 const reader = new FileReader();
-                reader.onload = event => {
+                reader.onload = async event => {
                     try {
                         const imported = JSON.parse(event.target.result);
                         if (!Array.isArray(imported)) throw new Error('Formato inválido');
-                        if (confirm('Isso substituirá todos os dados atuais da empresa selecionada. Deseja continuar?')) {
-                            transactions = imported;
-                            saveTransactions();
-                            applyFilters(); // Re-aplica o filtro para atualizar a tabela e o resumo
-                            alert('Dados restaurados com sucesso!');
+                        if (confirm('Isso substituirá todas as transações atuais da empresa selecionada no Firebase. Deseja continuar?')) {
+                            // Primeiro, exclui todas as transações existentes para a empresa
+                            const existingTransactions = await db.collection('companies')
+                                                                .doc(currentCompanyId)
+                                                                .collection('transactions')
+                                                                .get();
+                            const batch = db.batch();
+                            existingTransactions.docs.forEach(doc => {
+                                batch.delete(doc.ref);
+                            });
+                            await batch.commit();
+
+                            // Depois, adiciona as transações importadas
+                            const importBatch = db.batch();
+                            imported.forEach(t => {
+                                // Remove o ID original se existir, Firestore vai gerar um novo
+                                const { id, ...dataToImport } = t; 
+                                importBatch.set(db.collection('companies').doc(currentCompanyId).collection('transactions').doc(), dataToImport);
+                            });
+                            await importBatch.commit();
+
+                            showAlert('Dados restaurados com sucesso para o Firebase!', "success");
+                            await loadTransactions(); // Recarrega do Firebase
                         }
                     } catch (error) {
-                        alert('Erro ao ler o arquivo JSON. Verifique se o arquivo está no formato correto.');
+                        showAlert('Erro ao ler ou importar o arquivo JSON. Verifique se o arquivo está no formato correto e se o Firestore está configurado.', "error");
                         console.error(error);
                     }
                 };
@@ -1471,7 +1531,7 @@
         function exportToCsv() {
             const dataToExport = filteredTransactions.length > 0 ? filteredTransactions : transactions;
             if (dataToExport.length === 0) {
-                alert('Não há dados para exportar.');
+                showAlert('Não há dados para exportar.', "warning");
                 return;
             }
 
@@ -1503,17 +1563,17 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            const currentCompanyName = companies.find(c => c.id == currentCompanyId)?.name || 'empresa_desconhecida';
+            const currentCompanyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa_desconhecida';
             link.setAttribute("download", `extrato_financeiro_${currentCompanyName}_${new Date().toISOString().slice(0,10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            alert('Dados exportados para CSV com sucesso!');
+            showAlert('Dados exportados para CSV com sucesso!', "success");
         }
 
 
         // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Data hoje no topo
             const now = new Date();
             document.getElementById('todayLabel').textContent =
@@ -1522,11 +1582,8 @@
             // Data padrão no formulário
             document.getElementById('date').valueAsDate = now;
 
-            loadCompanies();
-            renderCompanySelector();
-            loadTransactions();
-            filteredTransactions = [...transactions]; // Inicializa filteredTransactions com todas as transações
-            renderTransactions();
+            // Carrega empresas e transações do Firebase
+            await loadCompanies();
 
             // Event listeners para habilitar/desabilitar campos de valor de pagamento
             paymentMethodCheckboxes.forEach(checkbox => {
@@ -1541,8 +1598,13 @@
                 });
             });
 
-            document.getElementById('transactionForm').addEventListener('submit', e => {
+            document.getElementById('transactionForm').addEventListener('submit', async e => {
                 e.preventDefault();
+
+                if (!currentCompanyId) {
+                    showAlert("Por favor, selecione ou adicione uma empresa antes de salvar transações.", "warning");
+                    return;
+                }
 
                 const id = document.getElementById('transactionId').value;
                 const date = document.getElementById('date').value;
@@ -1568,17 +1630,16 @@
                 const calculatedTotal = quantity * value;
 
                 if (totalPaymentAmount === 0) {
-                    alert('Selecione e informe o valor para pelo menos uma forma de pagamento/recebimento.');
+                    showAlert('Selecione e informe o valor para pelo menos uma forma de pagamento/recebimento.', "warning");
                     return;
                 }
 
                 if (Math.abs(totalPaymentAmount - calculatedTotal) > 0.001) { // Tolerância para float
-                    alert(`O valor total da transação (${formatCurrency(calculatedTotal)}) não corresponde à soma dos valores das formas de pagamento (${formatCurrency(totalPaymentAmount)}). Por favor, ajuste.`);
+                    showAlert(`O valor total da transação (${formatCurrency(calculatedTotal)}) não corresponde à soma dos valores das formas de pagamento (${formatCurrency(totalPaymentAmount)}). Por favor, ajuste.`, "warning");
                     return;
                 }
 
                 const newTransaction = {
-                    id: id ? parseInt(id) : Date.now(), // Usa ID existente ou gera um novo
                     date,
                     type,
                     description,
@@ -1590,19 +1651,11 @@
                     paymentDetails // Armazena os detalhes de pagamento
                 };
 
-                if (editingTransactionId) {
-                    // Modo de edição: encontra e substitui a transação
-                    const index = transactions.findIndex(t => t.id === editingTransactionId);
-                    if (index !== -1) {
-                        transactions[index] = newTransaction;
-                    }
-                } else {
-                    // Modo de nova transação
-                    transactions.push(newTransaction);
+                if (id) {
+                    newTransaction.id = id; // Mantém o ID para atualização
                 }
 
-                saveTransactions();
-                applyFilters(); // Re-aplica o filtro para atualizar a tabela e o resumo
+                await saveTransactionToFirestore(newTransaction);
                 resetForm(); // Limpa o formulário e volta para o modo de nova transação
             });
         });
