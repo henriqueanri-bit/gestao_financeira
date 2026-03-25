@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestão Financeira Multi-Empresas (Firebase)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Financeira Multi-Empresas</title>
 
     <!-- Fonte moderna -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -45,7 +45,7 @@
         .topbar {
             width: 100%;
             border-bottom: 1px solid #1f2937;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15,23,42,0.95);
             backdrop-filter: blur(16px);
             position: sticky;
             top: 0;
@@ -76,7 +76,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 24px rgba(37, 99, 235, 0.6);
+            box-shadow: 0 0 24px rgba(37,99,235,0.6);
         }
 
         .logo-mark span {
@@ -108,7 +108,7 @@
             border-radius: 999px;
             padding: 4px 10px;
             border: 1px solid #1f2937;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15,23,42,0.9);
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -119,7 +119,7 @@
             height: 7px;
             border-radius: 999px;
             background: #22c55e;
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+            box-shadow: 0 0 10px rgba(34,197,94,0.7);
         }
 
         /* Seletor de Empresa */
@@ -129,13 +129,11 @@
             gap: 8px;
             margin-left: 20px;
         }
-
         .company-selector-group label {
             font-size: 12px;
             color: var(--text-soft);
             white-space: nowrap;
         }
-
         .company-selector-group select {
             background: var(--input-bg);
             border: 1px solid var(--input-border);
@@ -147,12 +145,10 @@
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
             min-width: 140px;
         }
-
         .company-selector-group select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.7);
+            box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
         }
-
         .btn-add-company {
             background: var(--primary);
             color: white;
@@ -164,7 +160,6 @@
             transition: background-color 0.2s ease;
             white-space: nowrap;
         }
-
         .btn-add-company:hover {
             background: var(--primary-dark);
         }
@@ -201,7 +196,7 @@
             padding: 6px 12px;
             border-radius: 999px;
             border: 1px solid #1f2937;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15,23,42,0.85);
             font-size: 11px;
             color: var(--text-soft);
             display: inline-flex;
@@ -225,508 +220,490 @@
         }
 
         .summary-card {
-            background: radial-gradient(circle at top left, rgba(37,99,235,0.22) 0, rgba(2,6,23,0.9) 45%, rgba(0,0,0,0.9) 100%);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 18px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .summary-card.positive {
-            background: radial-gradient(circle at top left, rgba(34,197,94,0.22) 0, rgba(2,6,23,0.9) 45%, rgba(0,0,0,0.9) 100%);
-        }
-
-        .summary-card.negative {
-            background: radial-gradient(circle at top left, rgba(239,68,68,0.22) 0, rgba(2,6,23,0.9) 45%, rgba(0,0,0,0.9) 100%);
+            background: radial-gradient(circle at top left, rgba(37,99,235,0.22) 0, rgba(15,23,42,0.95) 52%, rgba(15,23,42,1) 100%);
+            border-radius: 14px;
+            padding: 12px 14px 14px;
+            border: 1px solid rgba(51,65,85,0.9);
+            box-shadow: 0 18px 40px rgba(15,23,42,0.8), 0 0 0 1px rgba(15,23,42,0.95);
         }
 
         .summary-label {
-            font-size: 13px;
-            color: var(--text-soft);
-            font-weight: 500;
-        }
-
-        .summary-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: -0.02em;
-        }
-
-        .summary-value.positive {
-            color: var(--positive);
-        }
-
-        .summary-value.negative {
-            color: var(--negative);
-        }
-
-        .summary-value.zero {
-            color: var(--text-soft);
-        }
-
-        .summary-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 12px;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed var(--border-subtle);
-        }
-
-        .summary-detail-item {
             font-size: 11px;
             color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        .summary-detail-item span:first-child {
-            font-weight: 500;
+        .summary-main {
+            margin-top: 6px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .summary-sub {
+            margin-top: 4px;
+            font-size: 11px;
             color: var(--text-soft);
         }
 
-        /* Layout principal (formulário e tabela) */
-        .main-content-grid {
+        .summary-tag {
+            display: inline-flex;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 10px;
+            border: 1px solid rgba(148,163,184,0.4);
+            color: var(--text-soft);
+            background: rgba(15,23,42,0.9);
+        }
+
+        .summary-main.positive { color: var(--positive); }
+        .summary-main.negative { color: var(--negative); }
+
+        /* Layout principal: formulário + tabela */
+        .main-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
+            grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+            gap: 16px;
+            align-items: flex-start;
         }
 
-        @media (min-width: 768px) {
-            .main-content-grid {
-                grid-template-columns: 2fr 1fr; /* Formulário maior, filtros/ferramentas menor */
-            }
-        }
-
-        /* Card genérico */
+        /* Card formulário */
         .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 20px;
+            background: radial-gradient(circle at top left, rgba(148,163,184,0.14) 0, rgba(15,23,42,1) 55%, rgba(15,23,42,1) 100%);
+            border-radius: 14px;
+            padding: 16px 16px 18px;
+            border: 1px solid rgba(51,65,85,0.9);
+            box-shadow: 0 18px 40px rgba(15,23,42,0.8), 0 0 0 1px rgba(15,23,42,0.95);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
+            align-items: baseline;
+            margin-bottom: 10px;
         }
 
         .card-title {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            color: var(--text-main);
+        }
+
+        .card-subtitle {
+            font-size: 11px;
+            color: var(--text-soft);
         }
 
         .card-badge {
             font-size: 10px;
-            font-weight: 500;
             color: var(--text-muted);
-            background: var(--bg-card-soft);
-            border: 1px solid var(--border-subtle);
-            border-radius: 6px;
-            padding: 4px 8px;
-            text-transform: uppercase;
+            border-radius: 999px;
+            padding: 3px 8px;
+            border: 1px solid rgba(51,65,85,0.9);
+            background: rgba(15,23,42,0.9);
         }
 
-        /* Formulário */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 10px;
+            margin-top: 10px;
+            margin-bottom: 8px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
-        .form-group label {
-            font-size: 12px;
+        label {
+            font-size: 11px;
             color: var(--text-soft);
-            font-weight: 500;
         }
 
-        .form-group input[type="text"],
-        .form-group input[type="date"],
-        .form-group input[type="number"],
-        .form-group select,
-        .form-group textarea {
+        input[type="date"],
+        input[type="text"],
+        input[type="number"],
+        textarea {
             background: var(--input-bg);
             border: 1px solid var(--input-border);
             color: var(--text-main);
             border-radius: 9px;
-            padding: 9px 12px;
-            font-size: 14px;
+            padding: 7px 9px;
+            font-size: 12px;
             outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            width: 100%;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        input::placeholder,
+        textarea::placeholder {
+            color: #4b5563;
+        }
+
+        input:focus,
+        textarea:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
+            background: #020617;
         }
 
-        .form-group textarea {
-            min-height: 60px;
-            resize: vertical;
+        .form-group-full {
+            grid-column: 1 / -1;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
+        .payment-methods-section {
+            margin-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 10px;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 9px;
-            padding: 10px 18px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            font-weight: 600;
-            flex-grow: 1;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .cancel-edit-btn {
-            background: var(--bg-card-soft);
-            color: var(--text-soft);
-            border: 1px solid var(--border-subtle);
-            border-radius: 9px;
-            padding: 10px 18px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            font-weight: 500;
-            flex-grow: 1;
-            display: none; /* Escondido por padrão */
-        }
-
-        .cancel-edit-btn:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: var(--text-muted);
-        }
-
-        /* Detalhes de pagamento */
-        .payment-details-grid {
+        .payment-methods-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
             margin-top: 8px;
         }
 
-        .payment-item {
+        .payment-method-item {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: var(--bg-card-soft);
-            border: 1px solid var(--border-subtle);
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
             border-radius: 9px;
-            padding: 8px 12px;
+            padding: 5px 9px;
         }
 
-        .payment-item label {
+        .payment-method-item label {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-main);
+            flex-grow: 1;
+        }
+
+        .payment-method-item input[type="checkbox"] {
+            margin: 0;
+            accent-color: var(--primary);
+            width: 14px;
+            height: 14px;
+        }
+
+        .payment-method-item input[type="number"] {
+            width: 90px;
+            padding: 4px 6px;
+            font-size: 11px;
+            background: #0f172a;
+            border-color: #334155;
+            border-radius: 6px;
+        }
+
+        .submit-btn {
+            margin-top: 12px;
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 12px 28px rgba(37,99,235,0.6), 0 0 0 1px rgba(15,23,42,0.9);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.05);
+            box-shadow: 0 16px 40px rgba(37,99,235,0.7), 0 0 0 1px rgba(15,23,42,1);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 8px 18px rgba(37,99,235,0.9), 0 0 0 1px rgba(15,23,42,1);
+        }
+
+        .cancel-edit-btn {
+            margin-top: 6px;
+            width: 100%;
+            background: transparent;
+            color: var(--text-soft);
+            border: 1px solid #4b5563;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* Card direita: ações + tabela */
+        .card-ghost {
+            background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,1));
+            border-radius: 14px;
+            border: 1px solid rgba(51,65,85,0.9);
+            padding: 14px 14px 16px;
+            box-shadow: 0 18px 40px rgba(15,23,42,0.9), 0 0 0 1px rgba(15,23,42,1);
+        }
+
+        .actions-row {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .actions-left {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary, .btn-outline {
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 11px;
+            border: 1px solid #334155;
+            background: rgba(15,23,42,0.9);
+            color: var(--text-soft);
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-size: 13px;
+        }
+        .btn-secondary:hover {
+            background: #020617;
             color: var(--text-main);
-            cursor: pointer;
-            white-space: nowrap;
-            margin-bottom: 0; /* Override form-group label margin */
+        }
+        .btn-outline {
+            background: transparent;
+        }
+        .btn-outline:hover {
+            background: rgba(15,23,42,0.8);
         }
 
-        .payment-item input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--primary);
-            cursor: pointer;
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
         }
 
-        .payment-item input[type="number"] {
-            flex-grow: 1;
+        .filter-row label {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        .filter-row input[type="date"] {
             background: var(--input-bg);
             border: 1px solid var(--input-border);
             color: var(--text-main);
-            border-radius: 6px;
-            padding: 6px 8px;
-            font-size: 13px;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            -moz-appearance: textfield; /* Remove setas no Firefox */
+            border-radius: 999px;
+            padding: 5px 8px;
+            font-size: 11px;
         }
 
-        .payment-item input[type="number"]::-webkit-outer-spin-button,
-        .payment-item input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none; /* Remove setas no Chrome/Safari */
-            margin: 0;
+        .filter-row button {
+            font-size: 11px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            border: 1px solid #334155;
+            background: rgba(15,23,42,0.9);
+            color: var(--text-soft);
+            cursor: pointer;
+        }
+        .filter-row button:hover {
+            background: #020617;
+            color: var(--text-main);
         }
 
-        .payment-item input[type="number"]:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
-        }
-
-        .payment-item input[type="number"]:disabled {
-            background: #080d1a;
-            border-color: #141b2b;
-            color: var(--text-muted);
-            cursor: not-allowed;
-        }
-
-        /* Filtros e Ferramentas */
-        .filter-group, .tools-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .table-wrapper {
             margin-top: 10px;
+            border-radius: 12px;
+            border: 1px solid #1f2937;
+            overflow: hidden;
+            background: radial-gradient(circle at top left, rgba(15,23,42,1) 0, #020617 65%);
         }
 
-        .filter-group .btn-group {
-            margin-top: 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        thead {
+            background: var(--table-header);
+        }
+
+        th, td {
+            padding: 7px 8px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        th {
+            text-align: left;
+            font-weight: 500;
+            color: var(--text-soft);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(15,23,42,0.85);
+        }
+
+        tbody tr:hover {
+            background: rgba(30,64,175,0.35);
+        }
+
+        .tag {
+            display: inline-flex;
+            padding: 2px 6px;
+            border-radius: 999px;
+            font-size: 10px;
+            border: 1px solid rgba(148,163,184,0.5);
+        }
+
+        .tag.income {
+            border-color: rgba(34,197,94,0.6);
+            color: #4ade80;
+        }
+
+        .tag.expense {
+            border-color: rgba(248,113,113,0.6);
+            color: #f87171;
         }
 
         .btn-action {
-            background: var(--bg-card-soft);
-            color: var(--text-main);
-            border: 1px solid var(--border-subtle);
-            border-radius: 9px;
-            padding: 10px 18px;
-            font-size: 14px;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 999px;
+            border: 1px solid #334155;
+            background: rgba(15,23,42,0.9);
+            color: var(--text-soft);
             cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            font-weight: 500;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            margin-right: 4px;
         }
-
         .btn-action:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: var(--text-muted);
+            background: #020617;
+            color: var(--text-main);
+        }
+        .btn-delete {
+            border-color: rgba(248,113,113,0.6);
+            color: #fca5a5;
+        }
+        .btn-delete:hover {
+            background: rgba(127,29,29,0.7);
+            color: #fee2e2;
         }
 
-        /* Tabela de transações */
-        .table-responsive {
-            overflow-x: auto;
-            margin-top: 10px;
-        }
-
-        .transactions-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 13px;
-            min-width: 700px; /* Garante que a tabela não fique muito pequena */
-        }
-
-        .transactions-table th,
-        .transactions-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .transactions-table th {
-            background: var(--table-header);
-            color: var(--text-soft);
-            font-weight: 600;
-            text-transform: uppercase;
+        .empty-state {
+            text-align: center;
+            padding: 18px 10px;
             font-size: 11px;
-            letter-spacing: 0.05em;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            color: var(--text-muted);
         }
 
-        .transactions-table tbody tr:last-child td {
-            border-bottom: none;
+        /* Totais por forma de pagamento */
+        .payment-totals-section {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0,1fr));
+            gap: 8px;
         }
-
-        .transactions-table tbody tr:hover {
-            background: rgba(255,255,255,0.03);
+        .payment-total-card {
+            background: rgba(15,23,42,0.95);
+            border-radius: 10px;
+            border: 1px solid #1f2937;
+            padding: 6px 8px;
         }
-
-        .transactions-table .type-entrada {
-            color: var(--positive);
-            font-weight: 500;
-        }
-
-        .transactions-table .type-saida {
-            color: var(--negative);
-            font-weight: 500;
-        }
-
-        .transactions-table .total-entrada {
-            color: var(--positive);
-            font-weight: 600;
-        }
-
-        .transactions-table .total-saida {
-            color: var(--negative);
-            font-weight: 600;
-        }
-
-        .transactions-table .actions-cell {
-            white-space: nowrap;
-            width: 1%; /* Para não ocupar espaço desnecessário */
-        }
-
-        .transactions-table .action-btn {
-            background: none;
-            border: none;
+        .payment-total-label {
+            font-size: 10px;
             color: var(--text-soft);
-            cursor: pointer;
-            font-size: 16px;
-            margin-left: 8px;
-            transition: color 0.2s ease;
         }
-
-        .transactions-table .action-btn:hover {
-            color: var(--primary);
-        }
-
-        .transactions-table .action-btn.delete:hover {
-            color: var(--negative);
+        .payment-total-value {
+            margin-top: 3px;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         /* Alertas */
-        #alertContainer {
+        .alert-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
+            top: 12px;
+            right: 12px;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
-
         .alert {
-            background-color: #333;
-            color: white;
-            padding: 12px 20px;
+            min-width: 220px;
+            max-width: 320px;
+            padding: 8px 10px;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(-20px);
-            animation: fadeInOut 3s forwards;
-            min-width: 250px;
-            font-size: 14px;
+            font-size: 11px;
             display: flex;
-            align-items: center;
-            gap: 10px;
+            align-items: flex-start;
+            gap: 8px;
+            box-shadow: 0 12px 30px rgba(15,23,42,0.9);
+        }
+        .alert-success {
+            background: rgba(22,163,74,0.15);
+            border: 1px solid rgba(22,163,74,0.6);
+            color: #bbf7d0;
+        }
+        .alert-error {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.6);
+            color: #fecaca;
+        }
+        .alert-warning {
+            background: rgba(234,179,8,0.15);
+            border: 1px solid rgba(234,179,8,0.6);
+            color: #fef3c7;
         }
 
-        .alert-success { background-color: #22c55e; }
-        .alert-error { background-color: #ef4444; }
-        .alert-warning { background-color: #f59e0b; }
-        .alert-info { background-color: #3b82f6; }
-
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(-20px); }
-            10% { opacity: 1; transform: translateY(0); }
-            90% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-20px); }
-        }
-
-        /* Estilos de impressão */
-        @media print {
-            body {
-                background: white;
-                color: black;
+        @media (max-width: 860px) {
+            .main-grid {
+                grid-template-columns: minmax(0, 1fr);
             }
-            .topbar, .form-card, .filter-group, .tools-group, .btn-group, .cancel-edit-btn, .actions-cell {
-                display: none !important;
-            }
-            .page {
-                margin: 0;
-                padding: 0;
-                max-width: none;
-            }
-            .main-content-grid {
-                grid-template-columns: 1fr !important;
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
             .summary-grid {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                justify-content: space-around;
-            }
-            .summary-card {
-                flex: 1;
-                min-width: 280px;
-                background: #f0f0f0 !important;
-                border: 1px solid #ccc !important;
-                box-shadow: none !important;
-            }
-            .transactions-table {
-                min-width: auto;
-                width: 100%;
-            }
-            .transactions-table th, .transactions-table td {
-                border-color: #eee !important;
-                color: black !important;
-            }
-            .transactions-table th {
-                background: #e0e0e0 !important;
-            }
-            .transactions-table .type-entrada, .transactions-table .total-entrada {
-                color: green !important;
-            }
-            .transactions-table .type-saida, .transactions-table .total-saida {
-                color: red !important;
-            }
-            .page-title-block h1, .page-title-block p {
-                color: black !important;
-            }
-            .date-badge {
-                background: #f0f0f0 !important;
-                border-color: #ccc !important;
-                color: #555 !important;
+                grid-template-columns: minmax(0, 1fr);
             }
         }
     </style>
 </head>
 <body>
-    <div id="alertContainer"></div>
-
     <div class="topbar">
         <div class="topbar-inner">
             <div class="logo-group">
-                <div class="logo-mark"><span>$</span></div>
-                <div class="logo-text">
-                    <div class="logo-text-main">Finanças</div>
-                    <div class="logo-text-sub">Multi-Empresas</div>
+                <div class="logo-mark"><span>GF</span></div>
+                <div>
+                    <div class="logo-text-main">Gestão Financeira</div>
+                    <div class="logo-text-sub">Sistema simples e completo</div>
+                </div>
+                <div class="company-selector-group">
+                    <label for="currentCompany">Empresa:</label>
+                    <select id="currentCompany"></select>
+                    <button class="btn-add-company" id="addCompanyBtn">+ Nova empresa</button>
                 </div>
             </div>
             <div class="topbar-right">
-                <div class="company-selector-group">
-                    <label for="companySelector">Empresa:</label>
-                    <select id="companySelector"></select>
-                    <button class="btn-add-company" id="addCompanyBtn">Nova Empresa</button>
-                </div>
                 <div class="status-pill">
-                    <div class="status-dot"></div>
-                    <span id="todayLabelHeader"></span>
+                    <span class="status-dot"></span>
+                    <span>Local (navegador)</span>
                 </div>
+                <span id="todayLabel"></span>
             </div>
         </div>
     </div>
@@ -734,52 +711,51 @@
     <div class="page">
         <div class="page-header">
             <div class="page-title-block">
-                <h1>Dashboard Financeiro</h1>
-                <p>Visão geral e gestão de transações.</p>
+                <h1>Controle de Caixa</h1>
+                <p>Registre entradas, saídas e acompanhe o saldo por empresa.</p>
             </div>
             <div class="date-badge">
-                <div class="date-dot"></div>
-                <span id="todayLabel"></span>
+                <span class="date-dot"></span>
+                <span>Hoje: <span id="todayLabelHeader"></span></span>
             </div>
         </div>
 
         <div class="summary-grid">
-            <div class="summary-card positive">
-                <div class="summary-label">Entradas</div>
-                <div class="summary-value" id="totalEntradas">R$ 0,00</div>
-                <div class="summary-details" id="entradasPaymentDetails">
-                    <!-- Detalhes de pagamento de entradas aqui -->
-                </div>
-            </div>
-            <div class="summary-card negative">
-                <div class="summary-label">Saídas</div>
-                <div class="summary-value" id="totalSaidas">R$ 0,00</div>
-                <div class="summary-details" id="saidasPaymentDetails">
-                    <!-- Detalhes de pagamento de saídas aqui -->
-                </div>
+            <div class="summary-card">
+                <div class="summary-label">Entradas no período</div>
+                <div class="summary-main positive" id="totalEntrada">R$ 0,00</div>
+                <div class="summary-sub">Somatório de todas as entradas filtradas</div>
             </div>
             <div class="summary-card">
-                <div class="summary-label">Saldo</div>
-                <div class="summary-value" id="saldoTotal">R$ 0,00</div>
-                <div class="summary-details" id="saldoPaymentDetails">
-                    <!-- Detalhes de pagamento de saldo aqui -->
-                </div>
+                <div class="summary-label">Saídas no período</div>
+                <div class="summary-main negative" id="totalSaida">R$ 0,00</div>
+                <div class="summary-sub">Somatório de todas as saídas filtradas</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Saldo líquido</div>
+                <div class="summary-main" id="saldoLiquido">R$ 0,00</div>
+                <div class="summary-sub">Entradas - Saídas</div>
             </div>
         </div>
 
-        <div class="main-content-grid">
-            <div class="card form-card">
+        <div class="main-grid">
+            <!-- Formulário -->
+            <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Nova Transação</div>
-                    <div class="card-badge">Formulário</div>
+                    <div>
+                        <div class="card-title" id="formTitle">Nova transação</div>
+                        <div class="card-subtitle">Preencha os dados e registre um lançamento</div>
+                    </div>
+                    <div class="card-badge">Caixa diário</div>
                 </div>
+
                 <form id="transactionForm">
-                    <input type="hidden" id="transactionId" /> <!-- Campo oculto para o ID da transação -->
+                    <input type="hidden" id="transactionId">
 
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="date">Data</label>
-                            <input type="date" id="date" required />
+                            <input type="date" id="date" required>
                         </div>
                         <div class="form-group">
                             <label for="type">Tipo</label>
@@ -788,161 +764,135 @@
                                 <option value="saida">Saída</option>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description">Descrição</label>
-                        <input type="text" id="description" placeholder="Ex: Venda de produto, Aluguel" required />
-                    </div>
-
-                    <div class="form-grid">
+                        <div class="form-group form-group-full">
+                            <label for="description">Descrição</label>
+                            <input type="text" id="description" placeholder="Ex: Venda balcão, pagamento fornecedor" required>
+                        </div>
                         <div class="form-group">
                             <label for="quantity">Quantidade</label>
-                            <input type="number" id="quantity" value="1" min="1" required />
+                            <input type="number" id="quantity" min="1" step="1" value="1" required>
                         </div>
                         <div class="form-group">
-                            <label for="value">Valor Unitário</label>
-                            <input type="number" id="value" step="0.01" value="0.00" min="0" required />
+                            <label for="value">Valor unitário (R$)</label>
+                            <input type="number" id="value" min="0" step="0.01" value="0.00" required>
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label for="responsible">Responsável</label>
+                            <input type="text" id="responsible" placeholder="Quem realizou/recebeu o pagamento">
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label for="notes">Observações</label>
+                            <textarea id="notes" rows="2" placeholder="Anotações adicionais, dados do cliente/fornecedor etc."></textarea>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="responsible">Responsável</label>
-                        <input type="text" id="responsible" placeholder="Ex: Cliente A, Fornecedor B" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="notes">Observações</label>
-                        <textarea id="notes" placeholder="Detalhes adicionais"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Formas de Pagamento/Recebimento</label>
-                        <div class="payment-details-grid">
-                            <div class="payment-item">
-                                <label>
-                                    <input type="checkbox" class="payment-method-checkbox" value="Dinheiro" /> Dinheiro
-                                </label>
-                                <input type="number" id="paymentDinheiro" step="0.01" value="0.00" disabled />
+                    <div class="payment-methods-section">
+                        <label>Valores por forma de pagamento/recebimento</label>
+                        <div class="payment-methods-grid">
+                            <div class="payment-method-item">
+                                <input type="checkbox" name="paymentMethodCheck" value="Dinheiro">
+                                <label>Dinheiro</label>
+                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Dinheiro" disabled>
                             </div>
-                            <div class="payment-item">
-                                <label>
-                                    <input type="checkbox" class="payment-method-checkbox" value="Pix" /> Pix
-                                </label>
-                                <input type="number" id="paymentPix" step="0.01" value="0.00" disabled />
+                            <div class="payment-method-item">
+                                <input type="checkbox" name="paymentMethodCheck" value="Pix">
+                                <label>Pix</label>
+                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Pix" disabled>
                             </div>
-                            <div class="payment-item">
-                                <label>
-                                    <input type="checkbox" class="payment-method-checkbox" value="Cartão Débito" /> Cartão Débito
-                                </label>
-                                <input type="number" id="paymentCartaoDebito" step="0.01" value="0.00" disabled />
+                            <div class="payment-method-item">
+                                <input type="checkbox" name="paymentMethodCheck" value="Cartão Débito">
+                                <label>Cartão Débito</label>
+                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Cartão Débito" disabled>
                             </div>
-                            <div class="payment-item">
-                                <label>
-                                    <input type="checkbox" class="payment-method-checkbox" value="Cartão Crédito" /> Cartão Crédito
-                                </label>
-                                <input type="number" id="paymentCartaoCredito" step="0.01" value="0.00" disabled />
+                            <div class="payment-method-item">
+                                <input type="checkbox" name="paymentMethodCheck" value="Cartão Crédito">
+                                <label>Cartão Crédito</label>
+                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Cartão Crédito" disabled>
                             </div>
+                        </div>
+                        <div style="margin-top:6px;font-size:10px;color:#9ca3af;">
+                            A soma dos valores acima deve ser igual ao total da transação (quantidade × valor unitário).
                         </div>
                     </div>
 
-                    <div class="btn-group">
-                        <button type="submit" class="btn-primary" id="submitButton">Salvar Transação</button>
-                        <button type="button" class="cancel-edit-btn" id="cancelEditButton">Cancelar Edição</button>
-                    </div>
+                    <button type="submit" class="submit-btn" id="submitButton">Salvar transação</button>
+                    <button type="button" class="cancel-edit-btn" id="cancelEditButton">Cancelar edição</button>
                 </form>
             </div>
 
-            <div>
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Filtros</div>
-                        <div class="card-badge">Data</div>
+            <!-- Ações + Tabela -->
+            <div class="card-ghost">
+                <div class="actions-row">
+                    <div class="actions-left">
+                        <button class="btn-secondary" id="backupJsonBtn">Backup (JSON)</button>
+                        <button class="btn-secondary" id="restoreJsonBtn">Importar backup</button>
+                        <button class="btn-secondary" id="exportCsvBtn">Exportar CSV</button>
                     </div>
-                    <div class="filter-group">
-                        <div class="form-group">
-                            <label for="filterStartDate">De:</label>
-                            <input type="date" id="filterStartDate" />
-                        </div>
-                        <div class="form-group">
-                            <label for="filterEndDate">Até:</label>
-                            <input type="date" id="filterEndDate" />
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn-primary" id="applyFilterBtn">Aplicar</button>
-                            <button type="button" class="cancel-edit-btn" id="clearFilterBtn" style="display: inline-block;">Limpar</button>
-                        </div>
-                    </div>
-
-                    <div class="card-header" style="margin-top: 20px;">
-                        <div class="card-title">Ferramentas</div>
-                        <div class="card-badge">Dados</div>
-                    </div>
-                    <div class="tools-group">
-                        <button type="button" class="btn-action" id="backupJsonBtn">Backup JSON</button>
-                        <button type="button" class="btn-action" id="restoreJsonBtn">Restaurar JSON</button>
-                        <button type="button" class="btn-action" id="exportCsvBtn">Exportar CSV</button>
-                        <button type="button" class="btn-action" id="printBtn">Imprimir Relatório</button>
-                    </div>
+                    <button class="btn-outline" id="printBtn">Imprimir</button>
                 </div>
 
-                <div class="card" style="margin-top: 16px;">
-                    <div class="card-header">
-                        <div class="card-title">Transações</div>
-                        <div class="card-badge">Lista</div>
+                <div class="filter-row">
+                    <label>Data início:
+                        <input type="date" id="filterDateStart">
+                    </label>
+                    <label>Data fim:
+                        <input type="date" id="filterDateEnd">
+                    </label>
+                    <button id="applyFilterBtn">Aplicar filtro</button>
+                    <button id="clearFilterBtn">Limpar filtro</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                                <th>Qtd</th>
+                                <th>V. Unit.</th>
+                                <th>Total</th>
+                                <th>Resp.</th>
+                                <th>Pagamentos</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsBody">
+                            <tr><td colspan="9" class="empty-state">Nenhuma transação registrada.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="payment-totals-section">
+                    <div class="payment-total-card">
+                        <div class="payment-total-label">Total Dinheiro</div>
+                        <div class="payment-total-value" id="totalDinheiro">R$ 0,00</div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="transactions-table">
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Tipo</th>
-                                    <th>Descrição</th>
-                                    <th>Qtd</th>
-                                    <th>Valor Unit.</th>
-                                    <th>Total</th>
-                                    <th>Responsável</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody id="transactionsTableBody">
-                                <!-- Transações serão carregadas aqui -->
-                            </tbody>
-                        </table>
+                    <div class="payment-total-card">
+                        <div class="payment-total-label">Total Pix</div>
+                        <div class="payment-total-value" id="totalPix">R$ 0,00</div>
+                    </div>
+                    <div class="payment-total-card">
+                        <div class="payment-total-label">Total Cartão Débito</div>
+                        <div class="payment-total-value" id="totalDebito">R$ 0,00</div>
+                    </div>
+                    <div class="payment-total-card">
+                        <div class="payment-total-label">Total Cartão Crédito</div>
+                        <div class="payment-total-value" id="totalCredito">R$ 0,00</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, runTransaction, writeBatch } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
-        // Sua configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyB34QUawe-Bz-NbSSgfWXeWQRIPXFvH62o",
-            authDomain: "gestaofinanceira-e086b.firebaseapp.com",
-            projectId: "gestaofinanceira-e086b",
-            storageBucket: "gestaofinanceira-e086b.firebasestorage.app",
-            messagingSenderId: "953138547535",
-            appId: "1:953138547535:web:4f7fb64696c685ec7d133a"
-        };
-
-        // Inicializa o Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
+    <div class="alert-container" id="alertContainer"></div>
+    <script>
         // ================== ESTADO GLOBAL ==================
         let companies = [];          // [{id, name}]
-        let currentCompanyId = null; // id da empresa selecionada
-        let transactions = [];       // transações da empresa atual
+        let currentCompanyId = null; // empresa selecionada
+        let transactions = [];       // todas da empresa atual
         let filteredTransactions = [];
-        let editingTransactionId = null; // Para controlar a edição
-
-        // Controles de pagamento
-        let paymentMethodCheckboxes = [];
-        let paymentValueInputs = {};
+        let editingTransactionId = null;
 
         // ================== FUNÇÕES UTILITÁRIAS ==================
         function formatCurrency(value) {
@@ -952,22 +902,13 @@
             });
         }
 
-        function parseDateOnly(dateStr) {
-            if (!dateStr) return null;
-            const [year, month, day] = dateStr.split('-').map(Number);
-            return new Date(year, month - 1, day);
-        }
-
-        // ================== ALERTAS BONITOS ==================
-        function showAlert(message, type = 'info', duration = 3000) {
+        function showAlert(message, type = 'success', duration = 3000) {
             const container = document.getElementById('alertContainer');
             const alert = document.createElement('div');
             alert.classList.add('alert');
-
             if (type === 'success') alert.classList.add('alert-success');
             else if (type === 'error') alert.classList.add('alert-error');
             else if (type === 'warning') alert.classList.add('alert-warning');
-            else alert.classList.add('alert-info');
 
             alert.textContent = message;
             container.appendChild(alert);
@@ -977,433 +918,390 @@
             }, duration);
         }
 
-        // ================== GERENCIAMENTO DE EMPRESAS (FIREBASE) ==================
-        async function loadCompanies() {
-            try {
-                const companiesCol = collection(db, 'companies');
-                const companySnapshot = await getDocs(companiesCol);
-                companies = companySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        function getCompanyStorageKey(companyId) {
+            return `transactions_${companyId}`;
+        }
 
-                const companySelector = document.getElementById('companySelector');
-                companySelector.innerHTML = '<option value="">Selecione uma empresa</option>';
-                companies.forEach(company => {
-                    const option = document.createElement('option');
-                    option.value = company.id;
-                    option.textContent = company.name;
-                    companySelector.appendChild(option);
-                });
+        // ================== EMPRESAS (LOCALSTORAGE) ==================
+        function loadCompanies() {
+            const stored = localStorage.getItem('companies');
+            if (stored) {
+                companies = JSON.parse(stored);
+            } else {
+                // cria uma empresa padrão
+                const defaultCompany = { id: Date.now().toString(), name: 'Minha Empresa' };
+                companies = [defaultCompany];
+                localStorage.setItem('companies', JSON.stringify(companies));
+            }
 
-                // Tenta carregar a última empresa selecionada
-                const lastCompanyId = localStorage.getItem('lastCompanyId');
-                if (lastCompanyId && companies.some(c => c.id === lastCompanyId)) {
-                    currentCompanyId = lastCompanyId;
-                    companySelector.value = lastCompanyId;
-                } else if (companies.length > 0) {
-                    currentCompanyId = companies[0].id;
-                    companySelector.value = companies[0].id;
-                } else {
-                    currentCompanyId = null;
-                }
+            const storedCurrent = localStorage.getItem('currentCompanyId');
+            if (storedCurrent && companies.find(c => c.id === storedCurrent)) {
+                currentCompanyId = storedCurrent;
+            } else {
+                currentCompanyId = companies[0].id;
+                localStorage.setItem('currentCompanyId', currentCompanyId);
+            }
 
-                if (currentCompanyId) {
-                    await loadTransactions();
-                } else {
-                    transactions = [];
-                    filteredTransactions = [];
-                    renderTransactions();
-                    updateSummary();
-                }
+            renderCompanySelector();
+            loadTransactions();
+        }
 
-                companySelector.addEventListener('change', async (e) => {
-                    currentCompanyId = e.target.value;
-                    localStorage.setItem('lastCompanyId', currentCompanyId);
-                    if (currentCompanyId) {
-                        await loadTransactions();
-                    } else {
-                        transactions = [];
-                        filteredTransactions = [];
-                        renderTransactions();
-                        updateSummary();
+        function saveCompanies() {
+            localStorage.setItem('companies', JSON.stringify(companies));
+            localStorage.setItem('currentCompanyId', currentCompanyId);
+        }
+
+        function renderCompanySelector() {
+            const select = document.getElementById('currentCompany');
+            select.innerHTML = '';
+            companies.forEach(company => {
+                const opt = document.createElement('option');
+                opt.value = company.id;
+                opt.textContent = company.name;
+                if (company.id === currentCompanyId) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            select.onchange = () => {
+                currentCompanyId = select.value;
+                saveCompanies();
+                loadTransactions();
+            };
+        }
+
+        function addCompany() {
+            const name = prompt('Nome da nova empresa:');
+            if (!name) return;
+            const newCompany = { id: Date.now().toString(), name: name.trim() };
+            companies.push(newCompany);
+            currentCompanyId = newCompany.id;
+            saveCompanies();
+            renderCompanySelector();
+            loadTransactions();
+            showAlert('Nova empresa criada.', 'success');
+        }
+
+        // ================== TRANSAÇÕES (LOCALSTORAGE) ==================
+        function loadTransactions() {
+            if (!currentCompanyId) return;
+            const key = getCompanyStorageKey(currentCompanyId);
+            const stored = localStorage.getItem(key);
+            transactions = stored ? JSON.parse(stored) : [];
+            filteredTransactions = [];
+            renderTransactions();
+            updateSummary();
+        }
+
+        function saveTransactions() {
+            if (!currentCompanyId) return;
+            const key = getCompanyStorageKey(currentCompanyId);
+            localStorage.setItem(key, JSON.stringify(transactions));
+        }
+
+        // ================== RENDERIZAÇÃO TABELA E RESUMO ==================
+        function renderTransactions() {
+            const tbody = document.getElementById('transactionsBody');
+            tbody.innerHTML = '';
+
+            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+
+            if (data.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = 9;
+                td.className = 'empty-state';
+                td.textContent = 'Nenhuma transação registrada.';
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                return;
+            }
+
+            data.forEach(t => {
+                const tr = document.createElement('tr');
+
+                const tdDate = document.createElement('td');
+                tdDate.textContent = new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR');
+                tr.appendChild(tdDate);
+
+                const tdType = document.createElement('td');
+                const spanType = document.createElement('span');
+                spanType.className = 'tag ' + (t.type === 'entrada' ? 'income' : 'expense');
+                spanType.textContent = t.type === 'entrada' ? 'Entrada' : 'Saída';
+                tdType.appendChild(spanType);
+                tr.appendChild(tdType);
+
+                const tdDesc = document.createElement('td');
+                tdDesc.textContent = t.description;
+                tr.appendChild(tdDesc);
+
+                const tdQty = document.createElement('td');
+                tdQty.textContent = t.quantity;
+                tr.appendChild(tdQty);
+
+                const tdValue = document.createElement('td');
+                tdValue.textContent = formatCurrency(t.value);
+                tr.appendChild(tdValue);
+
+                const tdTotal = document.createElement('td');
+                const signedTotal = t.type === 'saida' ? -t.totalAbs : t.totalAbs;
+                tdTotal.textContent = formatCurrency(signedTotal);
+                tr.appendChild(tdTotal);
+
+                const tdResp = document.createElement('td');
+                tdResp.textContent = t.responsible || '-';
+                tr.appendChild(tdResp);
+
+                const tdPayment = document.createElement('td');
+                const parts = [];
+                if (t.paymentDetails) {
+                    for (const method in t.paymentDetails) {
+                        const val = t.paymentDetails[method];
+                        if (val > 0) parts.push(`${method}: ${formatCurrency(val)}`);
                     }
-                    resetForm();
-                });
-
-            } catch (error) {
-                console.error("Erro ao carregar empresas:", error);
-                showAlert("Erro ao carregar empresas. Verifique sua conexão e regras do Firebase.", "error");
-            }
-        }
-
-        async function addCompany() {
-            const companyName = prompt("Digite o nome da nova empresa:");
-            if (companyName && companyName.trim() !== "") {
-                try {
-                    const companiesCol = collection(db, 'companies');
-                    const docRef = await addDoc(companiesCol, { name: companyName.trim() });
-                    showAlert(`Empresa "${companyName.trim()}" adicionada!`, "success");
-                    await loadCompanies(); // Recarrega a lista de empresas
-                    document.getElementById('companySelector').value = docRef.id; // Seleciona a nova empresa
-                    currentCompanyId = docRef.id;
-                    localStorage.setItem('lastCompanyId', currentCompanyId);
-                    await loadTransactions(); // Carrega transações para a nova empresa (vazia)
-                } catch (error) {
-                    console.error("Erro ao adicionar empresa:", error);
-                    showAlert("Erro ao adicionar empresa. Tente novamente.", "error");
                 }
-            }
+                tdPayment.textContent = parts.join(' | ') || '-';
+                tr.appendChild(tdPayment);
+
+                const tdActions = document.createElement('td');
+                const btnEdit = document.createElement('button');
+                btnEdit.className = 'btn-action';
+                btnEdit.textContent = 'Editar';
+                btnEdit.onclick = () => editTransaction(t.id);
+                tdActions.appendChild(btnEdit);
+
+                const btnDelete = document.createElement('button');
+                btnDelete.className = 'btn-action btn-delete';
+                btnDelete.textContent = 'Excluir';
+                btnDelete.onclick = () => deleteTransaction(t.id);
+                tdActions.appendChild(btnDelete);
+
+                tr.appendChild(tdActions);
+
+                tbody.appendChild(tr);
+            });
         }
 
-        // ================== GERENCIAMENTO DE TRANSAÇÕES (FIREBASE) ==================
-        async function loadTransactions() {
-            if (!currentCompanyId) {
-                transactions = [];
+        function updateSummary() {
+            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+
+            let totalEntrada = 0;
+            let totalSaida = 0;
+
+            const paymentTotals = {
+                'Dinheiro': 0,
+                'Pix': 0,
+                'Cartão Débito': 0,
+                'Cartão Crédito': 0
+            };
+
+            data.forEach(t => {
+                if (t.type === 'entrada') {
+                    totalEntrada += t.totalAbs;
+                } else {
+                    totalSaida += t.totalAbs;
+                }
+
+                if (t.paymentDetails) {
+                    for (const method in t.paymentDetails) {
+                        if (!paymentTotals.hasOwnProperty(method)) continue;
+                        paymentTotals[method] += t.paymentDetails[method];
+                    }
+                }
+            });
+
+            document.getElementById('totalEntrada').textContent = formatCurrency(totalEntrada);
+            document.getElementById('totalSaida').textContent = formatCurrency(totalSaida);
+            document.getElementById('saldoLiquido').textContent = formatCurrency(totalEntrada - totalSaida);
+
+            document.getElementById('totalDinheiro').textContent = formatCurrency(paymentTotals['Dinheiro']);
+            document.getElementById('totalPix').textContent = formatCurrency(paymentTotals['Pix']);
+            document.getElementById('totalDebito').textContent = formatCurrency(paymentTotals['Cartão Débito']);
+            document.getElementById('totalCredito').textContent = formatCurrency(paymentTotals['Cartão Crédito']);
+        }
+
+        // ================== FILTROS ==================
+        function applyFilters() {
+            const start = document.getElementById('filterDateStart').value;
+            const end = document.getElementById('filterDateEnd').value;
+
+            if (!start && !end) {
                 filteredTransactions = [];
                 renderTransactions();
                 updateSummary();
                 return;
             }
-            try {
-                const transactionsCol = collection(db, `companies/${currentCompanyId}/transactions`);
-                const q = query(transactionsCol, orderBy('date', 'desc')); // Ordena por data
-                const transactionSnapshot = await getDocs(q);
-                transactions = transactionSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                applyFilters(); // Aplica os filtros após carregar
-            } catch (error) {
-                console.error("Erro ao carregar transações:", error);
-                showAlert("Erro ao carregar transações. Verifique sua conexão e regras do Firebase.", "error");
-                transactions = [];
-                applyFilters();
-            }
-        }
-
-        async function saveTransactionToFirestore(transactionData) {
-            if (!currentCompanyId) {
-                showAlert("Selecione uma empresa antes de salvar transações.", "warning");
-                return;
-            }
-            try {
-                if (transactionData.id) { // Se tem ID, é uma atualização
-                    const transactionRef = doc(db, `companies/${currentCompanyId}/transactions`, transactionData.id);
-                    await updateDoc(transactionRef, transactionData);
-                    showAlert('Transação atualizada com sucesso!', 'success');
-                } else { // Se não tem ID, é uma nova transação
-                    const transactionsCol = collection(db, `companies/${currentCompanyId}/transactions`);
-                    await addDoc(transactionsCol, transactionData);
-                    showAlert('Transação adicionada com sucesso!', 'success');
-                }
-                await loadTransactions(); // Recarrega todas as transações após salvar
-            } catch (error) {
-                console.error("Erro ao salvar transação:", error);
-                showAlert("Erro ao salvar transação. Tente novamente.", "error");
-            }
-        }
-
-        async function deleteTransaction(id) {
-            if (!currentCompanyId) {
-                showAlert("Selecione uma empresa.", "warning");
-                return;
-            }
-            if (confirm("Tem certeza que deseja excluir esta transação?")) {
-                try {
-                    const transactionRef = doc(db, `companies/${currentCompanyId}/transactions`, id);
-                    await deleteDoc(transactionRef);
-                    showAlert('Transação excluída.', 'success');
-                    await loadTransactions(); // Recarrega as transações
-                } catch (error) {
-                    console.error("Erro ao excluir transação:", error);
-                    showAlert("Erro ao excluir transação. Tente novamente.", "error");
-                }
-            }
-        }
-
-        function editTransaction(id) {
-            const transaction = transactions.find(t => t.id === id);
-            if (transaction) {
-                editingTransactionId = id;
-                document.getElementById('transactionId').value = transaction.id;
-                document.getElementById('date').value = transaction.date;
-                document.getElementById('type').value = transaction.type;
-                document.getElementById('description').value = transaction.description;
-                document.getElementById('quantity').value = transaction.quantity;
-                document.getElementById('value').value = transaction.value;
-                document.getElementById('responsible').value = transaction.responsible;
-                document.getElementById('notes').value = transaction.notes;
-
-                // Preenche os detalhes de pagamento
-                paymentMethodCheckboxes.forEach(cb => {
-                    const method = cb.value;
-                    const valueInput = paymentValueInputs[method];
-                    if (transaction.paymentDetails && transaction.paymentDetails[method] !== undefined) {
-                        cb.checked = true;
-                        valueInput.value = transaction.paymentDetails[method].toFixed(2);
-                        valueInput.disabled = false;
-                    } else {
-                        cb.checked = false;
-                        valueInput.value = '0.00';
-                        valueInput.disabled = true;
-                    }
-                });
-
-                document.getElementById('submitButton').textContent = 'Atualizar Transação';
-                document.getElementById('cancelEditButton').style.display = 'inline-block';
-                showAlert('Modo de edição ativado.', 'info');
-            }
-        }
-
-        function resetForm() {
-            editingTransactionId = null;
-            document.getElementById('transactionId').value = '';
-            document.getElementById('transactionForm').reset();
-            document.getElementById('date').valueAsDate = new Date(); // Volta para a data atual
-            document.getElementById('submitButton').textContent = 'Salvar Transação';
-            document.getElementById('cancelEditButton').style.display = 'none';
-
-            // Reseta os campos de pagamento
-            paymentMethodCheckboxes.forEach(cb => {
-                cb.checked = false;
-                const valueInput = paymentValueInputs[cb.value];
-                valueInput.value = '0.00';
-                valueInput.disabled = true;
-            });
-        }
-
-        // ================== RENDERIZAÇÃO E RESUMO ==================
-        function renderTransactions() {
-            const tbody = document.getElementById('transactionsTableBody');
-            tbody.innerHTML = '';
-
-            if (filteredTransactions.length === 0) {
-                const row = tbody.insertRow();
-                const cell = row.insertCell();
-                cell.colSpan = 8;
-                cell.textContent = 'Nenhuma transação encontrada.';
-                cell.style.textAlign = 'center';
-                cell.style.color = 'var(--text-muted)';
-                return;
-            }
-
-            filteredTransactions.forEach(t => {
-                const row = tbody.insertRow();
-                row.insertCell().textContent = new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR');
-                row.insertCell().innerHTML = `<span class="type-${t.type}">${t.type === 'entrada' ? 'Entrada' : 'Saída'}</span>`;
-                row.insertCell().textContent = t.description;
-                row.insertCell().textContent = t.quantity;
-                row.insertCell().textContent = formatCurrency(t.value);
-                row.insertCell().innerHTML = `<span class="total-${t.type}">${formatCurrency(t.totalAbs)}</span>`;
-                row.insertCell().textContent = t.responsible;
-
-                const actionsCell = row.insertCell();
-                actionsCell.classList.add('actions-cell');
-                actionsCell.innerHTML = `
-                    <button class="action-btn edit-btn" data-id="${t.id}" title="Editar">✏️</button>
-                    <button class="action-btn delete-btn" data-id="${t.id}" title="Excluir">🗑️</button>
-                `;
-            });
-
-            // Adiciona event listeners para os botões de ação
-            tbody.querySelectorAll('.edit-btn').forEach(button => {
-                button.addEventListener('click', (e) => editTransaction(e.target.dataset.id));
-            });
-            tbody.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', (e) => deleteTransaction(e.target.dataset.id));
-            });
-
-            updateSummary();
-        }
-
-        function updateSummary() {
-            let totalEntradas = 0;
-            let totalSaidas = 0;
-            const entradasPayment = {};
-            const saidasPayment = {};
-            const saldoPayment = {};
-
-            // Inicializa os totais de pagamento
-            ['Dinheiro', 'Pix', 'Cartão Débito', 'Cartão Crédito'].forEach(method => {
-                entradasPayment[method] = 0;
-                saidasPayment[method] = 0;
-                saldoPayment[method] = 0;
-            });
-
-            filteredTransactions.forEach(t => {
-                if (t.type === 'entrada') {
-                    totalEntradas += t.totalAbs;
-                    for (const method in t.paymentDetails) {
-                        entradasPayment[method] += t.paymentDetails[method];
-                    }
-                } else {
-                    totalSaidas += t.totalAbs;
-                    for (const method in t.paymentDetails) {
-                        saidasPayment[method] += t.paymentDetails[method];
-                    }
-                }
-            });
-
-            const saldoTotal = totalEntradas - totalSaidas;
-
-            document.getElementById('totalEntradas').textContent = formatCurrency(totalEntradas);
-            document.getElementById('totalSaidas').textContent = formatCurrency(totalSaidas);
-            document.getElementById('saldoTotal').textContent = formatCurrency(saldoTotal);
-
-            // Adiciona classes para cores do saldo
-            const saldoElement = document.getElementById('saldoTotal');
-            saldoElement.classList.remove('positive', 'negative', 'zero');
-            if (saldoTotal > 0) saldoElement.classList.add('positive');
-            else if (saldoTotal < 0) saldoElement.classList.add('negative');
-            else saldoElement.classList.add('zero');
-
-            // Renderiza detalhes de pagamento
-            renderPaymentDetails('entradasPaymentDetails', entradasPayment);
-            renderPaymentDetails('saidasPaymentDetails', saidasPayment);
-
-            // Calcula saldo por forma de pagamento
-            for (const method in entradasPayment) {
-                saldoPayment[method] = entradasPayment[method] - saidasPayment[method];
-            }
-            renderPaymentDetails('saldoPaymentDetails', saldoPayment);
-        }
-
-        function renderPaymentDetails(elementId, paymentData) {
-            const container = document.getElementById(elementId);
-            container.innerHTML = '';
-            for (const method in paymentData) {
-                if (paymentData[method] !== 0) {
-                    const item = document.createElement('div');
-                    item.classList.add('summary-detail-item');
-                    item.innerHTML = `<span>${method}:</span> ${formatCurrency(paymentData[method])}`;
-                    container.appendChild(item);
-                }
-            }
-        }
-
-        // ================== FILTROS ==================
-        function applyFilters() {
-            const startDateStr = document.getElementById('filterStartDate').value;
-            const endDateStr = document.getElementById('filterEndDate').value;
-
-            const startDate = startDateStr ? parseDateOnly(startDateStr) : null;
-            const endDate = endDateStr ? parseDateOnly(endDateStr) : null;
 
             filteredTransactions = transactions.filter(t => {
-                const transactionDate = parseDateOnly(t.date);
-                let passFilter = true;
-
-                if (startDate && transactionDate < startDate) {
-                    passFilter = false;
-                }
-                if (endDate && transactionDate > endDate) {
-                    passFilter = false;
-                }
-                return passFilter;
+                if (start && t.date < start) return false;
+                if (end && t.date > end) return false;
+                return true;
             });
 
             renderTransactions();
+            updateSummary();
         }
 
         function clearFilters() {
-            document.getElementById('filterStartDate').value = '';
-            document.getElementById('filterEndDate').value = '';
-            applyFilters(); // Reaplica os filtros (mostra tudo)
+            document.getElementById('filterDateStart').value = '';
+            document.getElementById('filterDateEnd').value = '';
+            filteredTransactions = [];
+            renderTransactions();
+            updateSummary();
         }
 
-        // ================== CONTROLES DE PAGAMENTO ==================
-        function initPaymentControls() {
-            paymentMethodCheckboxes = document.querySelectorAll('.payment-method-checkbox');
-            paymentMethodCheckboxes.forEach(checkbox => {
-                const method = checkbox.value;
-                paymentValueInputs[method] = document.getElementById(`payment${method.replace(/\s/g, '')}`);
+        // ================== FORMULÁRIO ==================
+        const paymentMethodCheckboxes = [];
+        const paymentValueInputs = {};
 
-                checkbox.addEventListener('change', (event) => {
-                    const valueInput = paymentValueInputs[event.target.value];
-                    if (valueInput) {
-                        valueInput.disabled = !event.target.checked;
-                        if (!event.target.checked) {
-                            valueInput.value = '0.00'; // Zera o valor se desmarcado
+        function initPaymentControls() {
+            document.querySelectorAll('input[name="paymentMethodCheck"]').forEach(cb => {
+                paymentMethodCheckboxes.push(cb);
+            });
+            document.querySelectorAll('[data-payment-input]').forEach(input => {
+                const method = input.getAttribute('data-payment-input');
+                paymentValueInputs[method] = input;
+            });
+
+            paymentMethodCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const method = e.target.value;
+                    const input = paymentValueInputs[method];
+                    if (!input) return;
+                    if (checkbox.checked) {
+                        input.disabled = false;
+                        if (parseFloat(input.value) === 0) {
+                            input.value = '0.00';
                         }
+                    } else {
+                        input.disabled = true;
+                        input.value = '0.00';
                     }
                 });
             });
         }
 
-        // ================== FERRAMENTAS (BACKUP/RESTAURAR/CSV/IMPRIMIR) ==================
-        async function exportDataJson() {
-            if (!currentCompanyId) {
-                showAlert('Selecione uma empresa para fazer backup.', 'warning');
-                return;
-            }
-            try {
-                const dataToExport = {
-                    companies: companies,
-                    transactions: transactions // Exporta todas as transações da empresa atual
-                };
-                const jsonString = JSON.stringify(dataToExport, null, 2);
-                const blob = new Blob([jsonString], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                const currentCompanyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa_desconhecida';
-                a.href = url;
-                a.download = `backup_financeiro_${currentCompanyName}_${new Date().toISOString().slice(0,10)}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                showAlert('Backup JSON exportado com sucesso!', 'success');
-            } catch (error) {
-                console.error("Erro ao exportar backup JSON:", error);
-                showAlert("Erro ao exportar backup JSON.", "error");
-            }
+        function resetForm() {
+            const form = document.getElementById('transactionForm');
+            form.reset();
+            document.getElementById('transactionId').value = '';
+            document.getElementById('date').valueAsDate = new Date();
+
+            paymentMethodCheckboxes.forEach(cb => {
+                cb.checked = false;
+                const input = paymentValueInputs[cb.value];
+                if (input) {
+                    input.value = '0.00';
+                    input.disabled = true;
+                }
+            });
+
+            editingTransactionId = null;
+            document.getElementById('formTitle').textContent = 'Nova transação';
+            document.getElementById('submitButton').textContent = 'Salvar transação';
+            document.getElementById('cancelEditButton').style.display = 'none';
         }
 
-        async function importDataJson() {
+        function editTransaction(id) {
+            const t = transactions.find(tr => tr.id === id);
+            if (!t) return;
+
+            document.getElementById('transactionId').value = t.id;
+            document.getElementById('date').value = t.date;
+            document.getElementById('type').value = t.type;
+            document.getElementById('description').value = t.description;
+            document.getElementById('quantity').value = t.quantity;
+            document.getElementById('value').value = t.value;
+            document.getElementById('responsible').value = t.responsible || '';
+            document.getElementById('notes').value = t.notes || '';
+
+            paymentMethodCheckboxes.forEach(cb => {
+                cb.checked = false;
+                const input = paymentValueInputs[cb.value];
+                if (input) {
+                    input.value = '0.00';
+                    input.disabled = true;
+                }
+            });
+
+            if (t.paymentDetails) {
+                for (const method in t.paymentDetails) {
+                    const cb = paymentMethodCheckboxes.find(c => c.value === method);
+                    const input = paymentValueInputs[method];
+                    if (cb && input) {
+                        cb.checked = true;
+                        input.disabled = false;
+                        input.value = t.paymentDetails[method].toFixed(2);
+                    }
+                }
+            }
+
+            editingTransactionId = id;
+            document.getElementById('formTitle').textContent = 'Editar transação';
+            document.getElementById('submitButton').textContent = 'Atualizar transação';
+            document.getElementById('cancelEditButton').style.display = 'block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteTransaction(id) {
+            if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
+            transactions = transactions.filter(t => t.id !== id);
+            saveTransactions();
+            applyFilters();
+            showAlert('Transação excluída.', 'success');
+        }
+
+        // ================== BACKUP / EXPORT ==================
+        function exportDataJson() {
             if (!currentCompanyId) {
-                showAlert('Selecione uma empresa para restaurar o backup.', 'warning');
+                showAlert('Nenhuma empresa selecionada.', 'warning');
                 return;
             }
-            if (!confirm("Isso substituirá TODAS as transações da empresa atual. Tem certeza?")) {
+            const dataToExport = transactions;
+            if (dataToExport.length === 0) {
+                showAlert('Não há dados para backup.', 'warning');
                 return;
             }
 
+            const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const companyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa';
+            a.href = url;
+            a.download = `backup_${companyName}_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showAlert('Backup JSON gerado.', 'success');
+        }
+
+        function importDataJson() {
+            if (!currentCompanyId) {
+                showAlert('Nenhuma empresa selecionada.', 'warning');
+                return;
+            }
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = 'application/json';
-            input.onchange = async (e) => {
+            input.onchange = e => {
                 const file = e.target.files[0];
                 if (!file) return;
-
                 const reader = new FileReader();
-                reader.onload = async (event) => {
+                reader.onload = ev => {
                     try {
-                        const importedData = JSON.parse(event.target.result);
-                        const importedTransactions = importedData.transactions;
-
-                        if (!Array.isArray(importedTransactions)) {
-                            showAlert('Arquivo JSON inválido: não contém uma lista de transações.', 'error');
-                            return;
-                        }
-
-                        // Limpa as transações existentes no Firebase para a empresa atual
-                        const transactionsColRef = collection(db, `companies/${currentCompanyId}/transactions`);
-                        const existingDocs = await getDocs(transactionsColRef);
-                        const batch = writeBatch(db);
-                        existingDocs.forEach(doc => {
-                            batch.delete(doc.ref);
-                        });
-                        await batch.commit();
-
-                        // Adiciona as novas transações do backup
-                        const newBatch = writeBatch(db);
-                        for (const t of importedTransactions) {
-                            // Remove o ID original para que o Firebase gere um novo
-                            const { id, ...dataWithoutId } = t;
-                            newBatch.set(doc(transactionsColRef), dataWithoutId); // Firebase gera um novo ID
-                        }
-                        await newBatch.commit();
-
-                        showAlert('Backup JSON restaurado com sucesso!', 'success');
-                        await loadTransactions(); // Recarrega as transações do Firebase
+                        const imported = JSON.parse(ev.target.result);
+                        if (!Array.isArray(imported)) throw new Error('Formato inválido');
+                        if (!confirm('Isso vai substituir todas as transações atuais desta empresa. Continuar?')) return;
+                        transactions = imported;
+                        saveTransactions();
+                        filteredTransactions = [];
+                        renderTransactions();
+                        updateSummary();
+                        showAlert('Backup importado com sucesso.', 'success');
                     } catch (err) {
-                        console.error("Erro ao importar backup JSON:", err);
-                        showAlert('Erro ao importar backup JSON. Verifique o formato do arquivo.', 'error');
+                        console.error(err);
+                        showAlert('Erro ao importar backup JSON.', 'error');
                     }
                 };
                 reader.readAsText(file);
@@ -1412,46 +1310,48 @@
         }
 
         function exportToCsv() {
-            const dataToExport = filteredTransactions.length > 0 ? filteredTransactions : transactions;
-            if (dataToExport.length === 0) {
-                showAlert('Não há dados para exportar.', "warning");
+            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+            if (data.length === 0) {
+                showAlert('Não há dados para exportar.', 'warning');
                 return;
             }
 
-            let csvContent = "data:text/csv;charset=utf-8,";
+            let csv = '';
             const headers = [
-                "Data", "Tipo", "Descrição", "Quantidade", "Valor Unitário", "Total", "Responsável",
-                "Dinheiro", "Pix", "Cartão Débito", "Cartão Crédito", "Observações"
+                'Data','Tipo','Descrição','Quantidade','Valor Unitário','Total','Responsável',
+                'Dinheiro','Pix','Cartão Débito','Cartão Crédito','Observações'
             ];
-            csvContent += headers.join(";") + "\r\n"; // Usando ponto e vírgula como separador para Excel BR
+            csv += headers.join(';') + '\r\n';
 
-            dataToExport.forEach(t => {
+            data.forEach(t => {
                 const row = [
                     new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR'),
                     t.type === 'entrada' ? 'Entrada' : 'Saída',
-                    `"${(t.description || '').replace(/"/g, '""')}"`, // Escapa aspas duplas
-                    t.quantity.toString().replace('.', ','), // Formato BR para números
+                    `"${(t.description || '').replace(/"/g,'""')}"`,
+                    String(t.quantity).replace('.', ','),
                     t.value.toFixed(2).replace('.', ','),
                     (t.totalAbs * (t.type === 'saida' ? -1 : 1)).toFixed(2).replace('.', ','),
-                    `"${(t.responsible || '').replace(/"/g, '""')}"`,
+                    `"${(t.responsible || '').replace(/"/g,'""')}"`,
                     (t.paymentDetails?.['Dinheiro'] || 0).toFixed(2).replace('.', ','),
                     (t.paymentDetails?.['Pix'] || 0).toFixed(2).replace('.', ','),
                     (t.paymentDetails?.['Cartão Débito'] || 0).toFixed(2).replace('.', ','),
                     (t.paymentDetails?.['Cartão Crédito'] || 0).toFixed(2).replace('.', ','),
-                    `"${(t.notes || '').replace(/"/g, '""')}"`
+                    `"${(t.notes || '').replace(/"/g,'""')}"`
                 ];
-                csvContent += row.join(";") + "\r\n";
+                csv += row.join(';') + '\r\n';
             });
 
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            const currentCompanyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa_desconhecida';
-            link.setAttribute("download", `extrato_financeiro_${currentCompanyName}_${new Date().toISOString().slice(0,10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showAlert('Dados exportados para CSV com sucesso!', "success");
+            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const companyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa';
+            a.href = url;
+            a.download = `extrato_${companyName}_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showAlert('CSV exportado.', 'success');
         }
 
         function printReport() {
@@ -1459,7 +1359,7 @@
         }
 
         // ================== INICIALIZAÇÃO ==================
-        document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('DOMContentLoaded', () => {
             // Datas topo
             const now = new Date();
             const todayText = now.toLocaleDateString('pt-BR', {
@@ -1481,10 +1381,10 @@
             document.getElementById('cancelEditButton').addEventListener('click', resetForm);
 
             initPaymentControls();
-            await loadCompanies(); // Carrega empresas e transações ao iniciar
+            loadCompanies();
 
             // Submit form
-            document.getElementById('transactionForm').addEventListener('submit', async e => {
+            document.getElementById('transactionForm').addEventListener('submit', e => {
                 e.preventDefault();
                 if (!currentCompanyId) {
                     showAlert('Selecione uma empresa.', 'warning');
@@ -1529,7 +1429,8 @@
                 }
 
                 const newTransaction = {
-                    date, // Firebase aceita strings de data, mas é bom padronizar
+                    id: idHidden || Date.now().toString(),
+                    date,
                     type,
                     description,
                     quantity,
@@ -1540,12 +1441,17 @@
                     paymentDetails
                 };
 
-                // Se idHidden existe, estamos editando. Caso contrário, é uma nova transação.
-                if (idHidden) {
-                    newTransaction.id = idHidden; // Mantém o ID para a atualização
+                const existingIndex = transactions.findIndex(t => t.id === newTransaction.id);
+                if (existingIndex >= 0) {
+                    transactions[existingIndex] = newTransaction;
+                    showAlert('Transação atualizada.', 'success');
+                } else {
+                    transactions.push(newTransaction);
+                    showAlert('Transação adicionada.', 'success');
                 }
 
-                await saveTransactionToFirestore(newTransaction);
+                saveTransactions();
+                applyFilters(); // reaplica filtro (ou mostra tudo)
                 resetForm();
             });
         });
