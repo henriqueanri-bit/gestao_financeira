@@ -188,498 +188,497 @@
 
         .page-title-block p {
             margin: 4px 0 0;
-            font-size: 13px;
-            color: var(--text-soft);
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
-        /* Cards */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-subtle);
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-
-        .card-badge {
-            background: var(--primary-soft);
-            color: var(--primary);
-            padding: 4px 10px;
+        .date-badge {
+            padding: 6px 12px;
             border-radius: 999px;
+            border: 1px solid #1f2937;
+            background: rgba(15,23,42,0.85);
             font-size: 11px;
-            font-weight: 500;
-        }
-
-        .card-content {
-            font-size: 14px;
             color: var(--text-soft);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
+        .date-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #38bdf8;
+        }
+
+        /* Cards de resumo */
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(3, minmax(0,1fr));
+            gap: 14px;
+            margin-bottom: 20px;
         }
 
-        .summary-item {
-            background: var(--bg-card-soft);
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-            border: 1px solid var(--border-subtle);
+        .summary-card {
+            background: radial-gradient(circle at top left, rgba(37,99,235,0.22) 0, rgba(15,23,42,0.95) 52%, rgba(15,23,42,1) 100%);
+            border-radius: 14px;
+            padding: 12px 14px 14px;
+            border: 1px solid rgba(51,65,85,0.9);
+            box-shadow: 0 18px 40px rgba(15,23,42,0.8), 0 0 0 1px rgba(15,23,42,0.95);
         }
 
         .summary-label {
             font-size: 11px;
             color: var(--text-muted);
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
-        .summary-value {
-            font-size: 16px;
+        .summary-main {
+            margin-top: 6px;
+            font-size: 18px;
             font-weight: 600;
-            color: var(--text-main);
         }
 
-        .summary-value.positive {
-            color: var(--positive);
-        }
-
-        .summary-value.negative {
-            color: var(--negative);
-        }
-
-        /* Formulário */
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
+        .summary-sub {
+            margin-top: 4px;
+            font-size: 11px;
             color: var(--text-soft);
-            margin-bottom: 6px;
         }
 
-        .form-group input[type="date"],
-        .form-group input[type="text"],
-        .form-group input[type="number"],
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 12px;
+        .summary-tag {
+            display: inline-flex;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 10px;
+            border: 1px solid rgba(148,163,184,0.4);
+            color: var(--text-soft);
+            background: rgba(15,23,42,0.9);
+        }
+
+        .summary-main.positive { color: var(--positive); }
+        .summary-main.negative { color: var(--negative); }
+
+        /* Layout principal: formulário + tabela */
+        .main-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        /* Card formulário */
+        .card {
+            background: radial-gradient(circle at top left, rgba(148,163,184,0.14) 0, rgba(15,23,42,1) 55%, rgba(15,23,42,1) 100%);
+            border-radius: 14px;
+            padding: 16px 16px 18px;
+            border: 1px solid rgba(51,65,85,0.9);
+            box-shadow: 0 18px 40px rgba(15,23,42,0.8), 0 0 0 1px rgba(15,23,42,0.95);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .card-subtitle {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        .card-badge {
+            font-size: 10px;
+            color: var(--text-muted);
+            border-radius: 999px;
+            padding: 3px 8px;
+            border: 1px solid rgba(51,65,85,0.9);
+            background: rgba(15,23,42,0.9);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 10px;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        label {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        input[type="date"],
+        input[type="text"],
+        input[type="number"],
+        textarea {
             background: var(--input-bg);
             border: 1px solid var(--input-border);
-            border-radius: 9px;
             color: var(--text-main);
-            font-size: 14px;
+            border-radius: 9px;
+            padding: 7px 9px;
+            font-size: 12px;
             outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
         }
 
-        .form-group input[type="date"]:focus,
-        .form-group input[type="text"]:focus,
-        .form-group input[type="number"]:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        input::placeholder,
+        textarea::placeholder {
+            color: #4b5563;
+        }
+
+        input:focus,
+        textarea:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
+            background: #020617;
         }
 
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
+        .form-group-full {
+            grid-column: 1 / -1;
         }
 
-        .form-row {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        .form-row > .form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 16px;
-            margin-top: 8px;
-        }
-
-        .radio-group label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--text-main);
-        }
-
-        .radio-group input[type="radio"] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--input-border);
-            border-radius: 50%;
-            background-color: var(--input-bg);
-            display: inline-block;
-            position: relative;
-            cursor: pointer;
-            transition: border-color 0.2s ease, background-color 0.2s ease;
-        }
-
-        .radio-group input[type="radio"]:checked {
-            border-color: var(--primary);
-            background-color: var(--primary);
-        }
-
-        .radio-group input[type="radio"]:checked::before {
-            content: '';
-            display: block;
-            width: 8px;
-            height: 8px;
-            background-color: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .payment-methods-section {
+            margin-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 10px;
         }
 
         .payment-methods-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
-            margin-top: 10px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 8px;
         }
 
         .payment-method-item {
-            background: var(--bg-card-soft);
-            border: 1px solid var(--input-border);
-            border-radius: 9px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            transition: border-color 0.2s ease;
-        }
-
-        .payment-method-item.active {
-            border-color: var(--primary);
-        }
-
-        .payment-method-item label {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 13px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 9px;
+            padding: 5px 9px;
+        }
+
+        .payment-method-item label {
+            margin: 0;
+            font-size: 12px;
             color: var(--text-main);
-            cursor: pointer;
-            margin-bottom: 0; /* Override default form-group label margin */
+            flex-grow: 1;
         }
 
         .payment-method-item input[type="checkbox"] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid var(--input-border);
-            border-radius: 4px;
-            background-color: var(--input-bg);
-            display: inline-block;
-            position: relative;
-            cursor: pointer;
-            transition: border-color 0.2s ease, background-color 0.2s ease;
-        }
-
-        .payment-method-item input[type="checkbox"]:checked {
-            border-color: var(--primary);
-            background-color: var(--primary);
-        }
-
-        .payment-method-item input[type="checkbox"]:checked::before {
-            content: '✔';
-            display: block;
-            color: white;
-            font-size: 12px;
-            line-height: 1;
-            text-align: center;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            margin: 0;
+            accent-color: var(--primary);
+            width: 14px;
+            height: 14px;
         }
 
         .payment-method-item input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
+            width: 90px;
+            padding: 4px 6px;
+            font-size: 11px;
+            background: #0f172a;
+            border-color: #334155;
             border-radius: 6px;
-            color: var(--text-main);
-            font-size: 13px;
-            outline: none;
-            text-align: right;
         }
 
-        .payment-method-item input[type="number"]:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .btn-primary {
-            background: var(--primary);
+        .submit-btn {
+            margin-top: 12px;
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
             color: white;
             border: none;
-            border-radius: 9px;
-            padding: 10px 18px;
-            font-size: 14px;
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             cursor: pointer;
-            transition: background-color 0.2s ease;
-            flex: 1;
+            box-shadow: 0 12px 28px rgba(37,99,235,0.6), 0 0 0 1px rgba(15,23,42,0.9);
+            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
         }
 
-        .btn-primary:hover {
-            background: var(--primary-dark);
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.05);
+            box-shadow: 0 16px 40px rgba(37,99,235,0.7), 0 0 0 1px rgba(15,23,42,1);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 8px 18px rgba(37,99,235,0.9), 0 0 0 1px rgba(15,23,42,1);
         }
 
         .cancel-edit-btn {
-            background: var(--bg-card-soft);
+            margin-top: 6px;
+            width: 100%;
+            background: transparent;
             color: var(--text-soft);
-            border: 1px solid var(--input-border);
-            border-radius: 9px;
-            padding: 10px 18px;
-            font-size: 14px;
+            border: 1px solid #4b5563;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
             cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            flex: 1;
+            display: none;
         }
 
-        .cancel-edit-btn:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: var(--text-muted);
+        /* Card direita: ações + tabela */
+        .card-ghost {
+            background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,1));
+            border-radius: 14px;
+            border: 1px solid rgba(51,65,85,0.9);
+            padding: 14px 14px 16px;
+            box-shadow: 0 18px 40px rgba(15,23,42,0.9), 0 0 0 1px rgba(15,23,42,1);
         }
 
-        /* Filtros e Ferramentas */
-        .filter-group, .tools-group {
+        .actions-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .actions-left {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-secondary, .btn-outline {
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 11px;
+            border: 1px solid #334155;
+            background: rgba(15,23,42,0.9);
+            color: var(--text-soft);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-secondary:hover {
+            background: #020617;
+            color: var(--text-main);
+        }
+        .btn-outline {
+            background: transparent;
+        }
+        .btn-outline:hover {
+            background: rgba(15,23,42,0.8);
+        }
+
+        .filter-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 16px;
+            gap: 8px;
+            margin-bottom: 10px;
+            align-items: center;
         }
 
-        .filter-group .form-group {
-            flex: 1;
-            min-width: 120px;
-            margin-bottom: 0;
-        }
-
-        .filter-group .form-group input,
-        .filter-group .form-group select {
-            padding: 8px 10px;
-            font-size: 13px;
-            height: 38px;
-        }
-
-        .btn-action {
-            background: var(--bg-card-soft);
+        .filter-row label {
+            font-size: 11px;
             color: var(--text-soft);
+        }
+
+        .filter-row input[type="date"] {
+            background: var(--input-bg);
             border: 1px solid var(--input-border);
-            border-radius: 9px;
-            padding: 8px 14px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            white-space: nowrap;
+            color: var(--text-main);
+            border-radius: 999px;
+            padding: 5px 8px;
+            font-size: 11px;
         }
 
-        .btn-action:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: var(--text-muted);
-        }
-
-        /* Tabela */
-        .table-responsive {
-            overflow-x: auto;
-            margin-top: 16px;
-        }
-
-        .transactions-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            min-width: 700px; /* Garante que a tabela não fique muito estreita */
-        }
-
-        .transactions-table th,
-        .transactions-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .transactions-table th {
-            background: var(--table-header);
+        .filter-row button {
+            font-size: 11px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            border: 1px solid #334155;
+            background: rgba(15,23,42,0.9);
             color: var(--text-soft);
-            font-weight: 500;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.05em;
+            cursor: pointer;
         }
-
-        .transactions-table tbody tr:hover {
-            background: rgba(255,255,255,0.03);
-        }
-
-        .transactions-table td {
+        .filter-row button:hover {
+            background: #020617;
             color: var(--text-main);
         }
 
-        .transactions-table .type-entrada {
-            color: var(--positive);
+        .table-wrapper {
+            margin-top: 10px;
+            border-radius: 12px;
+            border: 1px solid #1f2937;
+            overflow: hidden;
+            background: radial-gradient(circle at top left, rgba(15,23,42,1) 0, #020617 65%);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        thead {
+            background: var(--table-header);
+        }
+
+        th, td {
+            padding: 7px 8px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        th {
+            text-align: left;
             font-weight: 500;
+            color: var(--text-soft);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
 
-        .transactions-table .type-saida {
-            color: var(--negative);
-            font-weight: 500;
+        tbody tr:nth-child(even) {
+            background: rgba(15,23,42,0.85);
         }
 
-        .transactions-table .actions-cell {
-            display: flex;
-            gap: 8px;
-            white-space: nowrap;
+        tbody tr:hover {
+            background: rgba(30,64,175,0.35);
         }
 
-        .transactions-table .action-btn {
-            background: none;
-            border: none;
+        .tag {
+            display: inline-flex;
+            padding: 2px 6px;
+            border-radius: 999px;
+            font-size: 10px;
+            border: 1px solid rgba(148,163,184,0.5);
+        }
+
+        .tag.income {
+            border-color: rgba(34,197,94,0.6);
+            color: #4ade80;
+        }
+
+        .tag.expense {
+            border-color: rgba(248,113,113,0.6);
+            color: #f87171;
+        }
+
+        .btn-action {
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 999px;
+            border: 1px solid #334155;
+            background: rgba(15,23,42,0.9);
             color: var(--text-soft);
             cursor: pointer;
-            font-size: 16px;
-            padding: 4px;
-            transition: color 0.2s ease;
+            margin-right: 4px;
+        }
+        .btn-action:hover {
+            background: #020617;
+            color: var(--text-main);
+        }
+        .btn-delete {
+            border-color: rgba(248,113,113,0.6);
+            color: #fca5a5;
+        }
+        .btn-delete:hover {
+            background: rgba(127,29,29,0.7);
+            color: #fee2e2;
         }
 
-        .transactions-table .action-btn:hover {
-            color: var(--primary);
+        .empty-state {
+            text-align: center;
+            padding: 18px 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Totais por forma de pagamento */
+        .payment-totals-section {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0,1fr));
+            gap: 8px;
+        }
+        .payment-total-card {
+            background: rgba(15,23,42,0.95);
+            border-radius: 10px;
+            border: 1px solid #1f2937;
+            padding: 6px 8px;
+        }
+        .payment-total-label {
+            font-size: 10px;
+            color: var(--text-soft);
+        }
+        .payment-total-value {
+            margin-top: 3px;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         /* Alertas */
         .alert-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
+            top: 12px;
+            right: 12px;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
-
         .alert {
-            padding: 12px 20px;
+            min-width: 220px;
+            max-width: 320px;
+            padding: 8px 10px;
             border-radius: 8px;
-            font-size: 14px;
-            color: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-size: 11px;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 250px;
+            align-items: flex-start;
+            gap: 8px;
+            box-shadow: 0 12px 30px rgba(15,23,42,0.9);
+        }
+        .alert-success {
+            background: rgba(22,163,74,0.15);
+            border: 1px solid rgba(22,163,74,0.6);
+            color: #bbf7d0;
+        }
+        .alert-error {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.6);
+            color: #fecaca;
+        }
+        .alert-warning {
+            background: rgba(234,179,8,0.15);
+            border: 1px solid rgba(234,179,8,0.6);
+            color: #fef3c7;
         }
 
-        .alert.success {
-            background-color: #22c55e;
-        }
-
-        .alert.warning {
-            background-color: #f59e0b;
-        }
-
-        .alert.error {
-            background-color: #ef4444;
-        }
-
-        .alert-icon {
-            font-size: 18px;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .topbar-inner {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px 16px;
-            }
-            .topbar-right {
-                width: 100%;
-                justify-content: space-between;
-                margin-top: 10px;
-            }
-            .company-selector-group {
-                margin-left: 0;
-                width: 100%;
-                justify-content: space-between;
-            }
-            .company-selector-group select {
-                flex: 1;
+        @media (max-width: 860px) {
+            .main-grid {
+                grid-template-columns: minmax(0, 1fr);
             }
             .page-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-            .form-row > .form-group {
-                margin-bottom: 16px;
-            }
-            .btn-group {
-                flex-direction: column;
-            }
-            .filter-group {
-                flex-direction: column;
-            }
-            .filter-group .form-group {
-                min-width: unset;
-                width: 100%;
-            }
-            .payment-methods-grid {
-                grid-template-columns: 1fr;
+            .summary-grid {
+                grid-template-columns: minmax(0, 1fr);
             }
         }
     </style>
@@ -688,22 +687,23 @@
     <div class="topbar">
         <div class="topbar-inner">
             <div class="logo-group">
-                <div class="logo-mark"><span>AI</span></div>
+                <div class="logo-mark"><span>GF</span></div>
                 <div>
                     <div class="logo-text-main">Gestão Financeira</div>
-                    <div class="logo-text-sub" id="todayLabelHeader"></div>
+                    <div class="logo-text-sub">Sistema simples e completo</div>
+                </div>
+                <div class="company-selector-group">
+                    <label for="currentCompany">Empresa:</label>
+                    <select id="currentCompany"></select>
+                    <button class="btn-add-company" id="addCompanyBtn">+ Nova empresa</button>
                 </div>
             </div>
             <div class="topbar-right">
                 <div class="status-pill">
-                    <div class="status-dot"></div>
-                    <span>Online</span>
+                    <span class="status-dot"></span>
+                    <span>Local (navegador)</span>
                 </div>
-                <div class="company-selector-group">
-                    <label for="companySelect">Empresa:</label>
-                    <select id="companySelect"></select>
-                    <button class="btn-add-company" id="addCompanyBtn">Adicionar</button>
-                </div>
+                <span id="todayLabel"></span>
             </div>
         </div>
     </div>
@@ -711,547 +711,626 @@
     <div class="page">
         <div class="page-header">
             <div class="page-title-block">
-                <h1>Dashboard</h1>
-                <p>Visão geral das suas finanças. Hoje é <span id="todayLabel"></span></p>
+                <h1>Controle de Caixa</h1>
+                <p>Registre entradas, saídas e acompanhe o saldo por empresa.</p>
+            </div>
+            <div class="date-badge">
+                <span class="date-dot"></span>
+                <span>Hoje: <span id="todayLabelHeader"></span></span>
             </div>
         </div>
 
-        <div class="card-grid">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Resumo Geral</div>
-                    <div class="card-badge">Valores</div>
-                </div>
-                <div class="card-content summary-grid">
-                    <div class="summary-item">
-                        <div class="summary-label">Entradas</div>
-                        <div class="summary-value positive" id="totalEntradas">R$ 0,00</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Saídas</div>
-                        <div class="summary-value negative" id="totalSaidas">R$ 0,00</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Saldo</div>
-                        <div class="summary-value" id="saldoTotal">R$ 0,00</div>
-                    </div>
-                </div>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">Entradas no período</div>
+                <div class="summary-main positive" id="totalEntrada">R$ 0,00</div>
+                <div class="summary-sub">Somatório de todas as entradas filtradas</div>
             </div>
+            <div class="summary-card">
+                <div class="summary-label">Saídas no período</div>
+                <div class="summary-main negative" id="totalSaida">R$ 0,00</div>
+                <div class="summary-sub">Somatório de todas as saídas filtradas</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Saldo líquido</div>
+                <div class="summary-main" id="saldoLiquido">R$ 0,00</div>
+                <div class="summary-sub">Entradas - Saídas</div>
+            </div>
+        </div>
 
+        <div class="main-grid">
+            <!-- Formulário -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Lançar Transação</div>
-                    <div class="card-badge">Novo</div>
+                    <div>
+                        <div class="card-title" id="formTitle">Nova transação</div>
+                        <div class="card-subtitle">Preencha os dados e registre um lançamento</div>
+                    </div>
+                    <div class="card-badge">Caixa diário</div>
                 </div>
+
                 <form id="transactionForm">
                     <input type="hidden" id="transactionId">
-                    <div class="form-row">
+
+                    <div class="form-grid">
                         <div class="form-group">
                             <label for="date">Data</label>
                             <input type="date" id="date" required>
                         </div>
                         <div class="form-group">
                             <label for="type">Tipo</label>
-                            <div class="radio-group">
-                                <label><input type="radio" name="type" value="entrada" required> Entrada</label>
-                                <label><input type="radio" name="type" value="saida"> Saída</label>
-                            </div>
+                            <select id="type" required>
+                                <option value="entrada">Entrada</option>
+                                <option value="saida">Saída</option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Descrição</label>
-                        <input type="text" id="description" placeholder="Ex: Venda de produto X, Pagamento de aluguel" required>
-                    </div>
-                    <div class="form-row">
+                        <div class="form-group form-group-full">
+                            <label for="description">Descrição</label>
+                            <input type="text" id="description" placeholder="Ex: Venda balcão, pagamento fornecedor" required>
+                        </div>
                         <div class="form-group">
                             <label for="quantity">Quantidade</label>
-                            <input type="number" id="quantity" value="1" min="1" required>
+                            <input type="number" id="quantity" min="1" step="1" value="1" required>
                         </div>
                         <div class="form-group">
-                            <label for="value">Valor Unitário</label>
-                            <input type="number" id="value" step="0.01" min="0.01" required>
+                            <label for="value">Valor unitário (R$)</label>
+                            <input type="number" id="value" min="0" step="0.01" value="0.00" required>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="responsible">Responsável</label>
-                        <input type="text" id="responsible" placeholder="Ex: João, Maria">
-                    </div>
-                    <div class="form-group">
-                        <label for="notes">Observações</label>
-                        <textarea id="notes" placeholder="Detalhes adicionais"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Formas de Pagamento/Recebimento</label>
-                        <div class="payment-methods-grid" id="paymentMethodsGrid">
-                            <div class="payment-method-item">
-                                <label>
-                                    <input type="checkbox" value="Dinheiro"> Dinheiro
-                                </label>
-                                <input type="number" class="payment-value-input" data-method="Dinheiro" step="0.01" min="0">
-                            </div>
-                            <div class="payment-method-item">
-                                <label>
-                                    <input type="checkbox" value="Pix"> Pix
-                                </label>
-                                <input type="number" class="payment-value-input" data-method="Pix" step="0.01" min="0">
-                            </div>
-                            <div class="payment-method-item">
-                                <label>
-                                    <input type="checkbox" value="Cartão Débito"> Cartão Débito
-                                </label>
-                                <input type="number" class="payment-value-input" data-method="Cartão Débito" step="0.01" min="0">
-                            </div>
-                            <div class="payment-method-item">
-                                <label>
-                                    <input type="checkbox" value="Cartão Crédito"> Cartão Crédito
-                                </label>
-                                <input type="number" class="payment-value-input" data-method="Cartão Crédito" step="0.01" min="0">
-                            </div>
+                        <div class="form-group form-group-full">
+                            <label for="responsible">Responsável</label>
+                            <input type="text" id="responsible" placeholder="Quem realizou/recebeu o pagamento">
+                        </div>
+                        <div class="form-group form-group-full">
+                            <label for="notes">Observações</label>
+                            <textarea id="notes" rows="2" placeholder="Anotações adicionais, dados do cliente/fornecedor etc."></textarea>
                         </div>
                     </div>
 
-                    <div class="btn-group">
-                        <button type="submit" class="btn-primary" id="saveTransactionBtn">Lançar Transação</button>
-                        <button type="button" class="cancel-edit-btn" id="cancelEditButton" style="display: none;">Cancelar Edição</button>
+                    <div class="payment-methods-section">
+                        <label>Valores por forma de pagamento/recebimento</label>
+                        <div class="payment-methods-grid">
+                            <div class="payment-method-item">
+                                <input type="checkbox" name="paymentMethodCheck" value="Dinheiro">
+                                <label>Dinheiro</label>
+                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Dinheiro" disabled>
+                            </div>
+                            <div class="payment-method-item">
+                                <input type="checkbox" name="paymentMethodCheck" value="Pix">
+                                <label>Pix</label>
+                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Pix" disabled>
+                            </div>
+                            <div class="payment-method-item">
+                                <input type="checkbox" name="paymentMethodCheck" value="Cartão Débito">
+                                <label>Cartão Débito</label>
+                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Cartão Débito" disabled>
+                            </div>
+                            <div class="payment-method-item">
+                                <input type="checkbox" name="paymentMethodCheck" value="Cartão Crédito">
+                                <label>Cartão Crédito</label>
+                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Cartão Crédito" disabled>
+                            </div>
+                        </div>
+                        <div style="margin-top:6px;font-size:10px;color:#9ca3af;">
+                            A soma dos valores acima deve ser igual ao total da transação (quantidade × valor unitário).
+                        </div>
                     </div>
+
+                    <button type="submit" class="submit-btn" id="submitButton">Salvar transação</button>
+                    <button type="button" class="cancel-edit-btn" id="cancelEditButton">Cancelar edição</button>
                 </form>
             </div>
-        </div>
 
-        <div class="card-grid" style="margin-top: 24px;">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Filtros</div>
-                    <div class="card-badge">Busca</div>
-                </div>
-                <div class="filter-group">
-                    <div class="form-group">
-                        <label for="filterStartDate">De</label>
-                        <input type="date" id="filterStartDate">
+            <!-- Ações + Tabela -->
+            <div class="card-ghost">
+                <div class="actions-row">
+                    <div class="actions-left">
+                        <button class="btn-secondary" id="backupJsonBtn">Backup (JSON)</button>
+                        <button class="btn-secondary" id="restoreJsonBtn">Importar backup</button>
+                        <button class="btn-secondary" id="exportCsvBtn">Exportar CSV</button>
                     </div>
-                    <div class="form-group">
-                        <label for="filterEndDate">Até</label>
-                        <input type="date" id="filterEndDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="filterType">Tipo</label>
-                        <select id="filterType">
-                            <option value="">Todos</option>
-                            <option value="entrada">Entrada</option>
-                            <option value="saida">Saída</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="filterDescription">Descrição</label>
-                        <input type="text" id="filterDescription" placeholder="Palavra-chave">
-                    </div>
-                    <div class="form-group">
-                        <label for="filterResponsible">Responsável</label>
-                        <input type="text" id="filterResponsible" placeholder="Nome">
-                    </div>
-                    <div class="btn-group" style="margin-top: 0; flex-basis: 100%; justify-content: flex-end;">
-                        <button type="button" class="btn-primary" id="applyFilterBtn">Aplicar</button>
-                        <button type="button" class="cancel-edit-btn" id="clearFilterBtn" style="display: inline-block;">Limpar</button>
-                    </div>
+                    <button class="btn-outline" id="printBtn">Imprimir</button>
                 </div>
 
-                <div class="card-header" style="margin-top: 20px;">
-                    <div class="card-title">Ferramentas</div>
-                    <div class="card-badge">Dados</div>
+                <div class="filter-row">
+                    <label>Data início:
+                        <input type="date" id="filterDateStart">
+                    </label>
+                    <label>Data fim:
+                        <input type="date" id="filterDateEnd">
+                    </label>
+                    <button id="applyFilterBtn">Aplicar filtro</button>
+                    <button id="clearFilterBtn">Limpar filtro</button>
                 </div>
-                <div class="tools-group">
-                    <button type="button" class="btn-action" id="backupJsonBtn">Backup JSON</button>
-                    <button type="button" class="btn-action" id="restoreJsonBtn">Restaurar JSON</button>
-                    <button type="button" class="btn-action" id="exportCsvBtn">Exportar CSV</button>
-                    <button type="button" class="btn-action" id="printBtn">Imprimir Relatório</button>
-                </div>
-            </div>
 
-            <div class="card" style="margin-top: 16px;">
-                <div class="card-header">
-                    <div class="card-title">Transações</div>
-                    <div class="card-badge">Lista</div>
-                </div>
-                <div class="table-responsive">
-                    <table class="transactions-table">
+                <div class="table-wrapper">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Data</th>
                                 <th>Tipo</th>
                                 <th>Descrição</th>
                                 <th>Qtd</th>
-                                <th>Valor Unit.</th>
+                                <th>V. Unit.</th>
                                 <th>Total</th>
-                                <th>Responsável</th>
+                                <th>Resp.</th>
+                                <th>Pagamentos</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="transactionsTableBody">
-                            <!-- Transações serão carregadas aqui -->
+                        <tbody id="transactionsBody">
+                            <tr><td colspan="9" class="empty-state">Nenhuma transação registrada.</td></tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div class="payment-totals-section">
+                    <div class="payment-total-card">
+                        <div class="payment-total-label">Total Dinheiro</div>
+                        <div class="payment-total-value" id="totalDinheiro">R$ 0,00</div>
+                    </div>
+                    <div class="payment-total-card">
+                        <div class="payment-total-label">Total Pix</div>
+                        <div class="payment-total-value" id="totalPix">R$ 0,00</div>
+                    </div>
+                    <div class="payment-total-card">
+                        <div class="payment-total-label">Total Cartão Débito</div>
+                        <div class="payment-total-value" id="totalDebito">R$ 0,00</div>
+                    </div>
+                    <div class="payment-total-card">
+                        <div class="payment-total-label">Total Cartão Crédito</div>
+                        <div class="payment-total-value" id="totalCredito">R$ 0,00</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="alert-container" id="alertContainer"></div>
-
     <script>
-        // ================== VARIÁVEIS GLOBAIS ==================
-        let companies = [];
-        let currentCompanyId = null;
-        let transactions = []; // Array para armazenar as transações da empresa atual
-        let editingTransactionId = null; // Para controlar se estamos editando
+        // ================== ESTADO GLOBAL ==================
+        let companies = [];          // [{id, name}]
+        let currentCompanyId = null; // empresa selecionada
+        let transactions = [];       // todas da empresa atual
+        let filteredTransactions = [];
+        let editingTransactionId = null;
 
-        const companySelect = document.getElementById('companySelect');
-        const transactionsTableBody = document.getElementById('transactionsTableBody');
-        const totalEntradasElem = document.getElementById('totalEntradas');
-        const totalSaidasElem = document.getElementById('totalSaidas');
-        const saldoTotalElem = document.getElementById('saldoTotal');
-        const transactionForm = document.getElementById('transactionForm');
-        const saveTransactionBtn = document.getElementById('saveTransactionBtn');
-        const cancelEditButton = document.getElementById('cancelEditButton');
-        const paymentMethodCheckboxes = document.querySelectorAll('#paymentMethodsGrid input[type="checkbox"]');
-        const paymentValueInputs = {};
-        document.querySelectorAll('.payment-value-input').forEach(input => {
-            paymentValueInputs[input.dataset.method] = input;
-        });
-
-        // ================== FUNÇÕES DE UTILIDADE ==================
+        // ================== FUNÇÕES UTILITÁRIAS ==================
         function formatCurrency(value) {
-            return new Intl.NumberFormat('pt-BR', {
+            return value.toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
-            }).format(value);
-        }
-
-        function showAlert(message, type = 'info') {
-            const alertContainer = document.getElementById('alertContainer');
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert ${type}`;
-            const icon = type === 'success' ? '✔' : (type === 'warning' ? '⚠' : 'ℹ');
-            alertDiv.innerHTML = `<span class="alert-icon">${icon}</span><span>${message}</span>`;
-            alertContainer.appendChild(alertDiv);
-
-            setTimeout(() => {
-                alertDiv.remove();
-            }, 5000);
-        }
-
-        // ================== GERENCIAMENTO DE EMPRESAS ==================
-        function saveCompanies() {
-            localStorage.setItem('companies', JSON.stringify(companies));
-        }
-
-        function loadCompanies() {
-            const storedCompanies = localStorage.getItem('companies');
-            if (storedCompanies) {
-                companies = JSON.parse(storedCompanies);
-            } else {
-                companies = [{ id: 'default', name: 'Minha Empresa Padrão' }];
-                saveCompanies();
-            }
-            renderCompanySelect();
-            // Tenta carregar a última empresa selecionada ou a primeira
-            currentCompanyId = localStorage.getItem('currentCompanyId') || companies[0].id;
-            companySelect.value = currentCompanyId;
-            loadTransactions();
-        }
-
-        function renderCompanySelect() {
-            companySelect.innerHTML = '';
-            companies.forEach(company => {
-                const option = document.createElement('option');
-                option.value = company.id;
-                option.textContent = company.name;
-                companySelect.appendChild(option);
             });
         }
 
-        async function addCompany() {
-            const companyName = prompt('Digite o nome da nova empresa:');
-            if (companyName && companyName.trim() !== '') {
-                const newCompany = {
-                    id: Date.now().toString(),
-                    name: companyName.trim()
-                };
-                companies.push(newCompany);
-                saveCompanies();
-                renderCompanySelect();
-                currentCompanyId = newCompany.id;
-                companySelect.value = currentCompanyId;
-                localStorage.setItem('currentCompanyId', currentCompanyId);
-                transactions = []; // Limpa transações ao mudar de empresa
-                saveTransactions();
-                renderTransactions();
-                updateSummary();
-                showAlert(`Empresa "${companyName}" adicionada!`, 'success');
-            }
+        function showAlert(message, type = 'success', duration = 3000) {
+            const container = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.classList.add('alert');
+            if (type === 'success') alert.classList.add('alert-success');
+            else if (type === 'error') alert.classList.add('alert-error');
+            else if (type === 'warning') alert.classList.add('alert-warning');
+
+            alert.textContent = message;
+            container.appendChild(alert);
+
+            setTimeout(() => {
+                alert.remove();
+            }, duration);
         }
 
-        companySelect.addEventListener('change', () => {
-            currentCompanyId = companySelect.value;
-            localStorage.setItem('currentCompanyId', currentCompanyId);
-            loadTransactions();
-        });
-
-        // ================== GERENCIAMENTO DE TRANSAÇÕES ==================
-        function saveTransactions() {
-            if (currentCompanyId) {
-                localStorage.setItem(`transactions_${currentCompanyId}`, JSON.stringify(transactions));
-            }
+        function getCompanyStorageKey(companyId) {
+            return `transactions_${companyId}`;
         }
 
-        function loadTransactions() {
-            if (currentCompanyId) {
-                const storedTransactions = localStorage.getItem(`transactions_${currentCompanyId}`);
-                transactions = storedTransactions ? JSON.parse(storedTransactions) : [];
+        // ================== EMPRESAS (LOCALSTORAGE) ==================
+        function loadCompanies() {
+            const stored = localStorage.getItem('companies');
+            if (stored) {
+                companies = JSON.parse(stored);
             } else {
-                transactions = [];
+                // cria uma empresa padrão
+                const defaultCompany = { id: Date.now().toString(), name: 'Minha Empresa' };
+                companies = [defaultCompany];
+                localStorage.setItem('companies', JSON.stringify(companies));
             }
-            applyFilters(); // Carrega e aplica os filtros existentes
+
+            const storedCurrent = localStorage.getItem('currentCompanyId');
+            if (storedCurrent && companies.find(c => c.id === storedCurrent)) {
+                currentCompanyId = storedCurrent;
+            } else {
+                currentCompanyId = companies[0].id;
+                localStorage.setItem('currentCompanyId', currentCompanyId);
+            }
+
+            renderCompanySelector();
+            loadTransactions();
         }
 
-        function renderTransactions(filteredTransactions = transactions) {
-            transactionsTableBody.innerHTML = '';
-            if (filteredTransactions.length === 0) {
-                transactionsTableBody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Nenhuma transação encontrada.</td></tr>`;
-                updateSummary(0, 0); // Zera o resumo se não há transações
+        function saveCompanies() {
+            localStorage.setItem('companies', JSON.stringify(companies));
+            localStorage.setItem('currentCompanyId', currentCompanyId);
+        }
+
+        function renderCompanySelector() {
+            const select = document.getElementById('currentCompany');
+            select.innerHTML = '';
+            companies.forEach(company => {
+                const opt = document.createElement('option');
+                opt.value = company.id;
+                opt.textContent = company.name;
+                if (company.id === currentCompanyId) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            select.onchange = () => {
+                currentCompanyId = select.value;
+                saveCompanies();
+                loadTransactions();
+            };
+        }
+
+        function addCompany() {
+            const name = prompt('Nome da nova empresa:');
+            if (!name) return;
+            const newCompany = { id: Date.now().toString(), name: name.trim() };
+            companies.push(newCompany);
+            currentCompanyId = newCompany.id;
+            saveCompanies();
+            renderCompanySelector();
+            loadTransactions();
+            showAlert('Nova empresa criada.', 'success');
+        }
+
+        // ================== TRANSAÇÕES (LOCALSTORAGE) ==================
+        function loadTransactions() {
+            if (!currentCompanyId) return;
+            const key = getCompanyStorageKey(currentCompanyId);
+            const stored = localStorage.getItem(key);
+            transactions = stored ? JSON.parse(stored) : [];
+            filteredTransactions = [];
+            renderTransactions();
+            updateSummary();
+        }
+
+        function saveTransactions() {
+            if (!currentCompanyId) return;
+            const key = getCompanyStorageKey(currentCompanyId);
+            localStorage.setItem(key, JSON.stringify(transactions));
+        }
+
+        // ================== RENDERIZAÇÃO TABELA E RESUMO ==================
+        function renderTransactions() {
+            const tbody = document.getElementById('transactionsBody');
+            tbody.innerHTML = '';
+
+            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+
+            if (data.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = 9;
+                td.className = 'empty-state';
+                td.textContent = 'Nenhuma transação registrada.';
+                tr.appendChild(td);
+                tbody.appendChild(tr);
                 return;
             }
 
-            let totalEntradas = 0;
-            let totalSaidas = 0;
+            data.forEach(t => {
+                const tr = document.createElement('tr');
 
-            filteredTransactions.forEach(t => {
-                const row = transactionsTableBody.insertRow();
-                row.innerHTML = `
-                    <td>${t.date}</td>
-                    <td class="${t.type === 'entrada' ? 'type-entrada' : 'type-saida'}">${t.type === 'entrada' ? 'Entrada' : 'Saída'}</td>
-                    <td>${t.description}</td>
-                    <td>${t.quantity}</td>
-                    <td>${formatCurrency(t.value)}</td>
-                    <td>${formatCurrency(t.totalAbs)}</td>
-                    <td>${t.responsible || '-'}</td>
-                    <td class="actions-cell">
-                        <button class="action-btn" onclick="editTransaction('${t.id}')" title="Editar">✏️</button>
-                        <button class="action-btn" onclick="deleteTransaction('${t.id}')" title="Excluir">🗑️</button>
-                    </td>
-                `;
+                const tdDate = document.createElement('td');
+                tdDate.textContent = new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR');
+                tr.appendChild(tdDate);
+
+                const tdType = document.createElement('td');
+                const spanType = document.createElement('span');
+                spanType.className = 'tag ' + (t.type === 'entrada' ? 'income' : 'expense');
+                spanType.textContent = t.type === 'entrada' ? 'Entrada' : 'Saída';
+                tdType.appendChild(spanType);
+                tr.appendChild(tdType);
+
+                const tdDesc = document.createElement('td');
+                tdDesc.textContent = t.description;
+                tr.appendChild(tdDesc);
+
+                const tdQty = document.createElement('td');
+                tdQty.textContent = t.quantity;
+                tr.appendChild(tdQty);
+
+                const tdValue = document.createElement('td');
+                tdValue.textContent = formatCurrency(t.value);
+                tr.appendChild(tdValue);
+
+                const tdTotal = document.createElement('td');
+                const signedTotal = t.type === 'saida' ? -t.totalAbs : t.totalAbs;
+                tdTotal.textContent = formatCurrency(signedTotal);
+                tr.appendChild(tdTotal);
+
+                const tdResp = document.createElement('td');
+                tdResp.textContent = t.responsible || '-';
+                tr.appendChild(tdResp);
+
+                const tdPayment = document.createElement('td');
+                const parts = [];
+                if (t.paymentDetails) {
+                    for (const method in t.paymentDetails) {
+                        const val = t.paymentDetails[method];
+                        if (val > 0) parts.push(`${method}: ${formatCurrency(val)}`);
+                    }
+                }
+                tdPayment.textContent = parts.join(' | ') || '-';
+                tr.appendChild(tdPayment);
+
+                const tdActions = document.createElement('td');
+                const btnEdit = document.createElement('button');
+                btnEdit.className = 'btn-action';
+                btnEdit.textContent = 'Editar';
+                btnEdit.onclick = () => editTransaction(t.id);
+                tdActions.appendChild(btnEdit);
+
+                const btnDelete = document.createElement('button');
+                btnDelete.className = 'btn-action btn-delete';
+                btnDelete.textContent = 'Excluir';
+                btnDelete.onclick = () => deleteTransaction(t.id);
+                tdActions.appendChild(btnDelete);
+
+                tr.appendChild(tdActions);
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateSummary() {
+            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+
+            let totalEntrada = 0;
+            let totalSaida = 0;
+
+            const paymentTotals = {
+                'Dinheiro': 0,
+                'Pix': 0,
+                'Cartão Débito': 0,
+                'Cartão Crédito': 0
+            };
+
+            data.forEach(t => {
                 if (t.type === 'entrada') {
-                    totalEntradas += t.totalAbs;
+                    totalEntrada += t.totalAbs;
                 } else {
-                    totalSaidas += t.totalAbs;
+                    totalSaida += t.totalAbs;
+                }
+
+                if (t.paymentDetails) {
+                    for (const method in t.paymentDetails) {
+                        if (!paymentTotals.hasOwnProperty(method)) continue;
+                        paymentTotals[method] += t.paymentDetails[method];
+                    }
                 }
             });
-            updateSummary(totalEntradas, totalSaidas);
-        }
 
-        function updateSummary(entradas, saidas) {
-            totalEntradasElem.textContent = formatCurrency(entradas);
-            totalSaidasElem.textContent = formatCurrency(saidas);
-            saldoTotalElem.textContent = formatCurrency(entradas - saidas);
-            saldoTotalElem.className = `summary-value ${entradas - saidas >= 0 ? 'positive' : 'negative'}`;
-        }
+            document.getElementById('totalEntrada').textContent = formatCurrency(totalEntrada);
+            document.getElementById('totalSaida').textContent = formatCurrency(totalSaida);
+            document.getElementById('saldoLiquido').textContent = formatCurrency(totalEntrada - totalSaida);
 
-        function resetForm() {
-            transactionForm.reset();
-            document.getElementById('transactionId').value = '';
-            document.getElementById('date').valueAsDate = new Date();
-            document.querySelector('input[name="type"][value="entrada"]').checked = true;
-            saveTransactionBtn.textContent = 'Lançar Transação';
-            cancelEditButton.style.display = 'none';
-            editingTransactionId = null;
-            // Limpa e desativa campos de pagamento
-            paymentMethodCheckboxes.forEach(cb => {
-                cb.checked = false;
-                const input = paymentValueInputs[cb.value];
-                input.value = '';
-                input.disabled = true;
-                input.closest('.payment-method-item').classList.remove('active');
-            });
-        }
-
-        function editTransaction(id) {
-            const transaction = transactions.find(t => t.id === id);
-            if (transaction) {
-                document.getElementById('transactionId').value = transaction.id;
-                document.getElementById('date').value = transaction.date;
-                document.querySelector(`input[name="type"][value="${transaction.type}"]`).checked = true;
-                document.getElementById('description').value = transaction.description;
-                document.getElementById('quantity').value = transaction.quantity;
-                document.getElementById('value').value = transaction.value;
-                document.getElementById('responsible').value = transaction.responsible;
-                document.getElementById('notes').value = transaction.notes;
-
-                // Preenche formas de pagamento
-                paymentMethodCheckboxes.forEach(cb => {
-                    const method = cb.value;
-                    const input = paymentValueInputs[method];
-                    if (transaction.paymentDetails && transaction.paymentDetails[method]) {
-                        cb.checked = true;
-                        input.value = transaction.paymentDetails[method];
-                        input.disabled = false;
-                        input.closest('.payment-method-item').classList.add('active');
-                    } else {
-                        cb.checked = false;
-                        input.value = '';
-                        input.disabled = true;
-                        input.closest('.payment-method-item').classList.remove('active');
-                    }
-                });
-
-                saveTransactionBtn.textContent = 'Atualizar Transação';
-                cancelEditButton.style.display = 'inline-block';
-                editingTransactionId = id;
-                showAlert('Modo de edição ativado.', 'info');
-            }
-        }
-
-        function deleteTransaction(id) {
-            if (confirm('Tem certeza que deseja excluir esta transação?')) {
-                transactions = transactions.filter(t => t.id !== id);
-                saveTransactions();
-                applyFilters();
-                showAlert('Transação excluída.', 'success');
-                if (editingTransactionId === id) {
-                    resetForm(); // Se a transação excluída era a que estava sendo editada
-                }
-            }
-        }
-
-        // ================== CONTROLES DE PAGAMENTO ==================
-        function initPaymentControls() {
-            paymentMethodCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', (event) => {
-                    const method = event.target.value;
-                    const input = paymentValueInputs[method];
-                    if (event.target.checked) {
-                        input.disabled = false;
-                        input.focus();
-                        input.closest('.payment-method-item').classList.add('active');
-                    } else {
-                        input.disabled = true;
-                        input.value = '';
-                        input.closest('.payment-method-item').classList.remove('active');
-                    }
-                });
-            });
+            document.getElementById('totalDinheiro').textContent = formatCurrency(paymentTotals['Dinheiro']);
+            document.getElementById('totalPix').textContent = formatCurrency(paymentTotals['Pix']);
+            document.getElementById('totalDebito').textContent = formatCurrency(paymentTotals['Cartão Débito']);
+            document.getElementById('totalCredito').textContent = formatCurrency(paymentTotals['Cartão Crédito']);
         }
 
         // ================== FILTROS ==================
         function applyFilters() {
-            const filterStartDate = document.getElementById('filterStartDate').value;
-            const filterEndDate = document.getElementById('filterEndDate').value;
-            const filterType = document.getElementById('filterType').value;
-            const filterDescription = document.getElementById('filterDescription').value.toLowerCase();
-            const filterResponsible = document.getElementById('filterResponsible').value.toLowerCase();
+            const start = document.getElementById('filterDateStart').value;
+            const end = document.getElementById('filterDateEnd').value;
 
-            let filtered = transactions;
-
-            if (filterStartDate) {
-                filtered = filtered.filter(t => t.date >= filterStartDate);
-            }
-            if (filterEndDate) {
-                filtered = filtered.filter(t => t.date <= filterEndDate);
-            }
-            if (filterType) {
-                filtered = filtered.filter(t => t.type === filterType);
-            }
-            if (filterDescription) {
-                filtered = filtered.filter(t => t.description.toLowerCase().includes(filterDescription));
-            }
-            if (filterResponsible) {
-                filtered = filtered.filter(t => (t.responsible || '').toLowerCase().includes(filterResponsible));
+            if (!start && !end) {
+                filteredTransactions = [];
+                renderTransactions();
+                updateSummary();
+                return;
             }
 
-            renderTransactions(filtered);
+            filteredTransactions = transactions.filter(t => {
+                if (start && t.date < start) return false;
+                if (end && t.date > end) return false;
+                return true;
+            });
+
+            renderTransactions();
+            updateSummary();
         }
 
         function clearFilters() {
-            document.getElementById('filterStartDate').value = '';
-            document.getElementById('filterEndDate').value = '';
-            document.getElementById('filterType').value = '';
-            document.getElementById('filterDescription').value = '';
-            document.getElementById('filterResponsible').value = '';
-            applyFilters();
-            showAlert('Filtros limpos.', 'info');
+            document.getElementById('filterDateStart').value = '';
+            document.getElementById('filterDateEnd').value = '';
+            filteredTransactions = [];
+            renderTransactions();
+            updateSummary();
         }
 
-        // ================== FERRAMENTAS DE DADOS ==================
-        function exportDataJson() {
-            const data = {
-                companies: companies,
-                transactions: {}
-            };
-            companies.forEach(company => {
-                data.transactions[company.id] = JSON.parse(localStorage.getItem(`transactions_${company.id}`) || '[]');
+        // ================== FORMULÁRIO ==================
+        const paymentMethodCheckboxes = [];
+        const paymentValueInputs = {};
+
+        function initPaymentControls() {
+            document.querySelectorAll('input[name="paymentMethodCheck"]').forEach(cb => {
+                paymentMethodCheckboxes.push(cb);
+            });
+            document.querySelectorAll('[data-payment-input]').forEach(input => {
+                const method = input.getAttribute('data-payment-input');
+                paymentValueInputs[method] = input;
             });
 
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            paymentMethodCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const method = e.target.value;
+                    const input = paymentValueInputs[method];
+                    if (!input) return;
+                    if (checkbox.checked) {
+                        input.disabled = false;
+                        if (parseFloat(input.value) === 0) {
+                            input.value = '0.00';
+                        }
+                    } else {
+                        input.disabled = true;
+                        input.value = '0.00';
+                    }
+                });
+            });
+        }
+
+        function resetForm() {
+            const form = document.getElementById('transactionForm');
+            form.reset();
+            document.getElementById('transactionId').value = '';
+            document.getElementById('date').valueAsDate = new Date();
+
+            paymentMethodCheckboxes.forEach(cb => {
+                cb.checked = false;
+                const input = paymentValueInputs[cb.value];
+                if (input) {
+                    input.value = '0.00';
+                    input.disabled = true;
+                }
+            });
+
+            editingTransactionId = null;
+            document.getElementById('formTitle').textContent = 'Nova transação';
+            document.getElementById('submitButton').textContent = 'Salvar transação';
+            document.getElementById('cancelEditButton').style.display = 'none';
+        }
+
+        function editTransaction(id) {
+            const t = transactions.find(tr => tr.id === id);
+            if (!t) return;
+
+            document.getElementById('transactionId').value = t.id;
+            document.getElementById('date').value = t.date;
+            document.getElementById('type').value = t.type;
+            document.getElementById('description').value = t.description;
+            document.getElementById('quantity').value = t.quantity;
+            document.getElementById('value').value = t.value;
+            document.getElementById('responsible').value = t.responsible || '';
+            document.getElementById('notes').value = t.notes || '';
+
+            paymentMethodCheckboxes.forEach(cb => {
+                cb.checked = false;
+                const input = paymentValueInputs[cb.value];
+                if (input) {
+                    input.value = '0.00';
+                    input.disabled = true;
+                }
+            });
+
+            if (t.paymentDetails) {
+                for (const method in t.paymentDetails) {
+                    const cb = paymentMethodCheckboxes.find(c => c.value === method);
+                    const input = paymentValueInputs[method];
+                    if (cb && input) {
+                        cb.checked = true;
+                        input.disabled = false;
+                        input.value = t.paymentDetails[method].toFixed(2);
+                    }
+                }
+            }
+
+            editingTransactionId = id;
+            document.getElementById('formTitle').textContent = 'Editar transação';
+            document.getElementById('submitButton').textContent = 'Atualizar transação';
+            document.getElementById('cancelEditButton').style.display = 'block';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteTransaction(id) {
+            if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
+            transactions = transactions.filter(t => t.id !== id);
+            saveTransactions();
+            applyFilters();
+            showAlert('Transação excluída.', 'success');
+        }
+
+        // ================== BACKUP / EXPORT ==================
+        function exportDataJson() {
+            if (!currentCompanyId) {
+                showAlert('Nenhuma empresa selecionada.', 'warning');
+                return;
+            }
+            const dataToExport = transactions;
+            if (dataToExport.length === 0) {
+                showAlert('Não há dados para backup.', 'warning');
+                return;
+            }
+
+            const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
+            const companyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa';
             a.href = url;
-            a.download = `backup_gestao_financeira_${new Date().toISOString().slice(0,10)}.json`;
+            a.download = `backup_${companyName}_${new Date().toISOString().slice(0,10)}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showAlert('Backup JSON exportado.', 'success');
+            showAlert('Backup JSON gerado.', 'success');
         }
 
         function importDataJson() {
+            if (!currentCompanyId) {
+                showAlert('Nenhuma empresa selecionada.', 'warning');
+                return;
+            }
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = 'application/json';
-            input.onchange = async (e) => {
+            input.onchange = e => {
                 const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = async (event) => {
-                        try {
-                            const importedData = JSON.parse(event.target.result);
-                            if (importedData.companies && importedData.transactions) {
-                                if (confirm('Isso substituirá todos os seus dados atuais. Deseja continuar?')) {
-                                    companies = importedData.companies;
-                                    saveCompanies();
-                                    for (const companyId in importedData.transactions) {
-                                        localStorage.setItem(`transactions_${companyId}`, JSON.stringify(importedData.transactions[companyId]));
-                                    }
-                                    loadCompanies(); // Recarrega tudo
-                                    showAlert('Dados restaurados com sucesso!', 'success');
-                                }
-                            } else {
-                                showAlert('Arquivo JSON inválido. Estrutura esperada: {companies: [], transactions: {}}', 'error');
-                            }
-                        } catch (error) {
-                            showAlert('Erro ao ler o arquivo JSON. Verifique se é um JSON válido.', 'error');
-                            console.error('Erro ao importar JSON:', error);
-                        }
-                    };
-                    reader.readAsText(file);
-                }
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    try {
+                        const imported = JSON.parse(ev.target.result);
+                        if (!Array.isArray(imported)) throw new Error('Formato inválido');
+                        if (!confirm('Isso vai substituir todas as transações atuais desta empresa. Continuar?')) return;
+                        transactions = imported;
+                        saveTransactions();
+                        filteredTransactions = [];
+                        renderTransactions();
+                        updateSummary();
+                        showAlert('Backup importado com sucesso.', 'success');
+                    } catch (err) {
+                        console.error(err);
+                        showAlert('Erro ao importar backup JSON.', 'error');
+                    }
+                };
+                reader.readAsText(file);
             };
             input.click();
         }
 
         function exportToCsv() {
-            if (transactions.length === 0) {
-                showAlert('Não há transações para exportar.', 'warning');
+            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+            if (data.length === 0) {
+                showAlert('Não há dados para exportar.', 'warning');
                 return;
             }
 
-            let csv = 'Data;Tipo;Descrição;Quantidade;Valor Unitário;Total;Responsável;Dinheiro;Pix;Cartão Débito;Cartão Crédito;Observações\r\n';
-            transactions.forEach(t => {
+            let csv = '';
+            const headers = [
+                'Data','Tipo','Descrição','Quantidade','Valor Unitário','Total','Responsável',
+                'Dinheiro','Pix','Cartão Débito','Cartão Crédito','Observações'
+            ];
+            csv += headers.join(';') + '\r\n';
+
+            data.forEach(t => {
                 const row = [
-                    `"${t.date}"`,
-                    `"${t.type === 'entrada' ? 'Entrada' : 'Saída'}"`,
+                    new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR'),
+                    t.type === 'entrada' ? 'Entrada' : 'Saída',
                     `"${(t.description || '').replace(/"/g,'""')}"`,
-                    t.quantity,
+                    String(t.quantity).replace('.', ','),
                     t.value.toFixed(2).replace('.', ','),
-                    t.totalAbs.toFixed(2).replace('.', ','),
+                    (t.totalAbs * (t.type === 'saida' ? -1 : 1)).toFixed(2).replace('.', ','),
                     `"${(t.responsible || '').replace(/"/g,'""')}"`,
                     (t.paymentDetails?.['Dinheiro'] || 0).toFixed(2).replace('.', ','),
                     (t.paymentDetails?.['Pix'] || 0).toFixed(2).replace('.', ','),
@@ -1376,27 +1455,6 @@
                 resetForm();
             });
         });
-    </script>
-
-    <!-- APENAS A INICIALIZAÇÃO DO FIREBASE, SEM MUDAR O RESTO -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-        // Se quiser usar Realtime Database depois:
-        // import { getDatabase } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyA5BlJqLvDWN4_N2F1J_Ys-UjTMuLXbeCM",
-            authDomain: "capela-santa-helena.firebaseapp.com",
-            databaseURL: "https://gestaofinanceiracaixa-default-rtdb.firebaseio.com", // Nova URL do Realtime Database
-            projectId: "capela-santa-helena",
-            storageBucket: "capela-santa-helena.firebasestorage.app",
-            messagingSenderId: "398714274907",
-            appId: "1:398714274907:web:9bf2296f7cbe89ee322b7e"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        // const db = getDatabase(app); // quando formos usar Realtime Database
-        console.log("Firebase inicializado com sucesso com a nova configuração!");
     </script>
 </body>
 </html>
