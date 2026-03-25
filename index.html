@@ -1,44 +1,10 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestão Financeira Firebase</title>
-</head>
-
-<body style="font-family: Arial; padding:20px">
-
-<h2>💰 Gestão Financeira (Firebase)</h2>
-
-<label>Empresa:</label>
-<select id="empresa"></select>
-<button onclick="novaEmpresa()">+ Empresa</button>
-
-<hr>
-
-<input type="text" id="descricao" placeholder="Descrição">
-<input type="number" id="valor" placeholder="Valor">
-<select id="tipo">
-  <option value="entrada">Entrada</option>
-  <option value="saida">Saída</option>
-</select>
-
-<button onclick="salvar()">Salvar</button>
-
-<h3>Transações</h3>
-<ul id="lista"></ul>
-
-<h3>Resumo</h3>
-<p id="entrada"></p>
-<p id="saida"></p>
-<p id="saldo"></p>
-
 <script type="module">
-
+// ================= FIREBASE =================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-import { getDatabase, ref, push, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { 
+  getDatabase, ref, push, set, onValue, remove 
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
-// CONFIG (A SUA)
 const firebaseConfig = {
   apiKey: "AIzaSyAEeOilHu6K2qvyB-49kyqx0K9dXAgW74c",
   authDomain: "gestaofinanceiracaixa.firebaseapp.com",
@@ -49,125 +15,155 @@ const firebaseConfig = {
   appId: "1:15986056077:web:2f43cb7abd56fe69cc7bc4"
 };
 
-// INICIAR
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ================= VARIÁVEIS =================
-let empresaAtual = null;
+// ================= ESTADO =================
+let currentCompanyId = null;
+let transactions = [];
 
 // ================= EMPRESAS =================
 const empresasRef = ref(db, "empresas");
 
-function carregarEmpresas() {
+function loadCompanies() {
   onValue(empresasRef, (snapshot) => {
-    const select = document.getElementById("empresa");
+    const select = document.getElementById('currentCompany');
     select.innerHTML = "";
 
     snapshot.forEach(child => {
-      const opt = document.createElement("option");
+      const opt = document.createElement('option');
       opt.value = child.key;
-      opt.textContent = child.val().nome;
+      opt.textContent = child.val().name;
       select.appendChild(opt);
     });
 
-    if (select.options.length > 0) {
-      empresaAtual = select.value;
-      carregarTransacoes();
+    if (!currentCompanyId && select.options.length > 0) {
+      currentCompanyId = select.options[0].value;
+      loadTransactions();
     }
   });
 }
 
-// NOVA EMPRESA
-window.novaEmpresa = function() {
-  const nome = prompt("Nome da empresa:");
-  if (!nome) return;
+window.addCompany = function() {
+  const name = prompt("Nome da empresa:");
+  if (!name) return;
 
-  const novaRef = push(empresasRef);
-  set(novaRef, { nome });
+  const newRef = push(empresasRef);
+  set(newRef, { name });
 
-  empresaAtual = novaRef.key;
-  carregarTransacoes();
+  currentCompanyId = newRef.key;
 };
 
-// TROCAR EMPRESA
-document.getElementById("empresa").addEventListener("change", (e) => {
-  empresaAtual = e.target.value;
-  carregarTransacoes();
+// troca empresa
+document.getElementById("currentCompany").addEventListener("change", (e) => {
+  currentCompanyId = e.target.value;
+  loadTransactions();
 });
 
 // ================= TRANSAÇÕES =================
 function transacoesRef() {
-  return ref(db, "transacoes/" + empresaAtual);
+  return ref(db, "transacoes/" + currentCompanyId);
 }
 
-function carregarTransacoes() {
-  if (!empresaAtual) return;
+function loadTransactions() {
+  if (!currentCompanyId) return;
 
   onValue(transacoesRef(), (snapshot) => {
-    const lista = document.getElementById("lista");
-    lista.innerHTML = "";
-
-    let entrada = 0;
-    let saida = 0;
+    transactions = [];
 
     snapshot.forEach(child => {
-      const t = child.val();
-      const id = child.key;
-
-      if (t.tipo === "entrada") entrada += t.valor;
-      else saida += t.valor;
-
-      const li = document.createElement("li");
-      li.innerHTML = `
-        ${t.descricao} - R$ ${t.valor} (${t.tipo})
-        <button onclick="excluir('${id}')">Excluir</button>
-      `;
-      lista.appendChild(li);
+      transactions.push({
+        id: child.key,
+        ...child.val()
+      });
     });
 
-    document.getElementById("entrada").textContent = "Entradas: R$ " + entrada;
-    document.getElementById("saida").textContent = "Saídas: R$ " + saida;
-    document.getElementById("saldo").textContent = "Saldo: R$ " + (entrada - saida);
+    renderTransactions();
+    updateSummary();
   });
 }
 
-// SALVAR
-window.salvar = function() {
-  if (!empresaAtual) {
-    alert("Crie uma empresa primeiro!");
+// ================= SALVAR =================
+document.getElementById('transactionForm').addEventListener('submit', e => {
+  e.preventDefault();
+
+  if (!currentCompanyId) {
+    alert("Selecione uma empresa!");
     return;
   }
 
-  const descricao = document.getElementById("descricao").value;
-  const valor = parseFloat(document.getElementById("valor").value);
-  const tipo = document.getElementById("tipo").value;
+  const date = document.getElementById('date').value;
+  const type = document.getElementById('type').value;
+  const description = document.getElementById('description').value;
+  const quantity = parseFloat(document.getElementById('quantity').value);
+  const value = parseFloat(document.getElementById('value').value);
 
-  if (!descricao || isNaN(valor)) {
-    alert("Preencha corretamente!");
-    return;
-  }
+  const total = quantity * value;
 
   push(transacoesRef(), {
-    descricao,
-    valor,
-    tipo,
-    data: new Date().toISOString()
+    date,
+    type,
+    description,
+    quantity,
+    value,
+    totalAbs: total
   });
 
-  document.getElementById("descricao").value = "";
-  document.getElementById("valor").value = "";
+  document.getElementById('transactionForm').reset();
+});
+
+// ================= EXCLUIR =================
+window.deleteTransaction = function(id) {
+  remove(ref(db, "transacoes/" + currentCompanyId + "/" + id));
 };
 
-// EXCLUIR
-window.excluir = function(id) {
-  remove(ref(db, "transacoes/" + empresaAtual + "/" + id));
-};
+// ================= RENDER =================
+function renderTransactions() {
+  const tbody = document.getElementById('transactionsBody');
+  tbody.innerHTML = "";
 
-// INICIAR
-carregarEmpresas();
+  if (transactions.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9">Nenhuma transação</td></tr>';
+    return;
+  }
+
+  transactions.forEach(t => {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${t.date}</td>
+      <td>${t.type}</td>
+      <td>${t.description}</td>
+      <td>${t.quantity}</td>
+      <td>${t.value}</td>
+      <td>${t.totalAbs}</td>
+      <td>-</td>
+      <td>-</td>
+      <td>
+        <button onclick="deleteTransaction('${t.id}')">Excluir</button>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
+
+// ================= RESUMO =================
+function updateSummary() {
+  let entrada = 0;
+  let saida = 0;
+
+  transactions.forEach(t => {
+    if (t.type === "entrada") entrada += t.totalAbs;
+    else saida += t.totalAbs;
+  });
+
+  document.getElementById('totalEntrada').textContent = "R$ " + entrada.toFixed(2);
+  document.getElementById('totalSaida').textContent = "R$ " + saida.toFixed(2);
+  document.getElementById('saldoLiquido').textContent = "R$ " + (entrada - saida).toFixed(2);
+}
+
+// INIT
+loadCompanies();
 
 </script>
-
-</body>
-</html>
