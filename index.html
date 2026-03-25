@@ -227,21 +227,18 @@
         .summary-card {
             background: radial-gradient(circle at top left, rgba(37,99,235,0.22) 0, rgba(15,23,42,0.95) 52%, rgba(15,23,42,1) 100%);
             border-radius: 14px;
-            border: 1px solid var(--border-subtle);
             padding: 18px 20px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-        }
-
-        .summary-card.total {
-            background: radial-gradient(circle at top left, rgba(99,102,241,0.22) 0, rgba(15,23,42,0.95) 52%, rgba(15,23,42,1) 100%);
+            justify-content: space-between;
         }
 
         .summary-card-title {
             font-size: 13px;
             color: var(--text-soft);
-            font-weight: 500;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -251,6 +248,7 @@
             font-size: 24px;
             font-weight: 700;
             color: var(--text-main);
+            margin-bottom: 4px;
         }
 
         .summary-card-value.positive {
@@ -261,42 +259,26 @@
             color: var(--negative);
         }
 
-        .summary-card-icon {
-            width: 20px;
-            height: 20px;
-            border-radius: 6px;
-            background: var(--primary-soft);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: var(--primary);
+        .summary-card-description {
+            font-size: 11px;
+            color: var(--text-muted);
         }
 
-        .summary-card.total .summary-card-icon {
-            background: rgba(99,102,241,0.14);
-            color: var(--accent);
-        }
-
-        /* Layout principal */
+        /* Layout principal de duas colunas */
         .main-content-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 2fr 3fr; /* Formulário maior, tabela menor */
             gap: 20px;
+            align-items: flex-start; /* Alinha o topo dos cards */
         }
 
-        @media (max-width: 900px) {
-            .main-content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Card base */
+        /* Card genérico */
         .card {
             background: var(--bg-card);
             border-radius: 14px;
-            border: 1px solid var(--border-subtle);
             padding: 20px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .card-header {
@@ -304,8 +286,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 18px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-subtle);
         }
 
         .card-title {
@@ -315,12 +295,12 @@
         }
 
         .card-badge {
-            font-size: 11px;
-            color: var(--text-muted);
-            background: var(--bg-card-soft);
-            border: 1px solid var(--border-subtle);
+            background: var(--primary-soft);
+            color: var(--primary);
             padding: 4px 10px;
             border-radius: 999px;
+            font-size: 11px;
+            font-weight: 500;
         }
 
         /* Formulário */
@@ -330,44 +310,38 @@
 
         .form-group label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-soft);
             margin-bottom: 6px;
-            font-weight: 500;
         }
 
         .form-group input[type="text"],
         .form-group input[type="number"],
         .form-group input[type="date"],
+        .form-group select,
         .form-group textarea {
             width: 100%;
             padding: 10px 12px;
-            border-radius: 9px;
-            border: 1px solid var(--input-border);
             background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 9px;
             color: var(--text-main);
             font-size: 14px;
             outline: none;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .form-group input[type="text"]::placeholder,
-        .form-group input[type="number"]::placeholder,
-        .form-group input[type="date"]::placeholder,
-        .form-group textarea::placeholder {
-            color: var(--text-muted);
-        }
-
         .form-group input[type="text"]:focus,
         .form-group input[type="number"]:focus,
         .form-group input[type="date"]:focus,
+        .form-group select:focus,
         .form-group textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.7);
+            box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
         }
 
         .form-group textarea {
-            min-height: 60px;
+            min-height: 80px;
             resize: vertical;
         }
 
@@ -384,7 +358,6 @@
             cursor: pointer;
             font-size: 14px;
             color: var(--text-main);
-            margin-bottom: 0; /* Override default form-group label margin */
         }
 
         .radio-group input[type="radio"] {
@@ -393,18 +366,18 @@
             appearance: none;
             width: 16px;
             height: 16px;
+            border: 2px solid var(--primary);
             border-radius: 50%;
-            border: 2px solid var(--input-border);
             background-color: var(--input-bg);
-            transition: border-color 0.2s ease, background-color 0.2s ease;
+            outline: none;
             cursor: pointer;
             position: relative;
-            flex-shrink: 0;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
         }
 
         .radio-group input[type="radio"]:checked {
-            border-color: var(--primary);
             background-color: var(--primary);
+            border-color: var(--primary);
         }
 
         .radio-group input[type="radio"]:checked::before {
@@ -422,8 +395,8 @@
 
         .payment-details-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
             margin-top: 8px;
         }
 
@@ -438,14 +411,13 @@
         }
 
         .payment-item label {
+            margin-bottom: 0;
             display: flex;
             align-items: center;
             gap: 6px;
             font-size: 13px;
             color: var(--text-main);
-            margin-bottom: 0;
             flex-grow: 1;
-            cursor: pointer;
         }
 
         .payment-item input[type="checkbox"] {
@@ -454,27 +426,26 @@
             appearance: none;
             width: 16px;
             height: 16px;
-            border: 2px solid var(--input-border);
+            border: 2px solid var(--primary);
             border-radius: 4px;
             background-color: var(--input-bg);
-            transition: border-color 0.2s ease, background-color 0.2s ease;
+            outline: none;
             cursor: pointer;
             position: relative;
-            flex-shrink: 0;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
         }
 
         .payment-item input[type="checkbox"]:checked {
-            border-color: var(--primary);
             background-color: var(--primary);
+            border-color: var(--primary);
         }
 
         .payment-item input[type="checkbox"]:checked::before {
             content: '✔';
             display: block;
             color: white;
-            font-size: 10px;
+            font-size: 12px;
             line-height: 1;
-            text-align: center;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -482,19 +453,18 @@
         }
 
         .payment-item input[type="number"] {
-            width: 90px;
+            width: 100px; /* Ajuste para caber no grid */
             padding: 6px 8px;
-            border-radius: 6px;
-            border: 1px solid var(--input-border);
-            background: var(--input-bg);
-            color: var(--text-main);
             font-size: 13px;
-            outline: none;
             text-align: right;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 6px;
+            color: var(--text-main);
         }
 
         .payment-item input[type="number"]:disabled {
-            background: var(--bg-body);
+            background: #0d1627;
             color: var(--text-muted);
             cursor: not-allowed;
         }
@@ -512,9 +482,10 @@
             border-radius: 9px;
             padding: 10px 18px;
             font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease;
-            font-weight: 600;
+            flex-grow: 1;
         }
 
         .btn-primary:hover {
@@ -528,66 +499,68 @@
             border-radius: 9px;
             padding: 10px 18px;
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             transition: background-color 0.2s ease, border-color 0.2s ease;
-            font-weight: 500;
+            flex-grow: 1;
         }
 
         .cancel-edit-btn:hover {
-            background: var(--border-subtle);
-            color: var(--text-main);
+            background: #1c2a40;
+            border-color: #3b4d6e;
         }
 
         /* Filtros e Ferramentas */
         .filter-group, .tools-group {
-            padding-top: 10px;
-        }
-
-        .filter-group .form-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .filter-group .form-group label {
-            flex-shrink: 0;
-            width: 40px;
-            text-align: right;
-            margin-bottom: 0;
-        }
-
-        .filter-group .form-group input[type="date"] {
-            flex-grow: 1;
-        }
-
-        .filter-group .btn-group {
-            justify-content: flex-end;
-            margin-top: 15px;
-        }
-
-        .tools-group {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 10px;
         }
 
-        .btn-action {
+        .filter-group .form-group {
+            flex: 1;
+            min-width: 120px;
+            margin-bottom: 0; /* Remove margin-bottom padrão */
+        }
+
+        .filter-group .form-group label {
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .filter-group .form-group input[type="date"] {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        .filter-group .btn-group {
+            margin-top: 0;
+            align-self: flex-end; /* Alinha os botões com os campos de data */
+            flex-shrink: 0; /* Não deixa os botões encolherem */
+        }
+
+        .filter-group .btn-group button {
+            padding: 8px 14px;
+            font-size: 13px;
+        }
+
+        .tools-group .btn-action {
             background: var(--bg-card-soft);
             color: var(--text-soft);
             border: 1px solid var(--border-subtle);
             border-radius: 9px;
             padding: 8px 14px;
             font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
             transition: background-color 0.2s ease, border-color 0.2s ease;
-            font-weight: 500;
+            white-space: nowrap;
         }
 
-        .btn-action:hover {
-            background: var(--border-subtle);
-            color: var(--text-main);
+        .tools-group .btn-action:hover {
+            background: #1c2a40;
+            border-color: #3b4d6e;
         }
 
         /* Tabela de Transações */
@@ -598,17 +571,16 @@
 
         .transactions-table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
+            border-collapse: collapse;
             font-size: 13px;
-            min-width: 700px; /* Garante que a tabela não fique muito estreita */
+            text-align: left;
         }
 
         .transactions-table th,
         .transactions-table td {
-            padding: 12px 15px;
-            text-align: left;
+            padding: 12px 10px;
             border-bottom: 1px solid var(--border-subtle);
+            white-space: nowrap; /* Evita quebra de linha nas células */
         }
 
         .transactions-table th {
@@ -618,58 +590,40 @@
             text-transform: uppercase;
             font-size: 11px;
             letter-spacing: 0.05em;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        .transactions-table tbody tr:last-child td {
-            border-bottom: none;
         }
 
         .transactions-table tbody tr:hover {
-            background: var(--bg-card-soft);
+            background: rgba(59,130,246,0.05);
         }
 
         .transactions-table .type-entrada {
             color: var(--positive);
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .transactions-table .type-saida {
             color: var(--negative);
-            font-weight: 600;
-        }
-
-        .transactions-table .total-value {
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .transactions-table .actions-cell {
-            white-space: nowrap;
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
         }
 
         .transactions-table .action-btn {
             background: none;
             border: none;
-            color: var(--primary);
+            color: var(--text-soft);
             cursor: pointer;
-            font-size: 13px;
-            margin-left: 8px;
+            font-size: 16px;
+            padding: 4px;
             transition: color 0.2s ease;
         }
 
         .transactions-table .action-btn:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-
-        .transactions-table .action-btn.delete {
-            color: var(--negative);
-        }
-
-        .transactions-table .action-btn.delete:hover {
-            color: #dc2626;
+            color: var(--primary);
         }
 
         /* Alertas */
@@ -684,34 +638,25 @@
         }
 
         .alert {
-            background-color: var(--bg-card);
-            color: var(--text-main);
+            background-color: #333;
+            color: white;
             padding: 12px 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            min-width: 250px;
-            max-width: 350px;
             opacity: 0;
             transform: translateY(-20px);
             animation: fadeInOut 3s forwards;
-            border: 1px solid var(--border-subtle);
+            min-width: 250px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .alert-success {
-            border-left: 4px solid var(--positive);
-        }
-
-        .alert-error {
-            border-left: 4px solid var(--negative);
-        }
-
-        .alert-warning {
-            border-left: 4px solid orange;
-        }
-
-        .alert-info {
-            border-left: 4px solid var(--primary);
-        }
+        .alert-success { background-color: var(--positive); }
+        .alert-error { background-color: var(--negative); }
+        .alert-warning { background-color: orange; }
+        .alert-info { background-color: var(--primary); }
 
         @keyframes fadeInOut {
             0% { opacity: 0; transform: translateY(-20px); }
@@ -720,73 +665,47 @@
             100% { opacity: 0; transform: translateY(-20px); }
         }
 
-        /* Estilos de impressão */
-        @media print {
-            body {
-                background: none;
-                color: black;
-            }
-            .topbar, .form-card, .filter-card, .tools-group, .btn-group, .action-btn, .summary-card-icon {
-                display: none !important;
-            }
-            .page {
-                margin: 0;
-                padding: 0;
-                max-width: 100%;
-            }
+        /* Responsividade */
+        @media (max-width: 900px) {
             .main-content-grid {
-                grid-template-columns: 1fr !important;
-            }
-            .card {
-                border: none;
-                box-shadow: none;
-                padding: 0;
-                margin-bottom: 20px;
-            }
-            .card-header {
-                border-bottom: 1px solid #eee;
-                margin-bottom: 10px;
-                padding-bottom: 5px;
-            }
-            .card-title {
-                color: black;
+                grid-template-columns: 1fr; /* Uma coluna em telas menores */
             }
             .summary-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 10px;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             }
-            .summary-card {
-                background: #f9f9f9;
-                border: 1px solid #ddd;
-                padding: 10px;
+            .topbar-inner {
+                flex-wrap: wrap;
+                justify-content: center;
             }
-            .transactions-table {
-                font-size: 11px;
-                min-width: auto;
+            .company-selector-group {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+                justify-content: center;
             }
-            .transactions-table th, .transactions-table td {
-                border: 1px solid #ccc;
-                padding: 8px;
-                color: black;
+            .company-selector-group select {
+                flex-grow: 1;
             }
-            .transactions-table th {
-                background: #e9e9e9;
+            .topbar-right {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
             }
-            .transactions-table .type-entrada {
-                color: green;
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
-            .transactions-table .type-saida {
-                color: red;
+            .filter-group, .tools-group {
+                flex-direction: column;
             }
-            .logo-group, .page-title-block {
-                display: block !important;
-                text-align: center;
+            .filter-group .form-group, .filter-group .btn-group {
+                width: 100%;
             }
-            .logo-text-sub {
-                color: #555;
+            .filter-group .btn-group {
+                flex-direction: row; /* Mantém botões de filtro lado a lado */
             }
-            .date-badge {
-                display: none !important;
+            .tools-group .btn-action {
+                width: 100%;
             }
         }
     </style>
@@ -797,22 +716,26 @@
     <div class="topbar">
         <div class="topbar-inner">
             <div class="logo-group">
-                <div class="logo-mark"><span>$</span></div>
-                <div class="logo-text">
+                <div class="logo-mark"><span>GF</span></div>
+                <div>
                     <div class="logo-text-main">Gestão Financeira</div>
-                    <div class="logo-text-sub">Multi-Empresas</div>
+                    <div class="logo-text-sub">Sistema simples e completo</div>
                 </div>
             </div>
+
+            <div class="company-selector-group">
+                <label for="companySelector">Empresa:</label>
+                <select id="companySelector"></select>
+                <button class="btn-add-company" id="addCompanyBtn">+ Nova empresa</button>
+            </div>
+
             <div class="topbar-right">
-                <div class="company-selector-group">
-                    <label for="companySelector">Empresa:</label>
-                    <select id="companySelector"></select>
-                    <button class="btn-add-company" id="addCompanyBtn">Adicionar</button>
-                </div>
-                <div class="status-pill">
-                    <span class="status-dot"></span>
-                    <span id="todayLabel"></span>
-                </div>
+                <span class="status-pill">
+                    <span class="status-dot"></span> Local (navegador)
+                </span>
+                <span class="date-badge">
+                    <span class="date-dot"></span> <span id="todayLabel"></span>
+                </span>
             </div>
         </div>
     </div>
@@ -820,44 +743,40 @@
     <div class="page">
         <div class="page-header">
             <div class="page-title-block">
-                <h1>Dashboard Financeiro</h1>
-                <p>Visão geral das suas finanças.</p>
+                <h1>Controle de Caixa</h1>
+                <p>Registre entradas, saídas e acompanhe o saldo por empresa.</p>
             </div>
-            <div class="date-badge">
-                <span class="date-dot"></span>
-                <span id="todayLabelHeader"></span>
-            </div>
+            <span class="date-badge">
+                <span class="date-dot"></span> Hoje: <span id="todayLabelHeader"></span>
+            </span>
         </div>
 
         <div class="summary-grid">
             <div class="summary-card">
-                <div class="summary-card-title">
-                    <span class="summary-card-icon">↑</span> Entradas
-                </div>
+                <div class="summary-card-title">Entradas no período</div>
                 <div class="summary-card-value positive" id="totalEntradas">R$ 0,00</div>
+                <div class="summary-card-description">Somatório de todas as entradas filtradas</div>
             </div>
             <div class="summary-card">
-                <div class="summary-card-title">
-                    <span class="summary-card-icon">↓</span> Saídas
-                </div>
+                <div class="summary-card-title">Saídas no período</div>
                 <div class="summary-card-value negative" id="totalSaidas">R$ 0,00</div>
+                <div class="summary-card-description">Somatório de todas as saídas filtradas</div>
             </div>
-            <div class="summary-card total">
-                <div class="summary-card-title">
-                    <span class="summary-card-icon">Σ</span> Saldo
-                </div>
-                <div class="summary-card-value" id="saldoTotal">R$ 0,00</div>
+            <div class="summary-card">
+                <div class="summary-card-title">Saldo líquido</div>
+                <div class="summary-card-value" id="saldoLiquido">R$ 0,00</div>
+                <div class="summary-card-description">Entradas - Saídas</div>
             </div>
         </div>
 
         <div class="main-content-grid">
-            <div class="card form-card">
+            <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Nova Transação</div>
-                    <div class="card-badge">Lançamento</div>
+                    <div class="card-title">Nova transação</div>
+                    <div class="card-badge">Caixa diário</div>
                 </div>
                 <form id="transactionForm">
-                    <input type="hidden" id="transactionId" /> <!-- Campo oculto para o ID da transação -->
+                    <input type="hidden" id="transactionId" /> <!-- Campo oculto para ID da transação -->
 
                     <div class="form-group">
                         <label for="date">Data</label>
@@ -939,7 +858,7 @@
             </div>
 
             <div>
-                <div class="card filter-card">
+                <div class="card">
                     <div class="card-header">
                         <div class="card-title">Filtros</div>
                         <div class="card-badge">Data</div>
@@ -1004,14 +923,14 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, runTransaction, writeBatch } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-        // Sua configuração do Firebase (ATUALIZADA)
+        // Sua configuração do Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyAEeOilHu6K2qvyB-49kyqx0K9dXAgW74c",
-            authDomain: "gestaofinanceiracaixa.firebaseapp.com",
-            projectId: "gestaofinanceiracaixa",
-            storageBucket: "gestaofinanceiracaixa.firebasestorage.app",
-            messagingSenderId: "15986056077",
-            appId: "1:15986056077:web:2f43cb7abd56fe69cc7bc4"
+            apiKey: "AIzaSyB34QUawe-Bz-NbSSgfWXeWQRIPXFvH62o",
+            authDomain: "gestaofinanceira-e086b.firebaseapp.com",
+            projectId: "gestaofinanceira-e086b",
+            storageBucket: "gestaofinanceira-e086b.firebasestorage.app",
+            messagingSenderId: "953138547535",
+            appId: "1:953138547535:web:4f7fb64696c685ec7d133a"
         };
 
         // Inicializa o Firebase
@@ -1104,16 +1023,16 @@
         }
 
         async function addCompany() {
-            const companyName = prompt('Digite o nome da nova empresa:');
-            if (companyName && companyName.trim() !== '') {
+            const companyName = prompt("Digite o nome da nova empresa:");
+            if (companyName && companyName.trim() !== "") {
                 try {
                     const docRef = await addDoc(collection(db, 'companies'), { name: companyName.trim() });
-                    showAlert(`Empresa "${companyName.trim()}" adicionada com sucesso!`, 'success');
+                    showAlert(`Empresa "${companyName.trim()}" adicionada!`, 'success');
                     await loadCompanies(); // Recarrega a lista de empresas
                     document.getElementById('companySelector').value = docRef.id; // Seleciona a nova empresa
                     currentCompanyId = docRef.id;
                     localStorage.setItem('lastCompanyId', currentCompanyId);
-                    await loadTransactions(); // Carrega transações para a nova empresa (vazia)
+                    await loadTransactions(); // Carrega transações da nova empresa (vazia)
                 } catch (e) {
                     showAlert('Erro ao adicionar empresa no Firebase.', 'error');
                     console.error("Erro ao adicionar empresa: ", e);
@@ -1121,24 +1040,18 @@
             }
         }
 
-        async function selectCompany() {
-            const companySelector = document.getElementById('companySelector');
-            currentCompanyId = companySelector.value;
+        // Event listener para mudança de empresa
+        document.getElementById('companySelector').addEventListener('change', async (event) => {
+            currentCompanyId = event.target.value;
             localStorage.setItem('lastCompanyId', currentCompanyId);
             if (currentCompanyId) {
                 await loadTransactions();
-                showAlert('Empresa selecionada.', 'info');
             } else {
                 transactions = [];
                 renderTransactions();
                 updateSummaries();
-                showAlert('Nenhuma empresa selecionada.', 'warning');
             }
-        }
-
-        // Adiciona o event listener para o seletor de empresas
-        document.getElementById('companySelector').addEventListener('change', selectCompany);
-
+        });
 
         // ================== GERENCIAMENTO DE TRANSAÇÕES (FIREBASE) ==================
         async function loadTransactions() {
@@ -1158,6 +1071,8 @@
             } catch (e) {
                 showAlert('Erro ao carregar transações do Firebase. Verifique sua conexão e regras de segurança.', 'error');
                 console.error("Erro ao carregar transações: ", e);
+                transactions = []; // Limpa as transações em caso de erro
+                applyFilters();
             }
         }
 
@@ -1167,6 +1082,7 @@
                 return;
             }
             try {
+                const transactionsCol = collection(db, `companies/${currentCompanyId}/transactions`);
                 if (transactionData.id) {
                     // Atualizar transação existente
                     const transactionRef = doc(db, `companies/${currentCompanyId}/transactions`, transactionData.id);
@@ -1174,10 +1090,10 @@
                     showAlert('Transação atualizada com sucesso!', 'success');
                 } else {
                     // Adicionar nova transação
-                    await addDoc(collection(db, `companies/${currentCompanyId}/transactions`), transactionData);
+                    await addDoc(transactionsCol, transactionData);
                     showAlert('Transação adicionada com sucesso!', 'success');
                 }
-                await loadTransactions(); // Recarrega todas as transações após salvar
+                await loadTransactions(); // Recarrega as transações após salvar
             } catch (e) {
                 showAlert('Erro ao salvar transação no Firebase.', 'error');
                 console.error("Erro ao salvar transação: ", e);
@@ -1189,41 +1105,49 @@
             if (transactionToEdit) {
                 document.getElementById('transactionId').value = transactionToEdit.id;
                 document.getElementById('date').value = transactionToEdit.date;
-                document.getElementById('type').value = transactionToEdit.type;
-                document.querySelector(`input[name="type"][value="${transactionToEdit.type}"]`).checked = true;
                 document.getElementById('description').value = transactionToEdit.description;
                 document.getElementById('quantity').value = transactionToEdit.quantity;
                 document.getElementById('value').value = transactionToEdit.value;
-                document.getElementById('responsible').value = transactionToEdit.responsible;
-                document.getElementById('notes').value = transactionToEdit.notes;
+                document.getElementById('responsible').value = transactionToEdit.responsible || '';
+                document.getElementById('notes').value = transactionToEdit.notes || '';
 
-                // Preencher detalhes de pagamento
+                // Tipo (entrada/saida)
+                document.querySelector(`input[name="type"][value="${transactionToEdit.type}"]`).checked = true;
+
+                // Formas de pagamento
                 paymentMethodCheckboxes.forEach(checkbox => {
                     const method = checkbox.value;
                     const valueInput = paymentValueInputs[method];
                     if (transactionToEdit.paymentDetails && transactionToEdit.paymentDetails[method] !== undefined) {
                         checkbox.checked = true;
-                        valueInput.value = transactionToEdit.paymentDetails[method].toFixed(2);
                         valueInput.disabled = false;
+                        valueInput.value = transactionToEdit.paymentDetails[method].toFixed(2);
                     } else {
                         checkbox.checked = false;
-                        valueInput.value = '0.00';
                         valueInput.disabled = true;
+                        valueInput.value = '0.00';
                     }
                 });
 
                 document.getElementById('submitButton').textContent = 'Atualizar Transação';
                 document.getElementById('cancelEditButton').style.display = 'inline-block';
                 showAlert('Modo de edição ativado.', 'info');
+            } else {
+                showAlert('Transação não encontrada para edição.', 'error');
             }
         }
 
         async function deleteTransaction(id) {
+            if (!currentCompanyId) {
+                showAlert("Nenhuma empresa selecionada.", "warning");
+                return;
+            }
             if (confirm('Tem certeza que deseja excluir esta transação?')) {
                 try {
                     await deleteDoc(doc(db, `companies/${currentCompanyId}/transactions`, id));
                     showAlert('Transação excluída com sucesso!', 'success');
-                    await loadTransactions(); // Recarrega as transações
+                    await loadTransactions(); // Recarrega as transações após excluir
+                    resetForm();
                 } catch (e) {
                     showAlert('Erro ao excluir transação do Firebase.', 'error');
                     console.error("Erro ao excluir transação: ", e);
@@ -1235,57 +1159,53 @@
             document.getElementById('transactionForm').reset();
             document.getElementById('transactionId').value = ''; // Limpa o ID oculto
             document.getElementById('date').valueAsDate = new Date(); // Volta para a data atual
-            document.querySelector('input[name="type"][value="entrada"]').checked = true; // Volta para entrada
             document.getElementById('submitButton').textContent = 'Salvar Transação';
             document.getElementById('cancelEditButton').style.display = 'none';
 
-            // Desabilita e zera os campos de pagamento
+            // Reseta os campos de pagamento
             paymentMethodCheckboxes.forEach(checkbox => {
                 checkbox.checked = false;
-                paymentValueInputs[checkbox.value].value = '0.00';
-                paymentValueInputs[checkbox.value].disabled = true;
+                const valueInput = paymentValueInputs[checkbox.value];
+                valueInput.disabled = true;
+                valueInput.value = '0.00';
             });
             showAlert('Formulário limpo.', 'info');
         }
 
         // ================== RENDERIZAÇÃO E RESUMOS ==================
         function renderTransactions() {
-            const tbody = document.getElementById('transactionsTableBody');
-            tbody.innerHTML = '';
+            const tableBody = document.getElementById('transactionsTableBody');
+            tableBody.innerHTML = '';
 
             if (filteredTransactions.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 20px;">Nenhuma transação encontrada.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 20px;">Nenhuma transação encontrada para o período.</td></tr>';
+                updateSummaries();
                 return;
             }
 
             filteredTransactions.forEach(t => {
-                const row = tbody.insertRow();
+                const row = tableBody.insertRow();
                 row.innerHTML = `
                     <td>${new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
                     <td class="${t.type === 'entrada' ? 'type-entrada' : 'type-saida'}">${t.type === 'entrada' ? 'Entrada' : 'Saída'}</td>
                     <td>${t.description}</td>
                     <td>${t.quantity}</td>
                     <td>${formatCurrency(t.value)}</td>
-                    <td class="total-value">${formatCurrency(t.totalAbs * (t.type === 'saida' ? -1 : 1))}</td>
+                    <td>${formatCurrency(t.totalAbs)}</td>
                     <td>${t.responsible || '-'}</td>
                     <td class="actions-cell">
-                        <button class="action-btn" onclick="editTransaction('${t.id}')">Editar</button>
-                        <button class="action-btn delete" onclick="deleteTransaction('${t.id}')">Excluir</button>
+                        <button class="action-btn" onclick="editTransaction('${t.id}')" title="Editar">✏️</button>
+                        <button class="action-btn" onclick="deleteTransaction('${t.id}')" title="Excluir">🗑️</button>
                     </td>
                 `;
             });
+            updateSummaries();
         }
 
         function updateSummaries() {
             let totalEntradas = 0;
             let totalSaidas = 0;
-            let saldoTotal = 0;
-            const paymentMethodTotals = {
-                'Dinheiro': 0,
-                'Pix': 0,
-                'Cartão Débito': 0,
-                'Cartão Crédito': 0
-            };
+            let saldoLiquido = 0;
 
             filteredTransactions.forEach(t => {
                 if (t.type === 'entrada') {
@@ -1293,32 +1213,22 @@
                 } else {
                     totalSaidas += t.totalAbs;
                 }
-
-                // Soma por forma de pagamento
-                if (t.paymentDetails) {
-                    for (const method in t.paymentDetails) {
-                        if (paymentMethodTotals.hasOwnProperty(method)) {
-                            paymentMethodTotals[method] += t.paymentDetails[method];
-                        }
-                    }
-                }
             });
 
-            saldoTotal = totalEntradas - totalSaidas;
+            saldoLiquido = totalEntradas - totalSaidas;
 
             document.getElementById('totalEntradas').textContent = formatCurrency(totalEntradas);
             document.getElementById('totalSaidas').textContent = formatCurrency(totalSaidas);
-            const saldoElement = document.getElementById('saldoTotal');
-            saldoElement.textContent = formatCurrency(saldoTotal);
-            saldoElement.classList.remove('positive', 'negative');
-            if (saldoTotal > 0) saldoElement.classList.add('positive');
-            else if (saldoTotal < 0) saldoElement.classList.add('negative');
+            document.getElementById('saldoLiquido').textContent = formatCurrency(saldoLiquido);
 
-            // Atualiza os totais por forma de pagamento no card de resumo
-            document.getElementById('totalDinheiro').textContent = formatCurrency(paymentMethodTotals['Dinheiro']);
-            document.getElementById('totalPix').textContent = formatCurrency(paymentMethodTotals['Pix']);
-            document.getElementById('totalCartaoDebito').textContent = formatCurrency(paymentMethodTotals['Cartão Débito']);
-            document.getElementById('totalCartaoCredito').textContent = formatCurrency(paymentMethodTotals['Cartão Crédito']);
+            // Ajusta cor do saldo
+            const saldoElement = document.getElementById('saldoLiquido');
+            saldoElement.classList.remove('positive', 'negative');
+            if (saldoLiquido > 0) {
+                saldoElement.classList.add('positive');
+            } else if (saldoLiquido < 0) {
+                saldoElement.classList.add('negative');
+            }
         }
 
         // ================== FILTROS ==================
@@ -1326,34 +1236,62 @@
             const startDateStr = document.getElementById('filterStartDate').value;
             const endDateStr = document.getElementById('filterEndDate').value;
 
-            const startDate = startDateStr ? parseDateOnly(startDateStr) : null;
-            const endDate = endDateStr ? parseDateOnly(endDateStr) : null;
+            let startDate = null;
+            let endDate = null;
+
+            if (startDateStr) {
+                startDate = parseDateOnly(startDateStr);
+            }
+            if (endDateStr) {
+                endDate = parseDateOnly(endDateStr);
+            }
 
             filteredTransactions = transactions.filter(t => {
                 const transactionDate = parseDateOnly(t.date);
-                let matchesFilter = true;
+                let match = true;
 
                 if (startDate && transactionDate < startDate) {
-                    matchesFilter = false;
+                    match = false;
                 }
                 if (endDate && transactionDate > endDate) {
-                    matchesFilter = false;
+                    match = false;
                 }
-                return matchesFilter;
+                return match;
             });
-
             renderTransactions();
-            updateSummaries();
         }
 
         function clearFilters() {
             document.getElementById('filterStartDate').value = '';
             document.getElementById('filterEndDate').value = '';
-            applyFilters(); // Reaplica o filtro sem datas, mostrando tudo
-            showAlert('Filtros de data limpos.', 'info');
+            applyFilters();
+            showAlert('Filtros limpos.', 'info');
         }
 
-        // ================== FERRAMENTAS (BACKUP/RESTORE/EXPORT) ==================
+        // ================== CONTROLES DE PAGAMENTO ==================
+        function initPaymentControls() {
+            paymentMethodCheckboxes = document.querySelectorAll('.payment-method-checkbox');
+            paymentValueInputs = {
+                'Dinheiro': document.getElementById('paymentDinheiro'),
+                'Pix': document.getElementById('paymentPix'),
+                'Cartão Débito': document.getElementById('paymentCartaoDebito'),
+                'Cartão Crédito': document.getElementById('paymentCartaoCredito')
+            };
+
+            paymentMethodCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    const valueInput = paymentValueInputs[event.target.value];
+                    if (valueInput) {
+                        valueInput.disabled = !event.target.checked;
+                        if (!event.target.checked) {
+                            valueInput.value = '0.00'; // Zera o valor se desmarcado
+                        }
+                    }
+                });
+            });
+        }
+
+        // ================== FERRAMENTAS (BACKUP/RESTORE JSON, EXPORT CSV, IMPRIMIR) ==================
         async function exportDataJson() {
             if (!currentCompanyId) {
                 showAlert('Selecione uma empresa para fazer backup.', 'warning');
@@ -1365,7 +1303,7 @@
                     transactions: transactions
                 };
                 const dataStr = JSON.stringify(companyData, null, 2);
-                const blob = new Blob([dataStr], { type: 'application/json' });
+                const blob = new Blob([dataStr], { type: "application/json" });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 const companyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa';
@@ -1375,19 +1313,19 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                showAlert('Backup JSON exportado com sucesso!', 'success');
+                showAlert('Backup JSON exportado.', 'success');
             } catch (e) {
-                showAlert('Erro ao exportar backup JSON.', 'error');
+                showAlert('Erro ao exportar dados para JSON.', 'error');
                 console.error("Erro ao exportar JSON: ", e);
             }
         }
 
-        async function importDataJson() {
+        function importDataJson() {
             if (!currentCompanyId) {
                 showAlert('Selecione uma empresa para importar dados.', 'warning');
                 return;
             }
-            if (!confirm('Atenção: A importação de dados substituirá TODAS as transações da empresa atual. Deseja continuar?')) {
+            if (!confirm('Atenção: A importação de dados JSON irá SOBRESCREVER as transações existentes para a empresa atual. Deseja continuar?')) {
                 return;
             }
 
@@ -1407,25 +1345,26 @@
                             return;
                         }
 
-                        // Usar um batch para apagar e adicionar transações
+                        // Usar um batch para escrever múltiplas transações de forma eficiente
                         const batch = writeBatch(db);
                         const transactionsColRef = collection(db, `companies/${currentCompanyId}/transactions`);
 
-                        // 1. Apagar todas as transações existentes para a empresa atual
+                        // Primeiro, apagar todas as transações existentes para a empresa atual
                         const existingTransactionsSnapshot = await getDocs(transactionsColRef);
                         existingTransactionsSnapshot.docs.forEach(docSnapshot => {
                             batch.delete(doc(db, `companies/${currentCompanyId}/transactions`, docSnapshot.id));
                         });
 
-                        // 2. Adicionar as novas transações
+                        // Depois, adicionar as transações importadas
                         importedData.transactions.forEach(t => {
-                            // Remove o ID original se existir, para que o Firebase gere um novo
+                            // Remove o ID original para que o Firestore gere um novo, ou usa o ID se for para manter
                             const { id, ...dataWithoutId } = t;
-                            batch.set(doc(transactionsColRef), dataWithoutId); // Firebase gera um novo ID
+                            const newDocRef = doc(transactionsColRef); // Firestore gera um novo ID
+                            batch.set(newDocRef, dataWithoutId);
                         });
 
                         await batch.commit();
-                        showAlert('Dados importados e transações restauradas com sucesso!', 'success');
+                        showAlert('Dados JSON importados e transações restauradas com sucesso!', 'success');
                         await loadTransactions(); // Recarrega as transações após a importação
                     } catch (e) {
                         showAlert('Erro ao importar JSON. Verifique o formato do arquivo.', 'error');
