@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão Financeira Multi-Empresas</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestão Financeira Multi-Empresas (Firebase)</title>
 
     <!-- Fonte moderna -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
         :root {
@@ -45,7 +45,7 @@
         .topbar {
             width: 100%;
             border-bottom: 1px solid #1f2937;
-            background: rgba(15,23,42,0.95);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(16px);
             position: sticky;
             top: 0;
@@ -76,7 +76,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 24px rgba(37,99,235,0.6);
+            box-shadow: 0 0 24px rgba(37, 99, 235, 0.6);
         }
 
         .logo-mark span {
@@ -108,7 +108,7 @@
             border-radius: 999px;
             padding: 4px 10px;
             border: 1px solid #1f2937;
-            background: rgba(15,23,42,0.9);
+            background: rgba(15, 23, 42, 0.9);
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -119,7 +119,7 @@
             height: 7px;
             border-radius: 999px;
             background: #22c55e;
-            box-shadow: 0 0 10px rgba(34,197,94,0.7);
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
         }
 
         /* Seletor de Empresa */
@@ -129,11 +129,13 @@
             gap: 8px;
             margin-left: 20px;
         }
+
         .company-selector-group label {
             font-size: 12px;
             color: var(--text-soft);
             white-space: nowrap;
         }
+
         .company-selector-group select {
             background: var(--input-bg);
             border: 1px solid var(--input-border);
@@ -145,10 +147,12 @@
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
             min-width: 140px;
         }
+
         .company-selector-group select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
+            box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.7);
         }
+
         .btn-add-company {
             background: var(--primary);
             color: white;
@@ -160,6 +164,7 @@
             transition: background-color 0.2s ease;
             white-space: nowrap;
         }
+
         .btn-add-company:hover {
             background: var(--primary-dark);
         }
@@ -196,7 +201,7 @@
             padding: 6px 12px;
             border-radius: 999px;
             border: 1px solid #1f2937;
-            background: rgba(15,23,42,0.85);
+            background: rgba(15, 23, 42, 0.85);
             font-size: 11px;
             color: var(--text-soft);
             display: inline-flex;
@@ -224,7 +229,9 @@
             border-radius: 14px;
             padding: 12px 14px 14px;
             border: 1px solid rgba(51,65,85,0.9);
-            box-shadow: 0 18px 40px rgba(15,23,42,0.8), 0 0 0 1px rgba(15,23,42,0.95);
+            box-shadow:
+                0 18px 40px rgba(15,23,42,0.8),
+                0 0 0 1px rgba(15,23,42,0.95);
         }
 
         .summary-label {
@@ -257,453 +264,474 @@
 
         .summary-main.positive { color: var(--positive); }
         .summary-main.negative { color: var(--negative); }
+        .summary-main.neutral { color: var(--text-main); }
 
-        /* Layout principal: formulário + tabela */
+        /* Layout principal (formulário e tabela) */
         .main-grid {
             display: grid;
-            grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
-            gap: 16px;
-            align-items: flex-start;
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
 
-        /* Card formulário */
+        @media (min-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr 1.5fr; /* Formulário menor, tabela maior */
+            }
+        }
+
+        /* Cards genéricos */
         .card {
-            background: radial-gradient(circle at top left, rgba(148,163,184,0.14) 0, rgba(15,23,42,1) 55%, rgba(15,23,42,1) 100%);
+            background: var(--bg-card);
             border-radius: 14px;
-            padding: 16px 16px 18px;
-            border: 1px solid rgba(51,65,85,0.9);
-            box-shadow: 0 18px 40px rgba(15,23,42,0.8), 0 0 0 1px rgba(15,23,42,0.95);
+            padding: 18px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 10px;
+            align-items: center;
+            margin-bottom: 16px;
         }
 
         .card-title {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
-        }
-
-        .card-subtitle {
-            font-size: 11px;
-            color: var(--text-soft);
+            color: var(--text-main);
         }
 
         .card-badge {
-            font-size: 10px;
-            color: var(--text-muted);
+            background: var(--primary-soft);
+            color: var(--primary);
+            padding: 4px 10px;
             border-radius: 999px;
-            padding: 3px 8px;
-            border: 1px solid rgba(51,65,85,0.9);
-            background: rgba(15,23,42,0.9);
+            font-size: 10px;
+            font-weight: 500;
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px 10px;
-            margin-top: 10px;
-            margin-bottom: 8px;
-        }
-
+        /* Formulário */
         .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+            margin-bottom: 14px;
         }
 
-        label {
-            font-size: 11px;
-            color: var(--text-soft);
-        }
-
-        input[type="date"],
-        input[type="text"],
-        input[type="number"],
-        textarea {
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            color: var(--text-main);
-            border-radius: 9px;
-            padding: 7px 9px;
+        .form-group label {
+            display: block;
             font-size: 12px;
+            color: var(--text-soft);
+            margin-bottom: 6px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 9px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 14px;
             outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        input::placeholder,
-        textarea::placeholder {
-            color: #4b5563;
+        .form-group input[type="text"]::placeholder,
+        .form-group input[type="number"]::placeholder,
+        .form-group input[type="date"]::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
         }
 
-        input:focus,
-        textarea:focus {
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
-            background: #020617;
         }
 
-        .form-group-full {
-            grid-column: 1 / -1;
+        .form-group textarea {
+            min-height: 60px;
+            resize: vertical;
         }
 
-        .payment-methods-section {
-            margin-top: 10px;
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 10px;
+        .radio-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 6px;
         }
 
-        .payment-methods-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .payment-method-item {
+        .radio-group label {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 9px;
-            padding: 5px 9px;
+            font-size: 14px;
+            color: var(--text-main);
+            cursor: pointer;
         }
 
-        .payment-method-item label {
+        .radio-group input[type="radio"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--input-border);
+            border-radius: 50%;
+            background-color: var(--input-bg);
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .radio-group input[type="radio"]::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.2s ease;
+            box-shadow: inset 1em 1em var(--primary);
+            background-color: CanvasText;
+        }
+
+        .radio-group input[type="radio"]:checked::before {
+            transform: scale(1);
+        }
+
+        .radio-group input[type="radio"]:checked {
+            border-color: var(--primary);
+        }
+
+        /* Detalhes de pagamento */
+        .payment-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .payment-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card-soft);
+            border: 1px solid var(--border-subtle);
+            border-radius: 9px;
+            padding: 8px 10px;
+        }
+
+        .payment-item label {
             margin: 0;
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .payment-item input[type="checkbox"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--input-border);
+            border-radius: 4px;
+            background-color: var(--input-bg);
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .payment-item input[type="checkbox"]::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            transform: scale(0);
+            transition: transform 0.2s ease;
+            box-shadow: inset 1em 1em var(--primary);
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 60%);
+            background-color: CanvasText;
+        }
+
+        .payment-item input[type="checkbox"]:checked::before {
+            transform: scale(1);
+        }
+
+        .payment-item input[type="checkbox"]:checked {
+            border-color: var(--primary);
+        }
+
+        .payment-item input[type="number"] {
+            flex-grow: 1;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .payment-item input[type="number"]:disabled {
+            background: var(--bg-card-soft);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        /* Botões do formulário */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
             flex-grow: 1;
         }
 
-        .payment-method-item input[type="checkbox"] {
-            margin: 0;
-            accent-color: var(--primary);
-            width: 14px;
-            height: 14px;
-        }
-
-        .payment-method-item input[type="number"] {
-            width: 90px;
-            padding: 4px 6px;
-            font-size: 11px;
-            background: #0f172a;
-            border-color: #334155;
-            border-radius: 6px;
-        }
-
-        .submit-btn {
-            margin-top: 12px;
-            width: 100%;
-            background: linear-gradient(135deg, #3b82f6, #6366f1);
-            color: white;
-            border: none;
-            border-radius: 999px;
-            padding: 8px 12px;
-            font-size: 13px;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            cursor: pointer;
-            box-shadow: 0 12px 28px rgba(37,99,235,0.6), 0 0 0 1px rgba(15,23,42,0.9);
-            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.05);
-            box-shadow: 0 16px 40px rgba(37,99,235,0.7), 0 0 0 1px rgba(15,23,42,1);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 8px 18px rgba(37,99,235,0.9), 0 0 0 1px rgba(15,23,42,1);
+        .btn-primary:hover {
+            background: var(--primary-dark);
         }
 
         .cancel-edit-btn {
-            margin-top: 6px;
-            width: 100%;
-            background: transparent;
+            background: var(--bg-card-soft);
             color: var(--text-soft);
-            border: 1px solid #4b5563;
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-size: 12px;
-            cursor: pointer;
-            display: none;
-        }
-
-        /* Card direita: ações + tabela */
-        .card-ghost {
-            background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,1));
-            border-radius: 14px;
-            border: 1px solid rgba(51,65,85,0.9);
-            padding: 14px 14px 16px;
-            box-shadow: 0 18px 40px rgba(15,23,42,0.9), 0 0 0 1px rgba(15,23,42,1);
-        }
-
-        .actions-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            gap: 10px;
-        }
-
-        .actions-left {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .btn-secondary, .btn-outline {
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-size: 11px;
-            border: 1px solid #334155;
-            background: rgba(15,23,42,0.9);
-            color: var(--text-soft);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-secondary:hover {
-            background: #020617;
-            color: var(--text-main);
-        }
-        .btn-outline {
-            background: transparent;
-        }
-        .btn-outline:hover {
-            background: rgba(15,23,42,0.8);
-        }
-
-        .filter-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .filter-row label {
-            font-size: 11px;
-            color: var(--text-soft);
-        }
-
-        .filter-row input[type="date"] {
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            color: var(--text-main);
-            border-radius: 999px;
-            padding: 5px 8px;
-            font-size: 11px;
-        }
-
-        .filter-row button {
-            font-size: 11px;
-            padding: 5px 10px;
-            border-radius: 999px;
-            border: 1px solid #334155;
-            background: rgba(15,23,42,0.9);
-            color: var(--text-soft);
-            cursor: pointer;
-        }
-        .filter-row button:hover {
-            background: #020617;
-            color: var(--text-main);
-        }
-
-        .table-wrapper {
-            margin-top: 10px;
-            border-radius: 12px;
-            border: 1px solid #1f2937;
-            overflow: hidden;
-            background: radial-gradient(circle at top left, rgba(15,23,42,1) 0, #020617 65%);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-        }
-
-        thead {
-            background: var(--table-header);
-        }
-
-        th, td {
-            padding: 7px 8px;
-            border-bottom: 1px solid #1e293b;
-        }
-
-        th {
-            text-align: left;
+            border: 1px solid var(--border-subtle);
+            border-radius: 9px;
+            padding: 10px 18px;
+            font-size: 14px;
             font-weight: 500;
-            color: var(--text-soft);
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            flex-grow: 1;
         }
 
-        tbody tr:nth-child(even) {
-            background: rgba(15,23,42,0.85);
+        .cancel-edit-btn:hover {
+            background: rgba(15, 23, 42, 0.7);
+            border-color: var(--text-muted);
         }
 
-        tbody tr:hover {
-            background: rgba(30,64,175,0.35);
+        /* Filtros e Ferramentas */
+        .filter-group, .tools-group {
+            padding-top: 10px;
         }
 
-        .tag {
-            display: inline-flex;
-            padding: 2px 6px;
-            border-radius: 999px;
-            font-size: 10px;
-            border: 1px solid rgba(148,163,184,0.5);
+        .filter-group .form-group {
+            margin-bottom: 10px;
         }
 
-        .tag.income {
-            border-color: rgba(34,197,94,0.6);
-            color: #4ade80;
-        }
-
-        .tag.expense {
-            border-color: rgba(248,113,113,0.6);
-            color: #f87171;
+        .filter-group .btn-group {
+            margin-top: 15px;
         }
 
         .btn-action {
-            font-size: 10px;
-            padding: 3px 6px;
-            border-radius: 999px;
-            border: 1px solid #334155;
-            background: rgba(15,23,42,0.9);
+            background: var(--bg-card-soft);
+            color: var(--text-soft);
+            border: 1px solid var(--border-subtle);
+            border-radius: 9px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            flex-grow: 1;
+            white-space: nowrap;
+        }
+
+        .btn-action:hover {
+            background: rgba(15, 23, 42, 0.7);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Tabela de transações */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+            min-width: 700px; /* Garante que a tabela não fique muito estreita */
+        }
+
+        .transactions-table th,
+        .transactions-table td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .transactions-table th {
+            background: var(--table-header);
+            color: var(--text-soft);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 11px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .transactions-table tbody tr:hover {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .transactions-table td.type-entrada { color: var(--positive); font-weight: 500; }
+        .transactions-table td.type-saida { color: var(--negative); font-weight: 500; }
+
+        .transactions-table .actions-cell {
+            display: flex;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .transactions-table .action-btn {
+            background: none;
+            border: none;
             color: var(--text-soft);
             cursor: pointer;
-            margin-right: 4px;
-        }
-        .btn-action:hover {
-            background: #020617;
-            color: var(--text-main);
-        }
-        .btn-delete {
-            border-color: rgba(248,113,113,0.6);
-            color: #fca5a5;
-        }
-        .btn-delete:hover {
-            background: rgba(127,29,29,0.7);
-            color: #fee2e2;
+            font-size: 14px;
+            padding: 4px;
+            transition: color 0.2s ease;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 18px 10px;
-            font-size: 11px;
-            color: var(--text-muted);
+        .transactions-table .action-btn:hover {
+            color: var(--primary);
         }
 
-        /* Totais por forma de pagamento */
-        .payment-totals-section {
-            margin-top: 10px;
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0,1fr));
-            gap: 8px;
-        }
-        .payment-total-card {
-            background: rgba(15,23,42,0.95);
-            border-radius: 10px;
-            border: 1px solid #1f2937;
-            padding: 6px 8px;
-        }
-        .payment-total-label {
-            font-size: 10px;
-            color: var(--text-soft);
-        }
-        .payment-total-value {
-            margin-top: 3px;
-            font-size: 13px;
-            font-weight: 600;
+        .transactions-table .action-btn.delete:hover {
+            color: var(--negative);
         }
 
         /* Alertas */
-        .alert-container {
+        #alertContainer {
             position: fixed;
-            top: 12px;
-            right: 12px;
-            z-index: 9999;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-        }
-        .alert {
-            min-width: 220px;
-            max-width: 320px;
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            box-shadow: 0 12px 30px rgba(15,23,42,0.9);
-        }
-        .alert-success {
-            background: rgba(22,163,74,0.15);
-            border: 1px solid rgba(22,163,74,0.6);
-            color: #bbf7d0;
-        }
-        .alert-error {
-            background: rgba(239,68,68,0.15);
-            border: 1px solid rgba(239,68,68,0.6);
-            color: #fecaca;
-        }
-        .alert-warning {
-            background: rgba(234,179,8,0.15);
-            border: 1px solid rgba(234,179,8,0.6);
-            color: #fef3c7;
+            gap: 10px;
         }
 
-        @media (max-width: 860px) {
-            .main-grid {
-                grid-template-columns: minmax(0, 1fr);
+        .alert {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            min-width: 250px;
+            max-width: 350px;
+            animation: fadeInOut 3s forwards;
+        }
+
+        .alert-info {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .alert-success {
+            background-color: #16a34a;
+            color: white;
+        }
+
+        .alert-error {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .alert-warning {
+            background-color: #d97706;
+            color: white;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-20px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 767px) {
+            .topbar-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .topbar-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .company-selector-group {
+                margin-left: 0;
+                width: 100%;
+                justify-content: space-between;
+            }
+            .company-selector-group select {
+                flex-grow: 1;
             }
             .page-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
             .summary-grid {
-                grid-template-columns: minmax(0, 1fr);
+                grid-template-columns: 1fr;
+            }
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn-group button {
+                width: 100%;
+            }
+            .payment-details-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+    <div id="alertContainer"></div>
+
     <div class="topbar">
         <div class="topbar-inner">
             <div class="logo-group">
-                <div class="logo-mark"><span>GF</span></div>
+                <div class="logo-mark"><span>$</span></div>
                 <div>
-                    <div class="logo-text-main">Gestão Financeira</div>
-                    <div class="logo-text-sub">Sistema simples e completo</div>
+                    <div class="logo-text-main">Finanças</div>
+                    <div class="logo-text-sub">Multi-Empresas</div>
                 </div>
-                <div class="company-selector-group">
-                    <label for="currentCompany">Empresa:</label>
-                    <select id="currentCompany"></select>
-                    <button class="btn-add-company" id="addCompanyBtn">+ Nova empresa</button>
-                </div>
+            </div>
+            <div class="company-selector-group">
+                <label for="companySelector">Empresa:</label>
+                <select id="companySelector" onchange="changeCompany()"></select>
+                <button class="btn-add-company" id="addCompanyBtn">Nova Empresa</button>
             </div>
             <div class="topbar-right">
                 <div class="status-pill">
                     <span class="status-dot"></span>
-                    <span>Local (navegador)</span>
+                    <span id="todayLabelHeader"></span>
                 </div>
-                <span id="todayLabel"></span>
             </div>
         </div>
     </div>
@@ -711,188 +739,229 @@
     <div class="page">
         <div class="page-header">
             <div class="page-title-block">
-                <h1>Controle de Caixa</h1>
-                <p>Registre entradas, saídas e acompanhe o saldo por empresa.</p>
+                <h1>Dashboard Financeiro</h1>
+                <p>Visão geral e gestão de suas transações.</p>
             </div>
             <div class="date-badge">
                 <span class="date-dot"></span>
-                <span>Hoje: <span id="todayLabelHeader"></span></span>
+                <span id="todayLabel"></span>
             </div>
         </div>
 
         <div class="summary-grid">
             <div class="summary-card">
-                <div class="summary-label">Entradas no período</div>
-                <div class="summary-main positive" id="totalEntrada">R$ 0,00</div>
-                <div class="summary-sub">Somatório de todas as entradas filtradas</div>
+                <div class="summary-label">Entradas</div>
+                <div class="summary-main positive" id="totalEntradas">R$ 0,00</div>
+                <div class="summary-sub">Total de recebimentos</div>
             </div>
             <div class="summary-card">
-                <div class="summary-label">Saídas no período</div>
-                <div class="summary-main negative" id="totalSaida">R$ 0,00</div>
-                <div class="summary-sub">Somatório de todas as saídas filtradas</div>
+                <div class="summary-label">Saídas</div>
+                <div class="summary-main negative" id="totalSaidas">R$ 0,00</div>
+                <div class="summary-sub">Total de pagamentos</div>
             </div>
             <div class="summary-card">
-                <div class="summary-label">Saldo líquido</div>
-                <div class="summary-main" id="saldoLiquido">R$ 0,00</div>
+                <div class="summary-label">Saldo</div>
+                <div class="summary-main neutral" id="saldoTotal">R$ 0,00</div>
                 <div class="summary-sub">Entradas - Saídas</div>
             </div>
         </div>
 
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">Dinheiro</div>
+                <div class="summary-main" id="totalDinheiro">R$ 0,00</div>
+                <div class="summary-sub">Total em espécie</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Pix</div>
+                <div class="summary-main" id="totalPix">R$ 0,00</div>
+                <div class="summary-sub">Total via Pix</div>
+            </div>
+            <div class="summary-card">
+                <div class="summary-label">Cartão</div>
+                <div class="summary-main" id="totalCartao">R$ 0,00</div>
+                <div class="summary-sub">Total em cartão (Débito/Crédito)</div>
+            </div>
+        </div>
+
         <div class="main-grid">
-            <!-- Formulário -->
-            <div class="card">
+            <div class="card form-card">
                 <div class="card-header">
-                    <div>
-                        <div class="card-title" id="formTitle">Nova transação</div>
-                        <div class="card-subtitle">Preencha os dados e registre um lançamento</div>
-                    </div>
-                    <div class="card-badge">Caixa diário</div>
+                    <div class="card-title" id="formTitle">Nova Transação</div>
+                    <div class="card-badge">Formulário</div>
                 </div>
-
                 <form id="transactionForm">
-                    <input type="hidden" id="transactionId">
+                    <input type="hidden" id="transactionId" />
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="date">Data</label>
-                            <input type="date" id="date" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="type">Tipo</label>
-                            <select id="type" required>
-                                <option value="entrada">Entrada</option>
-                                <option value="saida">Saída</option>
-                            </select>
-                        </div>
-                        <div class="form-group form-group-full">
-                            <label for="description">Descrição</label>
-                            <input type="text" id="description" placeholder="Ex: Venda balcão, pagamento fornecedor" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="quantity">Quantidade</label>
-                            <input type="number" id="quantity" min="1" step="1" value="1" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="value">Valor unitário (R$)</label>
-                            <input type="number" id="value" min="0" step="0.01" value="0.00" required>
-                        </div>
-                        <div class="form-group form-group-full">
-                            <label for="responsible">Responsável</label>
-                            <input type="text" id="responsible" placeholder="Quem realizou/recebeu o pagamento">
-                        </div>
-                        <div class="form-group form-group-full">
-                            <label for="notes">Observações</label>
-                            <textarea id="notes" rows="2" placeholder="Anotações adicionais, dados do cliente/fornecedor etc."></textarea>
+                    <div class="form-group">
+                        <label for="date">Data</label>
+                        <input type="date" id="date" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="type" value="entrada" checked /> Entrada
+                            </label>
+                            <label>
+                                <input type="radio" name="type" value="saida" /> Saída
+                            </label>
                         </div>
                     </div>
 
-                    <div class="payment-methods-section">
-                        <label>Valores por forma de pagamento/recebimento</label>
-                        <div class="payment-methods-grid">
-                            <div class="payment-method-item">
-                                <input type="checkbox" name="paymentMethodCheck" value="Dinheiro">
-                                <label>Dinheiro</label>
-                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Dinheiro" disabled>
+                    <div class="form-group">
+                        <label for="description">Descrição</label>
+                        <input type="text" id="description" placeholder="Ex: Venda de produto X, Pagamento de aluguel" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantidade</label>
+                        <input type="number" id="quantity" value="1" min="1" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="value">Valor Unitário</label>
+                        <input type="number" id="value" step="0.01" value="0.00" min="0" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="responsible">Responsável</label>
+                        <input type="text" id="responsible" placeholder="Ex: Cliente A, Fornecedor B" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Observações</label>
+                        <textarea id="notes" placeholder="Detalhes adicionais"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Formas de Pagamento/Recebimento</label>
+                        <div class="payment-details-grid">
+                            <div class="payment-item">
+                                <label>
+                                    <input type="checkbox" class="payment-method-checkbox" value="Dinheiro" /> Dinheiro
+                                </label>
+                                <input type="number" id="paymentDinheiro" step="0.01" value="0.00" disabled />
                             </div>
-                            <div class="payment-method-item">
-                                <input type="checkbox" name="paymentMethodCheck" value="Pix">
-                                <label>Pix</label>
-                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Pix" disabled>
+                            <div class="payment-item">
+                                <label>
+                                    <input type="checkbox" class="payment-method-checkbox" value="Pix" /> Pix
+                                </label>
+                                <input type="number" id="paymentPix" step="0.01" value="0.00" disabled />
                             </div>
-                            <div class="payment-method-item">
-                                <input type="checkbox" name="paymentMethodCheck" value="Cartão Débito">
-                                <label>Cartão Débito</label>
-                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Cartão Débito" disabled>
+                            <div class="payment-item">
+                                <label>
+                                    <input type="checkbox" class="payment-method-checkbox" value="Cartão Débito" /> Cartão Débito
+                                </label>
+                                <input type="number" id="paymentCartaoDebito" step="0.01" value="0.00" disabled />
                             </div>
-                            <div class="payment-method-item">
-                                <input type="checkbox" name="paymentMethodCheck" value="Cartão Crédito">
-                                <label>Cartão Crédito</label>
-                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Cartão Crédito" disabled>
+                            <div class="payment-item">
+                                <label>
+                                    <input type="checkbox" class="payment-method-checkbox" value="Cartão Crédito" /> Cartão Crédito
+                                </label>
+                                <input type="number" id="paymentCartaoCredito" step="0.01" value="0.00" disabled />
                             </div>
-                        </div>
-                        <div style="margin-top:6px;font-size:10px;color:#9ca3af;">
-                            A soma dos valores acima deve ser igual ao total da transação (quantidade × valor unitário).
                         </div>
                     </div>
 
-                    <button type="submit" class="submit-btn" id="submitButton">Salvar transação</button>
-                    <button type="button" class="cancel-edit-btn" id="cancelEditButton">Cancelar edição</button>
+                    <div class="btn-group">
+                        <button type="submit" class="btn-primary" id="submitButton">Salvar Transação</button>
+                        <button type="button" class="cancel-edit-btn" id="cancelEditButton">Cancelar Edição</button>
+                    </div>
                 </form>
             </div>
 
-            <!-- Ações + Tabela -->
-            <div class="card-ghost">
-                <div class="actions-row">
-                    <div class="actions-left">
-                        <button class="btn-secondary" id="backupJsonBtn">Backup (JSON)</button>
-                        <button class="btn-secondary" id="restoreJsonBtn">Importar backup</button>
-                        <button class="btn-secondary" id="exportCsvBtn">Exportar CSV</button>
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Filtros</div>
+                        <div class="card-badge">Data</div>
                     </div>
-                    <button class="btn-outline" id="printBtn">Imprimir</button>
+                    <div class="filter-group">
+                        <div class="form-group">
+                            <label for="filterStartDate">De:</label>
+                            <input type="date" id="filterStartDate" />
+                        </div>
+                        <div class="form-group">
+                            <label for="filterEndDate">Até:</label>
+                            <input type="date" id="filterEndDate" />
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn-primary" id="applyFilterBtn">Aplicar</button>
+                            <button type="button" class="cancel-edit-btn" id="clearFilterBtn" style="display: inline-block;">Limpar</button>
+                        </div>
+                    </div>
+
+                    <div class="card-header" style="margin-top: 20px;">
+                        <div class="card-title">Ferramentas</div>
+                        <div class="card-badge">Dados</div>
+                    </div>
+                    <div class="tools-group">
+                        <button type="button" class="btn-action" id="backupJsonBtn">Backup JSON</button>
+                        <button type="button" class="btn-action" id="restoreJsonBtn">Restaurar JSON</button>
+                        <button type="button" class="btn-action" id="exportCsvBtn">Exportar CSV</button>
+                        <button type="button" class="btn-action" id="printBtn">Imprimir Relatório</button>
+                    </div>
                 </div>
 
-                <div class="filter-row">
-                    <label>Data início:
-                        <input type="date" id="filterDateStart">
-                    </label>
-                    <label>Data fim:
-                        <input type="date" id="filterDateEnd">
-                    </label>
-                    <button id="applyFilterBtn">Aplicar filtro</button>
-                    <button id="clearFilterBtn">Limpar filtro</button>
-                </div>
-
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Tipo</th>
-                                <th>Descrição</th>
-                                <th>Qtd</th>
-                                <th>V. Unit.</th>
-                                <th>Total</th>
-                                <th>Resp.</th>
-                                <th>Pagamentos</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transactionsBody">
-                            <tr><td colspan="9" class="empty-state">Nenhuma transação registrada.</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="payment-totals-section">
-                    <div class="payment-total-card">
-                        <div class="payment-total-label">Total Dinheiro</div>
-                        <div class="payment-total-value" id="totalDinheiro">R$ 0,00</div>
+                <div class="card" style="margin-top: 16px;">
+                    <div class="card-header">
+                        <div class="card-title">Transações</div>
+                        <div class="card-badge">Lista</div>
                     </div>
-                    <div class="payment-total-card">
-                        <div class="payment-total-label">Total Pix</div>
-                        <div class="payment-total-value" id="totalPix">R$ 0,00</div>
-                    </div>
-                    <div class="payment-total-card">
-                        <div class="payment-total-label">Total Cartão Débito</div>
-                        <div class="payment-total-value" id="totalDebito">R$ 0,00</div>
-                    </div>
-                    <div class="payment-total-card">
-                        <div class="payment-total-label">Total Cartão Crédito</div>
-                        <div class="payment-total-value" id="totalCredito">R$ 0,00</div>
+                    <div class="table-responsive">
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Tipo</th>
+                                    <th>Descrição</th>
+                                    <th>Qtd</th>
+                                    <th>Valor Unit.</th>
+                                    <th>Total</th>
+                                    <th>Responsável</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody">
+                                <!-- Transações serão carregadas aqui -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="alert-container" id="alertContainer"></div>
-    <script>
+    <script type="module">
+        // Importa as funções necessárias do Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy, runTransaction, writeBatch } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+        // Sua configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyB34QUawe-Bz-NbSSgfWXeWQRIPXFvH62o",
+            authDomain: "gestaofinanceira-e086b.firebaseapp.com",
+            projectId: "gestaofinanceira-e086b",
+            storageBucket: "gestaofinanceira-e086b.firebasestorage.app",
+            messagingSenderId: "953138547535",
+            appId: "1:953138547535:web:4f7fb64696c685ec7d133a"
+        };
+
+        // Inicializa o Firebase e o Firestore
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         // ================== ESTADO GLOBAL ==================
         let companies = [];          // [{id, name}]
-        let currentCompanyId = null; // empresa selecionada
-        let transactions = [];       // todas da empresa atual
+        let currentCompanyId = null; // id da empresa selecionada
+        let transactions = [];       // transações da empresa atual
         let filteredTransactions = [];
-        let editingTransactionId = null;
+
+        // Controles de pagamento
+        let paymentMethodCheckboxes = [];
+        let paymentValueInputs = {};
 
         // ================== FUNÇÕES UTILITÁRIAS ==================
         function formatCurrency(value) {
@@ -902,13 +971,22 @@
             });
         }
 
-        function showAlert(message, type = 'success', duration = 3000) {
+        function parseDateOnly(dateStr) {
+            if (!dateStr) return null;
+            const [year, month, day] = dateStr.split('-').map(Number);
+            return new Date(year, month - 1, day);
+        }
+
+        // ================== ALERTAS BONITOS ==================
+        function showAlert(message, type = 'info', duration = 3000) {
             const container = document.getElementById('alertContainer');
             const alert = document.createElement('div');
             alert.classList.add('alert');
+
             if (type === 'success') alert.classList.add('alert-success');
             else if (type === 'error') alert.classList.add('alert-error');
             else if (type === 'warning') alert.classList.add('alert-warning');
+            else alert.classList.add('alert-info');
 
             alert.textContent = message;
             container.appendChild(alert);
@@ -918,390 +996,425 @@
             }, duration);
         }
 
-        function getCompanyStorageKey(companyId) {
-            return `transactions_${companyId}`;
-        }
+        // ================== GERENCIAMENTO DE EMPRESAS (FIREBASE) ==================
+        async function loadCompanies() {
+            try {
+                const companiesCol = collection(db, 'companies');
+                const companySnapshot = await getDocs(companiesCol);
+                companies = companySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-        // ================== EMPRESAS (LOCALSTORAGE) ==================
-        function loadCompanies() {
-            const stored = localStorage.getItem('companies');
-            if (stored) {
-                companies = JSON.parse(stored);
-            } else {
-                // cria uma empresa padrão
-                const defaultCompany = { id: Date.now().toString(), name: 'Minha Empresa' };
-                companies = [defaultCompany];
-                localStorage.setItem('companies', JSON.stringify(companies));
+                const companySelector = document.getElementById('companySelector');
+                companySelector.innerHTML = '<option value="">Selecione uma empresa</option>';
+                companies.forEach(company => {
+                    const option = document.createElement('option');
+                    option.value = company.id;
+                    option.textContent = company.name;
+                    companySelector.appendChild(option);
+                });
+
+                // Tenta carregar a última empresa selecionada
+                const lastCompanyId = localStorage.getItem('lastCompanyId');
+                if (lastCompanyId && companies.some(c => c.id === lastCompanyId)) {
+                    currentCompanyId = lastCompanyId;
+                    companySelector.value = lastCompanyId;
+                } else if (companies.length > 0) {
+                    currentCompanyId = companies[0].id;
+                    companySelector.value = companies[0].id;
+                } else {
+                    currentCompanyId = null;
+                }
+
+                if (currentCompanyId) {
+                    await loadTransactions();
+                } else {
+                    transactions = [];
+                    renderTransactions();
+                    updateSummaries();
+                }
+                showAlert('Empresas carregadas.', 'info');
+            } catch (e) {
+                showAlert('Erro ao carregar empresas do Firebase. Verifique sua conexão e regras de segurança.', 'error');
+                console.error("Erro ao carregar empresas: ", e);
             }
+        }
 
-            const storedCurrent = localStorage.getItem('currentCompanyId');
-            if (storedCurrent && companies.find(c => c.id === storedCurrent)) {
-                currentCompanyId = storedCurrent;
-            } else {
-                currentCompanyId = companies[0].id;
-                localStorage.setItem('currentCompanyId', currentCompanyId);
+        async function addCompany() {
+            const companyName = prompt('Digite o nome da nova empresa:');
+            if (companyName && companyName.trim() !== '') {
+                try {
+                    const docRef = await addDoc(collection(db, 'companies'), { name: companyName.trim() });
+                    showAlert(`Empresa "${companyName.trim()}" adicionada!`, 'success');
+                    await loadCompanies();
+                    document.getElementById('companySelector').value = docRef.id;
+                    currentCompanyId = docRef.id;
+                    localStorage.setItem('lastCompanyId', docRef.id);
+                    await loadTransactions();
+                } catch (e) {
+                    showAlert('Erro ao adicionar empresa no Firebase.', 'error');
+                    console.error("Erro ao adicionar empresa: ", e);
+                }
             }
-
-            renderCompanySelector();
-            loadTransactions();
         }
 
-        function saveCompanies() {
-            localStorage.setItem('companies', JSON.stringify(companies));
-            localStorage.setItem('currentCompanyId', currentCompanyId);
+        function changeCompany() {
+            const companySelector = document.getElementById('companySelector');
+            currentCompanyId = companySelector.value;
+            localStorage.setItem('lastCompanyId', currentCompanyId);
+            if (currentCompanyId) {
+                loadTransactions(); // Não precisa de await aqui, pois a renderização é assíncrona
+                showAlert('Empresa alterada.', 'info');
+            } else {
+                transactions = [];
+                renderTransactions();
+                updateSummaries();
+                showAlert('Nenhuma empresa selecionada.', 'warning');
+            }
         }
 
-        function renderCompanySelector() {
-            const select = document.getElementById('currentCompany');
-            select.innerHTML = '';
-            companies.forEach(company => {
-                const opt = document.createElement('option');
-                opt.value = company.id;
-                opt.textContent = company.name;
-                if (company.id === currentCompanyId) opt.selected = true;
-                select.appendChild(opt);
+        // ================== GERENCIAMENTO DE TRANSAÇÕES (FIREBASE) ==================
+        async function loadTransactions() {
+            if (!currentCompanyId) {
+                transactions = [];
+                renderTransactions();
+                updateSummaries();
+                return;
+            }
+            try {
+                const transactionsCol = collection(db, `companies/${currentCompanyId}/transactions`);
+                const q = query(transactionsCol, orderBy('date', 'desc')); // Ordena por data
+                const transactionSnapshot = await getDocs(q);
+                transactions = transactionSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                applyFilters(); // Aplica filtros após carregar
+                showAlert('Transações carregadas.', 'info');
+            } catch (e) {
+                showAlert('Erro ao carregar transações do Firebase. Verifique sua conexão e regras de segurança.', 'error');
+                console.error("Erro ao carregar transações: ", e);
+            }
+        }
+
+        async function saveTransactionToFirestore(transaction) {
+            if (!currentCompanyId) {
+                showAlert("Nenhuma empresa selecionada para salvar a transação.", "warning");
+                return;
+            }
+            try {
+                const transactionsCol = collection(db, `companies/${currentCompanyId}/transactions`);
+                if (transaction.id) {
+                    // Atualizar transação existente
+                    const transactionRef = doc(db, `companies/${currentCompanyId}/transactions`, transaction.id);
+                    await updateDoc(transactionRef, transaction);
+                    showAlert('Transação atualizada no Firebase!', 'success');
+                } else {
+                    // Adicionar nova transação
+                    await addDoc(transactionsCol, transaction);
+                    showAlert('Transação adicionada ao Firebase!', 'success');
+                }
+                await loadTransactions(); // Recarrega para atualizar a lista
+            } catch (e) {
+                showAlert('Erro ao salvar transação no Firebase. Verifique sua conexão e regras de segurança.', 'error');
+                console.error("Erro ao salvar transação: ", e);
+            }
+        }
+
+        async function deleteTransaction(id) {
+            if (!currentCompanyId) {
+                showAlert("Nenhuma empresa selecionada.", "warning");
+                return;
+            }
+            if (confirm('Tem certeza que deseja excluir esta transação?')) {
+                try {
+                    await deleteDoc(doc(db, `companies/${currentCompanyId}/transactions`, id));
+                    showAlert('Transação excluída do Firebase!', 'success');
+                    await loadTransactions(); // Recarrega para atualizar a lista
+                } catch (e) {
+                    showAlert('Erro ao excluir transação do Firebase.', 'error');
+                    console.error("Erro ao excluir transação: ", e);
+                }
+            }
+        }
+
+        function editTransaction(id) {
+            const transaction = transactions.find(t => t.id === id);
+            if (transaction) {
+                document.getElementById('transactionId').value = transaction.id;
+                document.getElementById('date').value = transaction.date;
+                document.getElementById('type').value = transaction.type;
+                document.querySelector(`input[name="type"][value="${transaction.type}"]`).checked = true;
+                document.getElementById('description').value = transaction.description;
+                document.getElementById('quantity').value = transaction.quantity;
+                document.getElementById('value').value = transaction.value;
+                document.getElementById('responsible').value = transaction.responsible;
+                document.getElementById('notes').value = transaction.notes;
+
+                // Preencher detalhes de pagamento
+                paymentMethodCheckboxes.forEach(checkbox => {
+                    const method = checkbox.value;
+                    const valueInput = paymentValueInputs[method];
+                    if (transaction.paymentDetails && transaction.paymentDetails[method] !== undefined) {
+                        checkbox.checked = true;
+                        valueInput.value = transaction.paymentDetails[method].toFixed(2);
+                        valueInput.disabled = false;
+                    } else {
+                        checkbox.checked = false;
+                        valueInput.value = '0.00';
+                        valueInput.disabled = true;
+                    }
+                });
+
+                document.getElementById('formTitle').textContent = 'Editar Transação';
+                document.getElementById('submitButton').textContent = 'Atualizar Transação';
+                document.getElementById('cancelEditButton').style.display = 'inline-block';
+                showAlert('Modo de edição ativado.', 'info');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('transactionForm').reset();
+            document.getElementById('transactionId').value = ''; // Limpa o ID oculto
+            document.getElementById('formTitle').textContent = 'Nova Transação';
+            document.getElementById('submitButton').textContent = 'Salvar Transação';
+            document.getElementById('cancelEditButton').style.display = 'none';
+            document.getElementById('date').valueAsDate = new Date(); // Volta para a data atual
+
+            // Desabilita e zera os campos de pagamento
+            paymentMethodCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                const valueInput = paymentValueInputs[checkbox.value];
+                if (valueInput) {
+                    valueInput.value = '0.00';
+                    valueInput.disabled = true;
+                }
             });
-
-            select.onchange = () => {
-                currentCompanyId = select.value;
-                saveCompanies();
-                loadTransactions();
-            };
         }
 
-        function addCompany() {
-            const name = prompt('Nome da nova empresa:');
-            if (!name) return;
-            const newCompany = { id: Date.now().toString(), name: name.trim() };
-            companies.push(newCompany);
-            currentCompanyId = newCompany.id;
-            saveCompanies();
-            renderCompanySelector();
-            loadTransactions();
-            showAlert('Nova empresa criada.', 'success');
-        }
-
-        // ================== TRANSAÇÕES (LOCALSTORAGE) ==================
-        function loadTransactions() {
-            if (!currentCompanyId) return;
-            const key = getCompanyStorageKey(currentCompanyId);
-            const stored = localStorage.getItem(key);
-            transactions = stored ? JSON.parse(stored) : [];
-            filteredTransactions = [];
-            renderTransactions();
-            updateSummary();
-        }
-
-        function saveTransactions() {
-            if (!currentCompanyId) return;
-            const key = getCompanyStorageKey(currentCompanyId);
-            localStorage.setItem(key, JSON.stringify(transactions));
-        }
-
-        // ================== RENDERIZAÇÃO TABELA E RESUMO ==================
+        // ================== RENDERIZAÇÃO E RESUMOS ==================
         function renderTransactions() {
-            const tbody = document.getElementById('transactionsBody');
-            tbody.innerHTML = '';
+            const tableBody = document.getElementById('transactionsTableBody');
+            tableBody.innerHTML = '';
 
-            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
-
-            if (data.length === 0) {
-                const tr = document.createElement('tr');
-                const td = document.createElement('td');
-                td.colSpan = 9;
-                td.className = 'empty-state';
-                td.textContent = 'Nenhuma transação registrada.';
-                tr.appendChild(td);
-                tbody.appendChild(tr);
+            if (filteredTransactions.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 20px;">Nenhuma transação encontrada.</td></tr>';
                 return;
             }
 
-            data.forEach(t => {
-                const tr = document.createElement('tr');
+            filteredTransactions.forEach(t => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR');
+                const typeCell = row.insertCell();
+                typeCell.textContent = t.type === 'entrada' ? 'Entrada' : 'Saída';
+                typeCell.classList.add(t.type === 'entrada' ? 'type-entrada' : 'type-saida');
+                row.insertCell().textContent = t.description;
+                row.insertCell().textContent = t.quantity;
+                row.insertCell().textContent = formatCurrency(t.value);
+                row.insertCell().textContent = formatCurrency(t.totalAbs * (t.type === 'saida' ? -1 : 1));
+                row.insertCell().textContent = t.responsible;
 
-                const tdDate = document.createElement('td');
-                tdDate.textContent = new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR');
-                tr.appendChild(tdDate);
+                const actionsCell = row.insertCell();
+                actionsCell.classList.add('actions-cell');
+                const editBtn = document.createElement('button');
+                editBtn.textContent = 'Editar';
+                editBtn.classList.add('action-btn');
+                editBtn.onclick = () => editTransaction(t.id);
+                actionsCell.appendChild(editBtn);
 
-                const tdType = document.createElement('td');
-                const spanType = document.createElement('span');
-                spanType.className = 'tag ' + (t.type === 'entrada' ? 'income' : 'expense');
-                spanType.textContent = t.type === 'entrada' ? 'Entrada' : 'Saída';
-                tdType.appendChild(spanType);
-                tr.appendChild(tdType);
-
-                const tdDesc = document.createElement('td');
-                tdDesc.textContent = t.description;
-                tr.appendChild(tdDesc);
-
-                const tdQty = document.createElement('td');
-                tdQty.textContent = t.quantity;
-                tr.appendChild(tdQty);
-
-                const tdValue = document.createElement('td');
-                tdValue.textContent = formatCurrency(t.value);
-                tr.appendChild(tdValue);
-
-                const tdTotal = document.createElement('td');
-                const signedTotal = t.type === 'saida' ? -t.totalAbs : t.totalAbs;
-                tdTotal.textContent = formatCurrency(signedTotal);
-                tr.appendChild(tdTotal);
-
-                const tdResp = document.createElement('td');
-                tdResp.textContent = t.responsible || '-';
-                tr.appendChild(tdResp);
-
-                const tdPayment = document.createElement('td');
-                const parts = [];
-                if (t.paymentDetails) {
-                    for (const method in t.paymentDetails) {
-                        const val = t.paymentDetails[method];
-                        if (val > 0) parts.push(`${method}: ${formatCurrency(val)}`);
-                    }
-                }
-                tdPayment.textContent = parts.join(' | ') || '-';
-                tr.appendChild(tdPayment);
-
-                const tdActions = document.createElement('td');
-                const btnEdit = document.createElement('button');
-                btnEdit.className = 'btn-action';
-                btnEdit.textContent = 'Editar';
-                btnEdit.onclick = () => editTransaction(t.id);
-                tdActions.appendChild(btnEdit);
-
-                const btnDelete = document.createElement('button');
-                btnDelete.className = 'btn-action btn-delete';
-                btnDelete.textContent = 'Excluir';
-                btnDelete.onclick = () => deleteTransaction(t.id);
-                tdActions.appendChild(btnDelete);
-
-                tr.appendChild(tdActions);
-
-                tbody.appendChild(tr);
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Excluir';
+                deleteBtn.classList.add('action-btn', 'delete');
+                deleteBtn.onclick = () => deleteTransaction(t.id);
+                actionsCell.appendChild(deleteBtn);
             });
         }
 
-        function updateSummary() {
-            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+        function updateSummaries() {
+            let totalEntradas = 0;
+            let totalSaidas = 0;
+            let totalDinheiro = 0;
+            let totalPix = 0;
+            let totalCartaoDebito = 0;
+            let totalCartaoCredito = 0;
 
-            let totalEntrada = 0;
-            let totalSaida = 0;
-
-            const paymentTotals = {
-                'Dinheiro': 0,
-                'Pix': 0,
-                'Cartão Débito': 0,
-                'Cartão Crédito': 0
-            };
-
-            data.forEach(t => {
+            filteredTransactions.forEach(t => {
                 if (t.type === 'entrada') {
-                    totalEntrada += t.totalAbs;
+                    totalEntradas += t.totalAbs;
                 } else {
-                    totalSaida += t.totalAbs;
+                    totalSaidas += t.totalAbs;
                 }
 
                 if (t.paymentDetails) {
-                    for (const method in t.paymentDetails) {
-                        if (!paymentTotals.hasOwnProperty(method)) continue;
-                        paymentTotals[method] += t.paymentDetails[method];
-                    }
+                    totalDinheiro += t.paymentDetails['Dinheiro'] || 0;
+                    totalPix += t.paymentDetails['Pix'] || 0;
+                    totalCartaoDebito += t.paymentDetails['Cartão Débito'] || 0;
+                    totalCartaoCredito += t.paymentDetails['Cartão Crédito'] || 0;
                 }
             });
 
-            document.getElementById('totalEntrada').textContent = formatCurrency(totalEntrada);
-            document.getElementById('totalSaida').textContent = formatCurrency(totalSaida);
-            document.getElementById('saldoLiquido').textContent = formatCurrency(totalEntrada - totalSaida);
+            const saldoTotal = totalEntradas - totalSaidas;
 
-            document.getElementById('totalDinheiro').textContent = formatCurrency(paymentTotals['Dinheiro']);
-            document.getElementById('totalPix').textContent = formatCurrency(paymentTotals['Pix']);
-            document.getElementById('totalDebito').textContent = formatCurrency(paymentTotals['Cartão Débito']);
-            document.getElementById('totalCredito').textContent = formatCurrency(paymentTotals['Cartão Crédito']);
+            document.getElementById('totalEntradas').textContent = formatCurrency(totalEntradas);
+            document.getElementById('totalSaidas').textContent = formatCurrency(totalSaidas);
+            document.getElementById('saldoTotal').textContent = formatCurrency(saldoTotal);
+            document.getElementById('saldoTotal').classList.remove('positive', 'negative', 'neutral');
+            if (saldoTotal > 0) document.getElementById('saldoTotal').classList.add('positive');
+            else if (saldoTotal < 0) document.getElementById('saldoTotal').classList.add('negative');
+            else document.getElementById('saldoTotal').classList.add('neutral');
+
+            document.getElementById('totalDinheiro').textContent = formatCurrency(totalDinheiro);
+            document.getElementById('totalPix').textContent = formatCurrency(totalPix);
+            document.getElementById('totalCartao').textContent = formatCurrency(totalCartaoDebito + totalCartaoCredito);
         }
 
         // ================== FILTROS ==================
         function applyFilters() {
-            const start = document.getElementById('filterDateStart').value;
-            const end = document.getElementById('filterDateEnd').value;
+            const startDateStr = document.getElementById('filterStartDate').value;
+            const endDateStr = document.getElementById('filterEndDate').value;
 
-            if (!start && !end) {
-                filteredTransactions = [];
-                renderTransactions();
-                updateSummary();
-                return;
-            }
+            const startDate = startDateStr ? parseDateOnly(startDateStr) : null;
+            const endDate = endDateStr ? parseDateOnly(endDateStr) : null;
 
             filteredTransactions = transactions.filter(t => {
-                if (start && t.date < start) return false;
-                if (end && t.date > end) return false;
-                return true;
+                const transactionDate = parseDateOnly(t.date);
+                let passFilter = true;
+
+                if (startDate && transactionDate < startDate) {
+                    passFilter = false;
+                }
+                if (endDate && transactionDate > endDate) {
+                    passFilter = false;
+                }
+                return passFilter;
             });
 
             renderTransactions();
-            updateSummary();
+            updateSummaries();
         }
 
         function clearFilters() {
-            document.getElementById('filterDateStart').value = '';
-            document.getElementById('filterDateEnd').value = '';
-            filteredTransactions = [];
+            document.getElementById('filterStartDate').value = '';
+            document.getElementById('filterEndDate').value = '';
+            filteredTransactions = [...transactions]; // Volta a mostrar todas as transações
             renderTransactions();
-            updateSummary();
+            updateSummaries();
+            showAlert('Filtros limpos.', 'info');
         }
 
-        // ================== FORMULÁRIO ==================
-        const paymentMethodCheckboxes = [];
-        const paymentValueInputs = {};
-
+        // ================== CONTROLES DE PAGAMENTO ==================
         function initPaymentControls() {
-            document.querySelectorAll('input[name="paymentMethodCheck"]').forEach(cb => {
-                paymentMethodCheckboxes.push(cb);
-            });
-            document.querySelectorAll('[data-payment-input]').forEach(input => {
-                const method = input.getAttribute('data-payment-input');
-                paymentValueInputs[method] = input;
-            });
+            paymentMethodCheckboxes = document.querySelectorAll('.payment-method-checkbox');
+            paymentValueInputs = {
+                'Dinheiro': document.getElementById('paymentDinheiro'),
+                'Pix': document.getElementById('paymentPix'),
+                'Cartão Débito': document.getElementById('paymentCartaoDebito'),
+                'Cartão Crédito': document.getElementById('paymentCartaoCredito')
+            };
 
             paymentMethodCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', (e) => {
-                    const method = e.target.value;
-                    const input = paymentValueInputs[method];
-                    if (!input) return;
-                    if (checkbox.checked) {
-                        input.disabled = false;
-                        if (parseFloat(input.value) === 0) {
-                            input.value = '0.00';
+                checkbox.addEventListener('change', (event) => {
+                    const valueInput = paymentValueInputs[event.target.value];
+                    if (valueInput) {
+                        valueInput.disabled = !event.target.checked;
+                        if (!event.target.checked) {
+                            valueInput.value = '0.00'; // Zera o valor se desmarcado
                         }
-                    } else {
-                        input.disabled = true;
-                        input.value = '0.00';
                     }
                 });
             });
         }
 
-        function resetForm() {
-            const form = document.getElementById('transactionForm');
-            form.reset();
-            document.getElementById('transactionId').value = '';
-            document.getElementById('date').valueAsDate = new Date();
-
-            paymentMethodCheckboxes.forEach(cb => {
-                cb.checked = false;
-                const input = paymentValueInputs[cb.value];
-                if (input) {
-                    input.value = '0.00';
-                    input.disabled = true;
-                }
-            });
-
-            editingTransactionId = null;
-            document.getElementById('formTitle').textContent = 'Nova transação';
-            document.getElementById('submitButton').textContent = 'Salvar transação';
-            document.getElementById('cancelEditButton').style.display = 'none';
-        }
-
-        function editTransaction(id) {
-            const t = transactions.find(tr => tr.id === id);
-            if (!t) return;
-
-            document.getElementById('transactionId').value = t.id;
-            document.getElementById('date').value = t.date;
-            document.getElementById('type').value = t.type;
-            document.getElementById('description').value = t.description;
-            document.getElementById('quantity').value = t.quantity;
-            document.getElementById('value').value = t.value;
-            document.getElementById('responsible').value = t.responsible || '';
-            document.getElementById('notes').value = t.notes || '';
-
-            paymentMethodCheckboxes.forEach(cb => {
-                cb.checked = false;
-                const input = paymentValueInputs[cb.value];
-                if (input) {
-                    input.value = '0.00';
-                    input.disabled = true;
-                }
-            });
-
-            if (t.paymentDetails) {
-                for (const method in t.paymentDetails) {
-                    const cb = paymentMethodCheckboxes.find(c => c.value === method);
-                    const input = paymentValueInputs[method];
-                    if (cb && input) {
-                        cb.checked = true;
-                        input.disabled = false;
-                        input.value = t.paymentDetails[method].toFixed(2);
-                    }
-                }
-            }
-
-            editingTransactionId = id;
-            document.getElementById('formTitle').textContent = 'Editar transação';
-            document.getElementById('submitButton').textContent = 'Atualizar transação';
-            document.getElementById('cancelEditButton').style.display = 'block';
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function deleteTransaction(id) {
-            if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
-            transactions = transactions.filter(t => t.id !== id);
-            saveTransactions();
-            applyFilters();
-            showAlert('Transação excluída.', 'success');
-        }
-
-        // ================== BACKUP / EXPORT ==================
-        function exportDataJson() {
+        // ================== FERRAMENTAS DE DADOS (JSON/CSV) ==================
+        // Adaptação para Firebase: Backup/Restore JSON agora é para o Firebase
+        async function exportDataJson() {
             if (!currentCompanyId) {
-                showAlert('Nenhuma empresa selecionada.', 'warning');
+                showAlert('Selecione uma empresa para fazer backup.', 'warning');
                 return;
             }
-            const dataToExport = transactions;
-            if (dataToExport.length === 0) {
-                showAlert('Não há dados para backup.', 'warning');
-                return;
+            try {
+                const dataToExport = {
+                    companies: companies,
+                    transactions: transactions // Exporta as transações da empresa atual
+                };
+                const jsonString = JSON.stringify(dataToExport, null, 2);
+                const blob = new Blob([jsonString], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const companyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa';
+                a.href = url;
+                a.download = `backup_financeiro_${companyName}_${new Date().toISOString().slice(0, 10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showAlert('Backup JSON exportado.', 'success');
+            } catch (e) {
+                showAlert('Erro ao gerar backup JSON.', 'error');
+                console.error("Erro ao exportar JSON: ", e);
             }
-
-            const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const companyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa';
-            a.href = url;
-            a.download = `backup_${companyName}_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showAlert('Backup JSON gerado.', 'success');
         }
 
-        function importDataJson() {
-            if (!currentCompanyId) {
-                showAlert('Nenhuma empresa selecionada.', 'warning');
+        async function importDataJson() {
+            if (!confirm('Restaurar dados irá SOBRESCREVER as empresas e transações existentes no Firebase para a empresa atual. Deseja continuar?')) {
                 return;
             }
+
             const input = document.createElement('input');
             input.type = 'file';
-            input.accept = 'application/json';
-            input.onchange = e => {
+            input.accept = '.json';
+            input.onchange = async e => {
                 const file = e.target.files[0];
                 if (!file) return;
+
                 const reader = new FileReader();
-                reader.onload = ev => {
+                reader.onload = async event => {
                     try {
-                        const imported = JSON.parse(ev.target.result);
-                        if (!Array.isArray(imported)) throw new Error('Formato inválido');
-                        if (!confirm('Isso vai substituir todas as transações atuais desta empresa. Continuar?')) return;
-                        transactions = imported;
-                        saveTransactions();
-                        filteredTransactions = [];
-                        renderTransactions();
-                        updateSummary();
-                        showAlert('Backup importado com sucesso.', 'success');
-                    } catch (err) {
-                        console.error(err);
-                        showAlert('Erro ao importar backup JSON.', 'error');
+                        const importedData = JSON.parse(event.target.result);
+
+                        if (!importedData.companies || !Array.isArray(importedData.companies)) {
+                            showAlert('Arquivo JSON inválido: não contém a estrutura esperada de empresas.', 'error');
+                            return;
+                        }
+
+                        // Importar empresas
+                        const batch = writeBatch(db);
+                        const companiesCol = collection(db, 'companies');
+                        const existingCompaniesSnapshot = await getDocs(companiesCol);
+                        const existingCompanyNames = new Set(existingCompaniesSnapshot.docs.map(d => d.data().name));
+
+                        for (const company of importedData.companies) {
+                            if (!existingCompanyNames.has(company.name)) {
+                                const newCompanyRef = doc(companiesCol); // Deixa o Firebase gerar o ID
+                                batch.set(newCompanyRef, { name: company.name });
+                            }
+                        }
+                        await batch.commit();
+                        showAlert('Empresas importadas/atualizadas no Firebase.', 'success');
+                        await loadCompanies(); // Recarrega as empresas para ter os novos IDs
+
+                        // Se houver transações na importação, e uma empresa estiver selecionada, importa para ela
+                        if (importedData.transactions && Array.isArray(importedData.transactions) && currentCompanyId) {
+                            const transactionsCol = collection(db, `companies/${currentCompanyId}/transactions`);
+                            const transactionBatch = writeBatch(db);
+
+                            // Opcional: Limpar transações existentes da empresa atual antes de importar
+                            const existingTransactionsSnapshot = await getDocs(transactionsCol);
+                            existingTransactionsSnapshot.docs.forEach(doc => {
+                                transactionBatch.delete(doc.ref);
+                            });
+                            await transactionBatch.commit(); // Executa a exclusão
+
+                            const newTransactionBatch = writeBatch(db);
+                            for (const transaction of importedData.transactions) {
+                                const newTransactionRef = doc(transactionsCol); // Deixa o Firebase gerar o ID
+                                newTransactionBatch.set(newTransactionRef, transaction);
+                            }
+                            await newTransactionBatch.commit();
+                            showAlert('Transações importadas para a empresa atual no Firebase.', 'success');
+                            await loadTransactions();
+                        } else if (importedData.transactions && !currentCompanyId) {
+                            showAlert('Nenhuma empresa selecionada para importar transações. Importe as empresas primeiro e selecione uma.', 'warning');
+                        }
+
+                    } catch (e) {
+                        showAlert('Erro ao processar arquivo JSON ou importar para o Firebase. Verifique o formato do arquivo e as regras de segurança.', 'error');
+                        console.error("Erro ao importar JSON: ", e);
                     }
                 };
                 reader.readAsText(file);
@@ -1309,49 +1422,48 @@
             input.click();
         }
 
+
         function exportToCsv() {
-            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
-            if (data.length === 0) {
-                showAlert('Não há dados para exportar.', 'warning');
+            const dataToExport = filteredTransactions.length > 0 ? filteredTransactions : transactions;
+            if (dataToExport.length === 0) {
+                showAlert('Não há dados para exportar.', "warning");
                 return;
             }
 
-            let csv = '';
+            let csvContent = "data:text/csv;charset=utf-8,";
             const headers = [
-                'Data','Tipo','Descrição','Quantidade','Valor Unitário','Total','Responsável',
-                'Dinheiro','Pix','Cartão Débito','Cartão Crédito','Observações'
+                "Data", "Tipo", "Descrição", "Quantidade", "Valor Unitário", "Total", "Responsável",
+                "Dinheiro", "Pix", "Cartão Débito", "Cartão Crédito", "Observações"
             ];
-            csv += headers.join(';') + '\r\n';
+            csvContent += headers.join(";") + "\r\n"; // Usando ponto e vírgula como separador para Excel BR
 
-            data.forEach(t => {
+            dataToExport.forEach(t => {
                 const row = [
                     new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR'),
                     t.type === 'entrada' ? 'Entrada' : 'Saída',
-                    `"${(t.description || '').replace(/"/g,'""')}"`,
-                    String(t.quantity).replace('.', ','),
+                    `"${(t.description || '').replace(/"/g, '""')}"`, // Escapa aspas duplas
+                    t.quantity.toString().replace('.', ','), // Formato BR para números
                     t.value.toFixed(2).replace('.', ','),
                     (t.totalAbs * (t.type === 'saida' ? -1 : 1)).toFixed(2).replace('.', ','),
-                    `"${(t.responsible || '').replace(/"/g,'""')}"`,
+                    `"${(t.responsible || '').replace(/"/g, '""')}"`,
                     (t.paymentDetails?.['Dinheiro'] || 0).toFixed(2).replace('.', ','),
                     (t.paymentDetails?.['Pix'] || 0).toFixed(2).replace('.', ','),
                     (t.paymentDetails?.['Cartão Débito'] || 0).toFixed(2).replace('.', ','),
                     (t.paymentDetails?.['Cartão Crédito'] || 0).toFixed(2).replace('.', ','),
-                    `"${(t.notes || '').replace(/"/g,'""')}"`
+                    `"${(t.notes || '').replace(/"/g, '""')}"`
                 ];
-                csv += row.join(';') + '\r\n';
+                csvContent += row.join(";") + "\r\n";
             });
 
-            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const companyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa';
-            a.href = url;
-            a.download = `extrato_${companyName}_${new Date().toISOString().slice(0,10)}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showAlert('CSV exportado.', 'success');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            const currentCompanyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa_desconhecida';
+            link.setAttribute("download", `extrato_financeiro_${currentCompanyName}_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showAlert('Dados exportados para CSV com sucesso!', "success");
         }
 
         function printReport() {
@@ -1359,7 +1471,7 @@
         }
 
         // ================== INICIALIZAÇÃO ==================
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Datas topo
             const now = new Date();
             const todayText = now.toLocaleDateString('pt-BR', {
@@ -1381,10 +1493,10 @@
             document.getElementById('cancelEditButton').addEventListener('click', resetForm);
 
             initPaymentControls();
-            loadCompanies();
+            await loadCompanies(); // Carrega empresas e transações ao iniciar
 
             // Submit form
-            document.getElementById('transactionForm').addEventListener('submit', e => {
+            document.getElementById('transactionForm').addEventListener('submit', async e => {
                 e.preventDefault();
                 if (!currentCompanyId) {
                     showAlert('Selecione uma empresa.', 'warning');
@@ -1429,8 +1541,7 @@
                 }
 
                 const newTransaction = {
-                    id: idHidden || Date.now().toString(),
-                    date,
+                    date, // Firebase aceita strings de data, mas é bom padronizar
                     type,
                     description,
                     quantity,
@@ -1441,17 +1552,8 @@
                     paymentDetails
                 };
 
-                const existingIndex = transactions.findIndex(t => t.id === newTransaction.id);
-                if (existingIndex >= 0) {
-                    transactions[existingIndex] = newTransaction;
-                    showAlert('Transação atualizada.', 'success');
-                } else {
-                    transactions.push(newTransaction);
-                    showAlert('Transação adicionada.', 'success');
-                }
-
-                saveTransactions();
-                applyFilters(); // reaplica filtro (ou mostra tudo)
+                // O saveTransactionToFirestore já lida com adicionar ou atualizar e recarregar
+                await saveTransactionToFirestore(newTransaction);
                 resetForm();
             });
         });
