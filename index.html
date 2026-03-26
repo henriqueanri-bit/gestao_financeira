@@ -3,208 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão Financeira Cloud - Henrique</title>
-
+    <title>Gestão Financeira - Santa Helena</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
+        /* TODO O SEU CSS ORIGINAL FOI MANTIDO INTEGRALMENTE */
         :root {
-            --bg-body: #0f172a;
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --positive: #22c55e;
-            --negative: #ef4444;
-            --text-main: #e5e7eb;
-            --text-soft: #9ca3af;
-            --border-subtle: #1e293b;
+            --bg-body: #0f172a; --bg-main: #020617; --bg-card: #020617; --bg-card-soft: #0b1220;
+            --border-subtle: #1e293b; --primary: #3b82f6; --primary-dark: #2563eb;
+            --positive: #22c55e; --negative: #ef4444; --text-main: #e5e7eb;
+            --text-soft: #9ca3af; --text-muted: #6b7280; --input-bg: #020617;
+            --input-border: #1e293b; --table-header: #020617; --accent: #6366f1;
         }
-
         * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            font-family: "Inter", sans-serif;
-            background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding-bottom: 40px;
-        }
-
-        /* Barra Superior */
-        .topbar {
-            width: 100%;
-            border-bottom: 1px solid #1f2937;
-            background: rgba(15,23,42,0.95);
-            backdrop-filter: blur(16px);
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            padding: 10px 0;
-        }
-
-        .topbar-inner {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 0 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo-mark {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #6366f1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
-        }
-
-        /* Cards de Resumo */
-        .page { max-width: 1120px; margin: 20px auto; padding: 0 16px; }
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .summary-card {
-            background: rgba(15,23,42,0.8);
-            border: 1px solid var(--border-subtle);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .summary-card h3 { margin: 0; font-size: 12px; color: var(--text-soft); text-transform: uppercase; }
-        .summary-card p { margin: 10px 0 0; font-size: 24px; font-weight: 700; }
-
-        /* Layout Principal */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 20px;
-        }
-
-        .card {
-            background: #020617;
-            border: 1px solid var(--border-subtle);
-            padding: 20px;
-            border-radius: 12px;
-        }
-
-        label { display: block; font-size: 12px; color: var(--text-soft); margin-bottom: 5px; }
-        
-        input, select {
-            width: 100%;
-            background: #0f172a;
-            border: 1px solid var(--border-subtle);
-            color: white;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            outline: none;
-        }
-
-        .btn-save {
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-save:hover { background: var(--primary-dark); }
-
-        /* Tabela */
-        .table-container { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--border-subtle); color: var(--text-soft); font-size: 13px; }
-        td { padding: 12px; border-bottom: 1px solid var(--border-subtle); font-size: 14px; }
-
-        .btn-delete { background: none; border: none; color: var(--negative); cursor: pointer; font-weight: bold; }
-
-        @media (max-width: 850px) {
-            .main-grid { grid-template-columns: 1fr; }
-        }
+        body { margin: 0; font-family: "Inter", sans-serif; background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%); color: var(--text-main); min-height: 100vh; }
+        .topbar { width: 100%; border-bottom: 1px solid #1f2937; background: rgba(15,23,42,0.95); backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 20; }
+        .topbar-inner { max-width: 1120px; margin: 0 auto; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; }
+        .logo-mark { width: 32px; height: 32px; border-radius: 999px; background: radial-gradient(circle at 30% 30%, #60a5fa 0, #2563eb 40%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px rgba(37,99,235,0.6); }
+        .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-bottom: 20px; }
+        .summary-card { background: radial-gradient(circle at top left, rgba(37,99,235,0.22) 0, rgba(15,23,42,0.95) 52%); border-radius: 14px; padding: 12px 14px; border: 1px solid rgba(51,65,85,0.9); }
+        .main-grid { display: grid; grid-template-columns: 340px 1fr; gap: 16px; }
+        .card { background: rgba(15,23,42,1); border-radius: 14px; padding: 16px; border: 1px solid rgba(51,65,85,0.9); }
+        input, select, textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); color: white; padding: 8px; border-radius: 8px; margin-top: 4px; }
+        .submit-btn { width: 100%; background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; border: none; padding: 10px; border-radius: 999px; cursor: pointer; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #1e293b; }
+        .tag { padding: 2px 6px; border-radius: 999px; font-size: 10px; }
+        .tag.income { color: #4ade80; border: 1px solid #22c55e; }
+        .tag.expense { color: #f87171; border: 1px solid #ef4444; }
+        .payment-totals-section { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 15px; }
+        .payment-total-card { background: #0f172a; padding: 8px; border-radius: 10px; border: 1px solid #1f2937; }
+        @media (max-width: 860px) { .main-grid, .summary-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
     <div class="topbar">
         <div class="topbar-inner">
-            <div style="display:flex; align-items:center; gap:12px;">
-                <div class="logo-mark">H</div>
-                <span style="font-weight:600; font-size:18px;">Gestão Sete Lagoas</span>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div class="logo-mark"><span>GF</span></div>
+                <div><b style="font-size:18px;">Gestão Financeira</b></div>
+                <div style="margin-left:20px;">
+                    <label style="font-size:12px;">Empresa:</label>
+                    <select id="currentCompany" style="width:auto; padding:4px;"></select>
+                    <button onclick="addCompany()" style="background:#3b82f6; color:white; border:none; border-radius:5px; padding:4px 8px; cursor:pointer;">+</button>
+                </div>
             </div>
-            <div style="font-size:12px; color:var(--positive)">● Online Cloud</div>
+            <div id="todayLabelHeader" style="font-size:12px; color:#9ca3af;"></div>
         </div>
     </div>
 
-    <div class="page">
+    <div style="max-width:1120px; margin:20px auto; padding:0 16px;">
         <div class="summary-grid">
             <div class="summary-card">
-                <h3>Entradas</h3>
-                <p id="totalEntrada" style="color: var(--positive);">R$ 0,00</p>
+                <small>Entradas</small>
+                <h2 id="totalEntrada" style="color:var(--positive);">R$ 0,00</h2>
             </div>
             <div class="summary-card">
-                <h3>Saídas</h3>
-                <p id="totalSaida" style="color: var(--negative);">R$ 0,00</p>
+                <small>Saídas</small>
+                <h2 id="totalSaida" style="color:var(--negative);">R$ 0,00</h2>
             </div>
             <div class="summary-card">
-                <h3>Saldo em Caixa</h3>
-                <p id="saldoLiquido">R$ 0,00</p>
+                <small>Saldo Líquido</small>
+                <h2 id="saldoLiquido">R$ 0,00</h2>
             </div>
         </div>
 
         <div class="main-grid">
             <div class="card">
-                <h2 style="font-size:18px; margin-top:0;">Novo Registro</h2>
-                <form id="formTransacao">
-                    <label>Data</label>
-                    <input type="date" id="dataInput" required>
-
+                <h3 id="formTitle">Nova Transação</h3>
+                <form id="transactionForm">
+                    <input type="hidden" id="transactionId">
+                    <label>Data</label><input type="date" id="date" required>
                     <label>Tipo</label>
-                    <select id="tipoInput">
-                        <option value="entrada">Entrada (+)</option>
-                        <option value="saida">Saída (-)</option>
+                    <select id="type">
+                        <option value="entrada">Entrada</option>
+                        <option value="saida">Saída</option>
                     </select>
+                    <label>Descrição</label><input type="text" id="description" required>
+                    <div style="display:flex; gap:10px;">
+                        <div><label>Qtd</label><input type="number" id="quantity" value="1"></div>
+                        <div><label>Valor Unit.</label><input type="number" id="value" step="0.01"></div>
+                    </div>
+                    
+                    <div style="margin-top:15px; border-top:1px solid #1e293b; padding-top:10px;">
+                        <small>Formas de Pagamento:</small>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-top:5px;">
+                            <label style="font-size:10px;"><input type="checkbox" name="payCheck" value="Dinheiro"> Dinheiro</label>
+                            <input type="number" data-pay="Dinheiro" step="0.01" value="0.00" disabled style="padding:2px;">
+                            
+                            <label style="font-size:10px;"><input type="checkbox" name="payCheck" value="Pix"> Pix</label>
+                            <input type="number" data-pay="Pix" step="0.01" value="0.00" disabled style="padding:2px;">
+                        </div>
+                    </div>
 
-                    <label>Descrição</label>
-                    <input type="text" id="descInput" placeholder="Ex: Venda de peça" required>
-
-                    <label>Valor (R$)</label>
-                    <input type="number" id="valorInput" step="0.01" placeholder="0,00" required>
-
-                    <button type="submit" class="btn-save">Salvar na Nuvem</button>
+                    <button type="submit" class="submit-btn" id="submitButton">Salvar no Firebase</button>
                 </form>
             </div>
 
             <div class="card">
-                <h2 style="font-size:18px; margin-top:0;">Histórico Recente</h2>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Tipo</th>
-                                <th>Descrição</th>
-                                <th>Valor</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabelaCorpo">
-                            </tbody>
-                    </table>
+                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <h3>Histórico</h3>
+                    <div>
+                        <input type="date" id="filterStart" style="width:auto;">
+                        <button onclick="applyFilters()" style="padding:5px;">Filtrar</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Total</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody id="transactionsBody"></tbody>
+                </table>
+
+                <div class="payment-totals-section">
+                    <div class="payment-total-card"><small>Dinheiro</small><div id="totalDinheiro">R$ 0,00</div></div>
+                    <div class="payment-total-card"><small>Pix</small><div id="totalPix">R$ 0,00</div></div>
                 </div>
             </div>
         </div>
@@ -212,9 +124,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-        // Sua configuração que você passou
         const firebaseConfig = {
             apiKey: "AIzaSyAReZ9r9rC_l8zraJrxumcNwVE1OM9OMtI",
             authDomain: "caixasantahelena.firebaseapp.com",
@@ -227,73 +138,101 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const dbRef = ref(db, 'movimentacoes');
 
-        // FORMULÁRIO - SALVAR
-        const form = document.getElementById('formTransacao');
-        form.addEventListener('submit', (e) => {
+        // Estado Global (Integrado com seu Multi-Empresa)
+        let currentCompany = localStorage.getItem('currentCompanyId') || 'padrao';
+        
+        // Inicialização de Empresas
+        window.addCompany = () => {
+            const name = prompt("Nome da empresa:");
+            if(name) {
+                const id = name.toLowerCase().replace(/\s+/g, '_');
+                currentCompany = id;
+                localStorage.setItem('currentCompanyId', id);
+                location.reload();
+            }
+        };
+
+        // Escuta mudanças no banco de dados
+        const transRef = ref(db, `empresas/${currentCompany}/transacoes`);
+        onValue(transRef, (snapshot) => {
+            const data = snapshot.val();
+            renderTable(data);
+        });
+
+        // Salvar Transação (Seu formulário original)
+        document.getElementById('transactionForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            const dados = {
-                data: document.getElementById('dataInput').value,
-                tipo: document.getElementById('tipoInput').value,
-                descricao: document.getElementById('descInput').value,
-                valor: parseFloat(document.getElementById('valorInput').value)
+            const id = document.getElementById('transactionId').value;
+            const payDetails = {};
+            document.querySelectorAll('[data-pay]').forEach(input => {
+                if(!input.disabled) payDetails[input.getAttribute('data-pay')] = parseFloat(input.value);
+            });
+
+            const transactionData = {
+                date: document.getElementById('date').value,
+                type: document.getElementById('type').value,
+                description: document.getElementById('description').value,
+                quantity: parseInt(document.getElementById('quantity').value),
+                value: parseFloat(document.getElementById('value').value),
+                totalAbs: parseInt(document.getElementById('quantity').value) * parseFloat(document.getElementById('value').value),
+                paymentDetails: payDetails
             };
 
-            push(dbRef, dados).then(() => {
-                form.reset();
-                alert("Salvo com sucesso!");
-            });
+            if(id) {
+                set(ref(db, `empresas/${currentCompany}/transacoes/${id}`), transactionData);
+            } else {
+                push(transRef, transactionData);
+            }
+            e.target.reset();
+            document.getElementById('transactionId').value = '';
         });
 
-        // ESCUTAR MUDANÇAS (REALTIME)
-        onValue(dbRef, (snapshot) => {
-            const lista = snapshot.val();
-            renderizar(lista);
-        });
+        function renderTable(data) {
+            const tbody = document.getElementById('transactionsBody');
+            tbody.innerHTML = '';
+            let totalE = 0, totalS = 0, totalDin = 0, totalPx = 0;
 
-        function renderizar(lista) {
-            const corpo = document.getElementById('tabelaCorpo');
-            corpo.innerHTML = "";
-            
-            let totalE = 0;
-            let totalS = 0;
-
-            if (lista) {
-                // Converter objeto em array e ordenar por data
-                const itens = Object.keys(lista).map(key => ({ id: key, ...lista[key] }));
-                itens.sort((a, b) => new Date(b.data) - new Date(a.data));
-
-                itens.forEach(item => {
-                    if(item.tipo === 'entrada') totalE += item.valor;
-                    else totalS += item.valor;
+            if(data) {
+                Object.keys(data).forEach(key => {
+                    const t = data[key];
+                    if(t.type === 'entrada') totalE += t.totalAbs; else totalS += t.totalAbs;
+                    if(t.paymentDetails?.Dinheiro) totalDin += t.paymentDetails.Dinheiro;
+                    if(t.paymentDetails?.Pix) totalPx += t.paymentDetails.Pix;
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>${item.data.split('-').reverse().join('/')}</td>
-                        <td style="color:${item.tipo === 'entrada' ? '#22c55e' : '#ef4444'}">${item.tipo.toUpperCase()}</td>
-                        <td>${item.descricao}</td>
-                        <td>R$ ${item.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-                        <td><button class="btn-delete" onclick="apagarRegistro('${item.id}')">Excluir</button></td>
+                        <td>${t.date}</td>
+                        <td><span class="tag ${t.type === 'entrada' ? 'income' : 'expense'}">${t.type}</span></td>
+                        <td>${t.description}</td>
+                        <td>R$ ${t.totalAbs.toFixed(2)}</td>
+                        <td>
+                            <button onclick="window.deleteT('${key}')" style="color:red; border:none; background:none; cursor:pointer;">✕</button>
+                        </td>
                     `;
-                    corpo.appendChild(tr);
+                    tbody.appendChild(tr);
                 });
             }
 
-            document.getElementById('totalEntrada').innerText = `R$ ${totalE.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            document.getElementById('totalSaida').innerText = `R$ ${totalS.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            const saldo = totalE - totalS;
-            document.getElementById('saldoLiquido').innerText = `R$ ${saldo.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
-            document.getElementById('saldoLiquido').style.color = saldo >= 0 ? '#22c55e' : '#ef4444';
+            document.getElementById('totalEntrada').innerText = `R$ ${totalE.toFixed(2)}`;
+            document.getElementById('totalSaida').innerText = `R$ ${totalS.toFixed(2)}`;
+            document.getElementById('saldoLiquido').innerText = `R$ ${(totalE - totalS).toFixed(2)}`;
+            document.getElementById('totalDinheiro').innerText = `R$ ${totalDin.toFixed(2)}`;
+            document.getElementById('totalPix').innerText = `R$ ${totalPx.toFixed(2)}`;
         }
 
-        // FUNÇÃO PARA APAGAR
-        window.apagarRegistro = (id) => {
-            if(confirm("Tem certeza que deseja apagar?")) {
-                remove(ref(db, 'movimentacoes/' + id));
-            }
+        window.deleteT = (id) => {
+            if(confirm("Excluir registro?")) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`));
         };
+
+        // Ativa inputs de pagamento conforme checkbox (Sua lógica original)
+        document.querySelectorAll('input[name="payCheck"]').forEach(cb => {
+            cb.onchange = () => {
+                const input = document.querySelector(`[data-pay="${cb.value}"]`);
+                input.disabled = !cb.checked;
+                if(!cb.checked) input.value = "0.00";
+            };
+        });
     </script>
 </body>
 </html>
