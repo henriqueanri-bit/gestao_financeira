@@ -18,8 +18,12 @@
         .topbar-inner { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
         .main-container { max-width: 1200px; margin: 24px auto; padding: 0 20px; display: grid; grid-template-columns: 380px 1fr; gap: 24px; }
         .card { background-color: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); }
-        .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+        .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
         .summary-item { background: var(--bg-card-soft); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 20px; }
+        .payment-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
+        .pay-card { background: #1e293b66; padding: 12px; border-radius: 12px; border: 1px solid var(--border-subtle); text-align: center; }
+        .pay-card small { color: var(--text-soft); font-size: 11px; }
+        .pay-card div { font-weight: bold; font-size: 14px; margin-top: 4px; }
         input, select, textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px; color: white; margin-bottom: 12px; }
         button.btn-primary { width: 100%; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -27,21 +31,16 @@
         .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .badge-entrada { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
         .badge-saida { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-        .alert { position: fixed; top: 20px; right: 20px; padding: 16px 24px; border-radius: 12px; z-index: 1000; color: white; font-weight: 600; }
-        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
-        @media print { .topbar, .card:first-child, .btn-action, #filterStart { display: none !important; } }
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } .payment-summary { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
     <div class="topbar">
         <div class="topbar-inner">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <div style="width:35px; height:35px; background:linear-gradient(135deg, #3b82f6, #6366f1); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:bold;">H</div>
-                <h1 style="font-size:18px; margin:0;">Santa Helena</h1>
-            </div>
-            <div style="display:flex; gap:10px; align-items:center;">
+            <h1 style="font-size:18px; margin:0;">Santa Helena - Gestão</h1>
+            <div style="display:flex; gap:10px;">
                 <select id="companySelect" style="margin:0; width:150px;"></select>
-                <button onclick="addCompany()" style="padding:8px 12px; border-radius:8px; background:#3b82f6; border:none; color:white; cursor:pointer; font-weight:bold;">+</button>
+                <button onclick="addCompany()" style="padding:8px 12px; border-radius:8px; background:#3b82f6; border:none; color:white; cursor:pointer;">+</button>
             </div>
         </div>
     </div>
@@ -54,16 +53,14 @@
                 <label>Data</label><input type="date" id="date" required>
                 <label>Tipo</label>
                 <select id="type"><option value="entrada">Entrada</option><option value="saida">Saída</option></select>
-                <label>Descrição</label><input type="text" id="description" placeholder="Ex: Venda" required>
+                <label>Descrição</label><input type="text" id="description" required>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <div><label>Qtd</label><input type="number" id="quantity" value="1" min="1"></div>
-                    <div><label>Valor Unit.</label><input type="number" id="value" step="0.01" placeholder="0,00"></div>
+                    <div><label>Qtd</label><input type="number" id="quantity" value="1"></div>
+                    <div><label>Valor Unit.</label><input type="number" id="value" step="0.01"></div>
                 </div>
-                <label>Responsável</label><input type="text" id="responsible">
-                <label>Observações</label><textarea id="notes" rows="2"></textarea>
                 
-                <div style="background:#0b1220; padding:15px; border-radius:12px; border:1px solid #1e293b;">
-                    <p style="font-size:12px; margin:0 0 10px 0; color:var(--text-soft);">Pagamento</p>
+                <div style="background:#0b1220; padding:15px; border-radius:12px; border:1px solid #1e293b; margin-top:10px;">
+                    <p style="font-size:12px; margin:0 0 10px 0; color:var(--text-soft);">Detalhamento de Recebimento</p>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                         <div><small>Dinheiro</small><input type="number" class="pay-input" data-method="Dinheiro" step="0.01" value="0"></div>
                         <div><small>Pix</small><input type="number" class="pay-input" data-method="Pix" step="0.01" value="0"></div>
@@ -71,32 +68,36 @@
                         <div><small>Débito</small><input type="number" class="pay-input" data-method="Débito" step="0.01" value="0"></div>
                     </div>
                 </div>
-                <button type="submit" class="btn-primary" id="btnSubmit" style="margin-top:20px;">Salvar Lançamento</button>
-                <button type="button" id="btnCancel" onclick="resetForm()" style="display:none; background:none; border:1px solid #1e293b; color:white; width:100%; margin-top:10px; padding:10px; border-radius:10px; cursor:pointer;">Cancelar Edição</button>
+                <button type="submit" class="btn-primary" style="margin-top:20px;">Salvar Lançamento</button>
             </form>
         </div>
 
         <div>
             <div class="summary-grid">
-                <div class="summary-item"><small>Entradas</small><div id="summaryIncomes" style="font-size:20px; color:#22c55e; font-weight:700;">R$ 0,00</div></div>
-                <div class="summary-item"><small>Saídas</small><div id="summaryExpenses" style="font-size:20px; color:#ef4444; font-weight:700;">R$ 0,00</div></div>
-                <div class="summary-item"><small>Saldo Atual</small><div id="summaryTotal" style="font-size:20px; font-weight:700;">R$ 0,00</div></div>
+                <div class="summary-item"><small>Entradas</small><div id="summaryIncomes" style="color:#22c55e; font-weight:700;">R$ 0,00</div></div>
+                <div class="summary-item"><small>Saídas</small><div id="summaryExpenses" style="color:#ef4444; font-weight:700;">R$ 0,00</div></div>
+                <div class="summary-item"><small>Saldo</small><div id="summaryTotal" style="font-weight:700;">R$ 0,00</div></div>
             </div>
+
+            <div class="payment-summary">
+                <div class="pay-card"><small>PIX</small><div id="sumPix">R$ 0,00</div></div>
+                <div class="pay-card"><small>DINHEIRO</small><div id="sumDinheiro">R$ 0,00</div></div>
+                <div class="pay-card"><small>C. CRÉDITO</small><div id="sumCredito">R$ 0,00</div></div>
+                <div class="pay-card"><small>C. DÉBITO</small><div id="sumDebito">R$ 0,00</div></div>
+            </div>
+
             <div class="card">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                     <h2 style="font-size:18px; margin:0;">Histórico</h2>
                     <div style="display:flex; gap:8px;">
-                        <input type="date" id="filterStart" onchange="applyFilters()" style="margin:0; width:140px; padding:6px;">
-                        <button onclick="imprimirRelatorio()" style="background:#10b981; color:white; border:none; border-radius:8px; padding:6px 12px; cursor:pointer; font-weight:bold;">Imprimir</button>
-                        <button onclick="exportarExcel()" style="background:#059669; color:white; border:none; border-radius:8px; padding:6px 12px; cursor:pointer; font-weight:bold;">Excel</button>
+                        <input type="date" id="filterStart" onchange="applyFilters()" style="margin:0; width:140px;">
+                        <button onclick="imprimirRelatorio()" style="background:#10b981; color:white; border:none; border-radius:8px; padding:6px 12px; cursor:pointer;">Imprimir</button>
                     </div>
                 </div>
-                <div style="overflow-x:auto;">
-                    <table id="transactionsTable">
-                        <thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Total</th><th>Resp.</th><th style="text-align:right;">Ações</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+                <table id="transactionsTable">
+                    <thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Total</th><th style="text-align:right;">Ações</th></tr></thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -122,92 +123,26 @@
         let companies = JSON.parse(localStorage.getItem('companies') || '["Matriz"]');
         let currentCompany = localStorage.getItem('currentCompany') || 'Matriz';
 
-        // --- FUNÇÕES GLOBAIS ---
-        window.addCompany = function() {
-            const name = prompt('Nome da nova filial:');
-            if (name && !companies.includes(name)) {
-                companies.push(name);
-                localStorage.setItem('companies', JSON.stringify(companies));
-                updateCompanySelect();
-            }
-        };
-
         window.updateCompanySelect = function() {
             const select = document.getElementById('companySelect');
             select.innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join('');
         };
 
+        window.addCompany = function() {
+            const name = prompt('Nome da filial:');
+            if (name) { companies.push(name); localStorage.setItem('companies', JSON.stringify(companies)); updateCompanySelect(); }
+        };
+
         window.applyFilters = function() {
-            const filterDate = document.getElementById('filterStart').value;
+            const date = document.getElementById('filterStart').value;
             let filtered = transactions;
-            if (filterDate) filtered = transactions.filter(t => t.date === filterDate);
+            if (date) filtered = transactions.filter(t => t.date === date);
             renderTable(filtered);
         };
 
-        window.deleteTransaction = function(id) {
-            if (confirm('Excluir da nuvem?')) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`));
-        };
+        window.imprimirRelatorio = function() { window.print(); };
 
-        window.editTransaction = function(id) {
-            const t = transactions.find(item => item.id === id);
-            if (!t) return;
-            document.getElementById('idHidden').value = t.id;
-            document.getElementById('date').value = t.date;
-            document.getElementById('type').value = t.type;
-            document.getElementById('description').value = t.description;
-            document.getElementById('quantity').value = t.quantity;
-            document.getElementById('value').value = t.value;
-            document.getElementById('responsible').value = t.responsible;
-            document.getElementById('notes').value = t.notes;
-            document.querySelectorAll('.pay-input').forEach(input => {
-                input.value = t.paymentDetails[input.dataset.method] || 0;
-            });
-            document.getElementById('btnSubmit').innerText = 'Salvar Alteração';
-            document.getElementById('btnCancel').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        window.resetForm = function() {
-            document.getElementById('financeForm').reset();
-            document.getElementById('idHidden').value = '';
-            document.getElementById('btnSubmit').innerText = 'Salvar Lançamento';
-            document.getElementById('btnCancel').style.display = 'none';
-        };
-
-        // --- IMPRIMIR E EXCEL ---
-        window.imprimirRelatorio = function() {
-            const resumo = document.querySelector('.summary-grid').innerHTML;
-            const tabela = document.getElementById('transactionsTable').outerHTML;
-            const win = window.open('', '', 'height=700,width=900');
-            win.document.write(`<html><head><title>Relatório - ${currentCompany}</title><style>
-                body { font-family: sans-serif; padding: 20px; }
-                table { width: 100%; border-collapse: collapse; }
-                th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-                .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-                .summary-item { border: 1px solid #ccc; padding: 10px; border-radius: 8px; }
-            </style></head><body>
-                <h1>Relatório Santa Helena - ${currentCompany}</h1>
-                <div class="summary-grid">${resumo}</div>
-                ${tabela}
-            </body></html>`);
-            win.document.close();
-            win.print();
-        };
-
-        window.exportarExcel = function() {
-            let csv = '\uFEFFData;Tipo;Descricao;Total;Responsavel\n';
-            transactions.forEach(t => {
-                csv += `${t.date.split('-').reverse().join('/')};${t.type};${t.description};${t.totalAbs.toFixed(2)};${t.responsible || '-'}\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `relatorio_${currentCompany}.csv`;
-            link.click();
-        };
-
-        // --- FIREBASE LOGIC ---
-        function loadFromFirebase() {
+        function loadData() {
             onValue(ref(db, `empresas/${currentCompany}/transacoes`), (snapshot) => {
                 const data = snapshot.val();
                 transactions = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
@@ -222,66 +157,80 @@
             const v = parseFloat(document.getElementById('value').value) || 0;
             const total = q * v;
 
-            const pays = {}; let sum = 0;
+            const pays = {};
             document.querySelectorAll('.pay-input').forEach(i => {
                 const val = parseFloat(i.value) || 0;
-                if(val > 0) { pays[i.dataset.method] = val; sum += val; }
+                if(val > 0) pays[i.dataset.method] = val;
             });
-
-            if (sum === 0 || Math.abs(sum - total) > 0.01) {
-                alert('Erro: Pagamento não confere com o total!'); return;
-            }
 
             const trans = {
                 date: document.getElementById('date').value,
                 type: document.getElementById('type').value,
                 description: document.getElementById('description').value,
                 quantity: q, value: v, totalAbs: total,
-                responsible: document.getElementById('responsible').value,
-                notes: document.getElementById('notes').value,
                 paymentDetails: pays
             };
 
             if (id) set(ref(db, `empresas/${currentCompany}/transacoes/${id}`), trans);
             else push(ref(db, `empresas/${currentCompany}/transacoes`), trans);
-            window.resetForm();
+            e.target.reset();
         };
 
         function renderTable(data) {
             const tbody = document.querySelector('#transactionsTable tbody');
             tbody.innerHTML = '';
             let inc = 0, exp = 0;
+            // Zera o relatório de pagamentos
+            let pPix = 0, pDin = 0, pCre = 0, pDeb = 0;
 
             data.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(t => {
-                if (t.type === 'entrada') inc += t.totalAbs; else exp += t.totalAbs;
+                if (t.type === 'entrada') {
+                    inc += t.totalAbs;
+                    // Soma os detalhes de pagamento apenas das ENTRADAS
+                    if(t.paymentDetails) {
+                        pPix += t.paymentDetails['Pix'] || 0;
+                        pDin += t.paymentDetails['Dinheiro'] || 0;
+                        pCre += t.paymentDetails['Crédito'] || 0;
+                        pDeb += t.paymentDetails['Débito'] || 0;
+                    }
+                } else {
+                    exp += t.totalAbs;
+                }
+
                 tbody.innerHTML += `<tr>
                     <td>${t.date.split('-').reverse().join('/')}</td>
                     <td><span class="badge badge-${t.type}">${t.type}</span></td>
-                    <td><b>${t.description}</b><br><small>${Object.entries(t.paymentDetails).map(([k,v])=>`${k}: R$${v.toFixed(2)}`).join(' | ')}</small></td>
+                    <td>${t.description}</td>
                     <td>R$ ${t.totalAbs.toFixed(2)}</td>
-                    <td>${t.responsible || '-'}</td>
                     <td style="text-align:right;">
-                        <button onclick="editTransaction('${t.id}')" style="background:none; border:none; color:#3b82f6; cursor:pointer; font-size:16px;">✎</button>
-                        <button onclick="deleteTransaction('${t.id}')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:16px; margin-left:10px;">✕</button>
+                        <button onclick="deleteItem('${t.id}')" style="background:none; border:none; color:#ef4444; cursor:pointer;">✕</button>
                     </td>
                 </tr>`;
             });
 
+            // Atualiza os cards de resumo de pagamento
+            document.getElementById('sumPix').innerText = `R$ ${pPix.toFixed(2)}`;
+            document.getElementById('sumDinheiro').innerText = `R$ ${pDin.toFixed(2)}`;
+            document.getElementById('sumCredito').innerText = `R$ ${pCre.toFixed(2)}`;
+            document.getElementById('sumDebito').innerText = `R$ ${pDeb.toFixed(2)}`;
+
             document.getElementById('summaryIncomes').innerText = `R$ ${inc.toFixed(2)}`;
             document.getElementById('summaryExpenses').innerText = `R$ ${exp.toFixed(2)}`;
-            const tot = inc - exp;
-            document.getElementById('summaryTotal').innerText = `R$ ${tot.toFixed(2)}`;
-            document.getElementById('summaryTotal').style.color = tot >= 0 ? '#22c55e' : '#ef4444';
+            document.getElementById('summaryTotal').innerText = `R$ ${(inc - exp).toFixed(2)}`;
         }
+
+        window.deleteItem = function(id) {
+            if(confirm('Excluir?')) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`));
+        };
 
         document.getElementById('companySelect').onchange = (e) => {
             currentCompany = e.target.value;
             localStorage.setItem('currentCompany', currentCompany);
-            loadFromFirebase();
+            loadData();
         };
 
         updateCompanySelect();
-        loadFromFirebase();
+        loadData();
     </script>
 </body>
 </html>
