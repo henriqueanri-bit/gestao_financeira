@@ -22,11 +22,10 @@
         .summary-item { background: var(--bg-card-soft); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 20px; }
         .payment-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
         .pay-card { background: #1e293b66; padding: 12px; border-radius: 12px; border: 1px solid var(--border-subtle); text-align: center; }
-        .pay-card small { color: var(--text-soft); font-size: 11px; }
-        .pay-card div { font-weight: bold; font-size: 14px; margin-top: 4px; }
         input, select, textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px; color: white; margin-bottom: 12px; }
         button { cursor: pointer; transition: 0.2s; }
-        button.btn-primary { width: 100%; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; }
+        .btn-primary { width: 100%; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; }
+        .btn-cancel { background: #334155; color: white; border: none; padding: 8px; border-radius: 8px; width: 100%; margin-top: 10px; display: none; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
         th, td { padding: 12px; border-bottom: 1px solid var(--border-subtle); text-align: left; vertical-align: top; }
         .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
@@ -48,22 +47,22 @@
 
     <div class="main-container">
         <div class="card">
-            <h2 style="font-size:18px; margin-bottom:20px;">Nova Transação</h2>
+            <h2 id="formTitle" style="font-size:18px; margin-bottom:20px;">Nova Transação</h2>
             <form id="financeForm">
                 <input type="hidden" id="idHidden">
                 <label>Data</label><input type="date" id="date" required>
                 <label>Tipo</label>
                 <select id="type"><option value="entrada">Entrada</option><option value="saida">Saída</option></select>
-                <label>Descrição</label><input type="text" id="description" required placeholder="Ex: Venda de Peças">
+                <label>Descrição</label><input type="text" id="description" required>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                     <div><label>Qtd</label><input type="number" id="quantity" value="1"></div>
-                    <div><label>Valor Unit.</label><input type="number" id="value" step="0.01" placeholder="0,00"></div>
+                    <div><label>Valor Unit.</label><input type="number" id="value" step="0.01"></div>
                 </div>
-                <label>Responsável</label><input type="text" id="responsible" placeholder="Quem lançou?">
-                <label>Observações</label><textarea id="notes" rows="2" placeholder="Detalhes adicionais..."></textarea>
+                <label>Responsável</label><input type="text" id="responsible">
+                <label>Observações</label><textarea id="notes" rows="2"></textarea>
                 
-                <div style="background:#0b1220; padding:15px; border-radius:12px; border:1px solid #1e293b; margin-top:10px;">
-                    <p style="font-size:12px; margin:0 0 10px 0; color:var(--text-soft);">Detalhamento de Pagamento</p>
+                <div id="paymentArea" style="background:#0b1220; padding:15px; border-radius:12px; border:1px solid #1e293b; margin-top:10px;">
+                    <p style="font-size:12px; margin:0 0 10px 0; color:var(--text-soft);">Formas de Pagamento (Recebido)</p>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                         <div><small>Dinheiro</small><input type="number" class="pay-input" data-method="Dinheiro" step="0.01" value="0"></div>
                         <div><small>Pix</small><input type="number" class="pay-input" data-method="Pix" step="0.01" value="0"></div>
@@ -71,7 +70,8 @@
                         <div><small>Débito</small><input type="number" class="pay-input" data-method="Débito" step="0.01" value="0"></div>
                     </div>
                 </div>
-                <button type="submit" class="btn-primary" style="margin-top:20px;">Salvar Lançamento</button>
+                <button type="submit" id="btnSubmit" class="btn-primary" style="margin-top:20px;">Salvar Lançamento</button>
+                <button type="button" id="btnCancel" class="btn-cancel" onclick="resetarFormulario()">Cancelar Edição</button>
             </form>
         </div>
 
@@ -91,16 +91,16 @@
 
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
-                    <h2 style="font-size:18px; margin:0;">Histórico de Lançamentos</h2>
+                    <h2 style="font-size:18px; margin:0;">Histórico</h2>
                     <div style="display:flex; gap:8px;">
                         <input type="date" id="filterStart" onchange="applyFilters()" style="margin:0; width:140px;">
-                        <button onclick="imprimirRelatorio()" style="background:#10b981; color:white; border:none; border-radius:8px; padding:6px 12px; font-weight:bold;">Imprimir</button>
+                        <button onclick="window.print()" style="background:#10b981; color:white; border:none; border-radius:8px; padding:6px 12px; font-weight:bold;">Imprimir</button>
                         <button onclick="exportarExcel()" style="background:#059669; color:white; border:none; border-radius:8px; padding:6px 12px; font-weight:bold;">Excel</button>
                     </div>
                 </div>
                 <div style="overflow-x:auto;">
                     <table id="transactionsTable">
-                        <thead><tr><th>Data</th><th>Tipo</th><th>Descrição / Obs</th><th>Total</th><th>Resp.</th><th style="text-align:right;">Ações</th></tr></thead>
+                        <thead><tr><th>Data</th><th>Tipo</th><th>Descrição / Pagamentos</th><th>Total</th><th>Resp.</th><th style="text-align:right;">Ações</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -129,31 +129,51 @@
         let companies = JSON.parse(localStorage.getItem('companies') || '["Matriz"]');
         let currentCompany = localStorage.getItem('currentCompany') || 'Matriz';
 
-        window.updateCompanySelect = () => {
-            document.getElementById('companySelect').innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join('');
+        // GLOBAIS
+        window.updateCompanySelect = () => { document.getElementById('companySelect').innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join(''); };
+        window.addCompany = () => { const n = prompt('Nome da filial:'); if(n) { companies.push(n); localStorage.setItem('companies', JSON.stringify(companies)); updateCompanySelect(); } };
+        window.applyFilters = () => { const d = document.getElementById('filterStart').value; renderTable(d ? transactions.filter(t => t.date === d) : transactions); };
+
+        // EDITAR
+        window.editarItem = (id) => {
+            const item = transactions.find(t => t.id === id);
+            if(!item) return;
+
+            document.getElementById('idHidden').value = item.id;
+            document.getElementById('date').value = item.date;
+            document.getElementById('type').value = item.type;
+            document.getElementById('description').value = item.description;
+            document.getElementById('quantity').value = item.quantity;
+            document.getElementById('value').value = item.value;
+            document.getElementById('responsible').value = item.responsible || '';
+            document.getElementById('notes').value = item.notes || '';
+
+            // Limpa e preenche pagamentos
+            document.querySelectorAll('.pay-input').forEach(input => {
+                input.value = item.paymentDetails ? (item.paymentDetails[input.dataset.method] || 0) : 0;
+            });
+
+            document.getElementById('formTitle').innerText = "Editando Lançamento";
+            document.getElementById('btnSubmit').innerText = "Atualizar Dados";
+            document.getElementById('btnCancel').style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        window.addCompany = () => {
-            const name = prompt('Nome da filial:');
-            if (name) { companies.push(name); localStorage.setItem('companies', JSON.stringify(companies)); updateCompanySelect(); }
+        window.resetarFormulario = () => {
+            document.getElementById('financeForm').reset();
+            document.getElementById('idHidden').value = '';
+            document.getElementById('formTitle').innerText = "Nova Transação";
+            document.getElementById('btnSubmit').innerText = "Salvar Lançamento";
+            document.getElementById('btnCancel').style.display = "none";
         };
-
-        window.applyFilters = () => {
-            const date = document.getElementById('filterStart').value;
-            renderTable(date ? transactions.filter(t => t.date === date) : transactions);
-        };
-
-        window.imprimirRelatorio = () => { window.print(); };
 
         window.exportarExcel = () => {
-            let csv = '\uFEFFData;Tipo;Descricao;Observacao;Responsavel;Dinheiro;Pix;Credito;Debito;Total\n';
+            let csv = '\uFEFFData;Tipo;Descricao;Obs;Responsavel;Total\n';
             transactions.forEach(t => {
-                const p = t.paymentDetails || {};
-                csv += `${t.date.split('-').reverse().join('/')};${t.type};${t.description};${t.notes || ''};${t.responsible || ''};${(p.Dinheiro||0).toFixed(2)};${(p.Pix||0).toFixed(2)};${(p.Crédito||0).toFixed(2)};${(p.Débito||0).toFixed(2)};${t.totalAbs.toFixed(2)}\n`;
+                csv += `${t.date.split('-').reverse().join('/')};${t.type};${t.description};${t.notes||''};${t.responsible||''};${t.totalAbs.toFixed(2)}\n`;
             });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
+            link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
             link.download = `caixa_${currentCompany}.csv`;
             link.click();
         };
@@ -171,6 +191,7 @@
             const id = document.getElementById('idHidden').value;
             const q = parseInt(document.getElementById('quantity').value) || 1;
             const v = parseFloat(document.getElementById('value').value) || 0;
+            
             const pays = {};
             document.querySelectorAll('.pay-input').forEach(i => { if(parseFloat(i.value)>0) pays[i.dataset.method] = parseFloat(i.value); });
 
@@ -186,7 +207,8 @@
 
             if(id) set(ref(db, `empresas/${currentCompany}/transacoes/${id}`), data);
             else push(ref(db, `empresas/${currentCompany}/transacoes`), data);
-            e.target.reset();
+            
+            window.resetarFormulario();
         };
 
         function renderTable(data) {
@@ -203,16 +225,27 @@
                     pDeb += (t.paymentDetails?.Débito || 0);
                 } else exp += t.totalAbs;
 
+                // Monta texto dos pagamentos
+                let payInfo = "";
+                if(t.paymentDetails && t.type === 'entrada') {
+                    payInfo = `<div style="font-size:10px; color:#3b82f6; margin-top:4px;">` + 
+                        Object.entries(t.paymentDetails).map(([k,v]) => `${k}: R$${v.toFixed(2)}`).join(' | ') + `</div>`;
+                }
+
                 tbody.innerHTML += `<tr>
                     <td>${t.date.split('-').reverse().join('/')}</td>
                     <td><span class="badge badge-${t.type}">${t.type}</span></td>
                     <td>
                         <div style="font-weight:700">${t.description}</div>
                         <div style="font-size:11px; color:var(--text-soft)">${t.notes || ''}</div>
+                        ${payInfo}
                     </td>
                     <td>R$ ${t.totalAbs.toFixed(2)}</td>
                     <td>${t.responsible || '-'}</td>
-                    <td style="text-align:right;"><button onclick="deleteItem('${t.id}')" style="background:none; border:none; color:#ef4444; font-weight:bold;">✕</button></td>
+                    <td style="text-align:right; white-space:nowrap;">
+                        <button onclick="editarItem('${t.id}')" style="background:none; border:none; color:#3b82f6; font-size:16px; margin-right:10px;">✎</button>
+                        <button onclick="deleteItem('${t.id}')" style="background:none; border:none; color:#ef4444; font-size:16px;">✕</button>
+                    </td>
                 </tr>`;
             });
 
@@ -222,12 +255,10 @@
             document.getElementById('sumDebito').innerText = `R$ ${pDeb.toFixed(2)}`;
             document.getElementById('summaryIncomes').innerText = `R$ ${inc.toFixed(2)}`;
             document.getElementById('summaryExpenses').innerText = `R$ ${exp.toFixed(2)}`;
-            const total = inc - exp;
-            document.getElementById('summaryTotal').innerText = `R$ ${total.toFixed(2)}`;
-            document.getElementById('summaryTotal').style.color = total >= 0 ? '#22c55e' : '#ef4444';
+            document.getElementById('summaryTotal').innerText = `R$ ${(inc - exp).toFixed(2)}`;
         }
 
-        window.deleteItem = (id) => { if(confirm('Excluir este lançamento?')) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`)); };
+        window.deleteItem = (id) => { if(confirm('Excluir?')) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`)); };
         document.getElementById('companySelect').onchange = (e) => { currentCompany = e.target.value; localStorage.setItem('currentCompany', currentCompany); loadData(); };
 
         updateCompanySelect();
