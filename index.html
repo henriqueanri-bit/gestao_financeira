@@ -26,19 +26,23 @@
         button { cursor: pointer; transition: 0.2s; }
         .btn-primary { width: 100%; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; }
         .btn-cancel { background: #334155; color: white; border: none; padding: 8px; border-radius: 8px; width: 100%; margin-top: 10px; display: none; }
+        .btn-backup { background: #6366f1; color: white; border: none; border-radius: 8px; padding: 8px 14px; font-weight: bold; font-size: 12px; display: flex; align-items: center; gap: 6px; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
         th, td { padding: 12px; border-bottom: 1px solid var(--border-subtle); text-align: left; vertical-align: top; }
         .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .badge-entrada { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
         .badge-saida { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } .payment-summary { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } .payment-summary { grid-template-columns: 1fr 1fr; } .topbar-inner { flex-direction: column; gap: 10px; } }
     </style>
 </head>
 <body>
     <div class="topbar">
         <div class="topbar-inner">
             <h1 style="font-size:18px; margin:0;">Santa Helena - Gestão</h1>
-            <div style="display:flex; gap:10px;">
+            <div style="display:flex; gap:10px; align-items:center;">
+                <button onclick="fazerBackupGeral()" class="btn-backup" title="Baixar cópia de segurança de TODAS as empresas">
+                    💾 Backup Geral
+                </button>
                 <select id="companySelect" style="margin:0; width:150px;"></select>
                 <button onclick="addCompany()" style="padding:8px 12px; border-radius:8px; background:#3b82f6; border:none; color:white;">+</button>
             </div>
@@ -62,7 +66,7 @@
                 <label>Observações</label><textarea id="notes" rows="2"></textarea>
                 
                 <div id="paymentArea" style="background:#0b1220; padding:15px; border-radius:12px; border:1px solid #1e293b; margin-top:10px;">
-                    <p style="font-size:12px; margin:0 0 10px 0; color:var(--text-soft);">Formas de Pagamento (Recebido)</p>
+                    <p style="font-size:12px; margin:0 0 10px 0; color:var(--text-soft);">Formas de Pagamento (Entradas)</p>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                         <div><small>Dinheiro</small><input type="number" class="pay-input" data-method="Dinheiro" step="0.01" value="0"></div>
                         <div><small>Pix</small><input type="number" class="pay-input" data-method="Pix" step="0.01" value="0"></div>
@@ -100,7 +104,7 @@
                 </div>
                 <div style="overflow-x:auto;">
                     <table id="transactionsTable">
-                        <thead><tr><th>Data</th><th>Tipo</th><th>Descrição / Pagamentos</th><th>Total</th><th>Resp.</th><th style="text-align:right;">Ações</th></tr></thead>
+                        <thead><tr><th>Data</th><th>Tipo</th><th>Descrição / Detalhes</th><th>Total</th><th>Resp.</th><th style="text-align:right;">Ações</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -110,7 +114,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue, remove, set, get } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAReZ9r9rC_l8zraJrxumcNwVE1OM9OMtI",
@@ -129,16 +133,32 @@
         let companies = ["Matriz"];
         let currentCompany = localStorage.getItem('currentCompany') || 'Matriz';
 
-        // --- GESTÃO DE EMPRESAS NO FIREBASE ---
-        function listenCompanies() {
-            onValue(ref(db, 'lista_empresas'), (snapshot) => {
+        // --- BACKUP GERAL ---
+        window.fazerBackupGeral = async () => {
+            if(!confirm("Deseja baixar uma cópia de segurança completa de TODAS as empresas?")) return;
+            try {
+                const snapshot = await get(ref(db));
                 const data = snapshot.val();
-                if (data) {
-                    companies = Object.values(data);
-                } else {
-                    companies = ["Matriz"];
-                    set(ref(db, 'lista_empresas/Matriz'), "Matriz");
-                }
+                if(!data) return alert("Nenhum dado encontrado para backup.");
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `BACKUP_GERAL_SANTA_HELENA_${new Date().toLocaleDateString().replace(/\//g, '-')}.json`;
+                a.click();
+                alert("Backup realizado com sucesso! Guarde este arquivo em um local seguro.");
+            } catch (err) {
+                console.error(err);
+                alert("Erro ao fazer backup. Verifique sua conexão.");
+            }
+        };
+
+        // --- GESTÃO DE EMPRESAS ---
+        function listenCompanies() {
+            onValue(ref(db, 'lista_empresas'), (snap) => {
+                const data = snap.val();
+                companies = data ? Object.values(data) : ["Matriz"];
                 updateCompanySelect();
                 loadTransactions();
             });
@@ -150,12 +170,8 @@
         };
 
         window.addCompany = () => {
-            const name = prompt('Nome da nova empresa/filial:');
-            if (name && !companies.includes(name)) {
-                set(ref(db, `lista_empresas/${name}`), name);
-                currentCompany = name;
-                localStorage.setItem('currentCompany', name);
-            }
+            const n = prompt('Nome da nova filial:');
+            if (n && !companies.includes(n)) set(ref(db, `lista_empresas/${n}`), n);
         };
 
         document.getElementById('companySelect').onchange = (e) => {
@@ -223,7 +239,7 @@
                     <td><b>${t.description}</b><br><small>${t.notes || ''}</small>${payInfo}</td>
                     <td>R$ ${t.totalAbs.toFixed(2)}</td>
                     <td>${t.responsible || '-'}</td>
-                    <td style="text-align:right;">
+                    <td style="text-align:right; white-space:nowrap;">
                         <button onclick="editarItem('${t.id}')" style="background:none; border:none; color:#3b82f6; font-size:16px;">✎</button>
                         <button onclick="deleteItem('${t.id}')" style="background:none; border:none; color:#ef4444; font-size:16px; margin-left:8px;">✕</button>
                     </td>
@@ -268,11 +284,11 @@
         window.deleteItem = (id) => { if(confirm('Excluir?')) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`)); };
 
         window.exportarExcel = () => {
-            let csv = '\uFEFFData;Tipo;Descricao;Total\n';
-            transactions.forEach(t => csv += `${t.date.split('-').reverse().join('/')};${t.type};${t.description};${t.totalAbs.toFixed(2)}\n`);
+            let csv = '\uFEFFData;Tipo;Descricao;Total;Responsavel;Observacao\n';
+            transactions.forEach(t => csv += `${t.date.split('-').reverse().join('/')};${t.type};${t.description};${t.totalAbs.toFixed(2)};${t.responsible||''};${t.notes||''}\n`);
             const link = document.createElement("a");
             link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
-            link.download = `caixa_${currentCompany}.csv`;
+            link.download = `relatorio_${currentCompany}.csv`;
             link.click();
         };
 
