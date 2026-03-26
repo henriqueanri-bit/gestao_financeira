@@ -4,193 +4,99 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestão Financeira Multi-Empresas</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
     <style>
         :root {
-            --bg-body: #0f172a;
-            --bg-main: #020617;
-            --bg-card: #020617;
-            --bg-card-soft: #0b1220;
-            --border-subtle: #1e293b;
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --primary-soft: rgba(59,130,246,0.14);
-            --positive: #22c55e;
-            --negative: #ef4444;
-            --text-main: #e5e7eb;
-            --text-soft: #9ca3af;
-            --text-muted: #6b7280;
-            --input-bg: #020617;
-            --input-border: #1e293b;
-            --table-header: #020617;
-            --accent: #6366f1;
+            --bg-body: #0f172a; --bg-main: #020617; --bg-card: #020617; --bg-card-soft: #0b1220;
+            --border-subtle: #1e293b; --primary: #3b82f6; --primary-dark: #2563eb;
+            --positive: #22c55e; --negative: #ef4444; --text-main: #e5e7eb;
+            --text-soft: #9ca3af; --text-muted: #6b7280; --input-bg: #020617;
         }
-
         * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg-body);
-            background-image: radial-gradient(circle at top right, rgba(59, 130, 246, 0.08), transparent 400px),
-                              radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.05), transparent 400px);
-            color: var(--text-main);
-            min-height: 100vh;
-            line-height: 1.5;
-        }
-
-        /* [TODO O SEU CSS ORIGINAL FOI MANTIDO AQUI] */
+        body { margin: 0; padding: 0; font-family: "Inter", sans-serif; background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; }
         .topbar { width: 100%; border-bottom: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 50; }
         .topbar-inner { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
-        .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
         .main-container { max-width: 1200px; margin: 24px auto; padding: 0 20px; display: grid; grid-template-columns: 380px 1fr; gap: 24px; }
-        .card { background-color: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); height: fit-content; }
+        .card { background-color: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); }
         .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
         .summary-item { background: var(--bg-card-soft); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 20px; }
-        label { display: block; font-size: 13px; font-weight: 500; color: var(--text-soft); margin-bottom: 6px; }
-        input, select, textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; padding: 10px 14px; color: white; font-size: 14px; margin-bottom: 16px; transition: all 0.2s; }
-        button.btn-primary { width: 100%; background: linear-gradient(to right, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-        th { text-align: left; padding: 12px; color: var(--text-muted); border-bottom: 1px solid var(--border-subtle); }
-        td { padding: 12px; border-bottom: 1px solid var(--border-subtle); }
-        .badge { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
-        .badge-entrada { background: rgba(34, 197, 94, 0.15); color: var(--positive); }
-        .badge-saida { background: rgba(239, 68, 68, 0.15); color: var(--negative); }
-        .alert { position: fixed; top: 20px; right: 20px; padding: 16px 24px; border-radius: 12px; z-index: 1000; animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        input, select, textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; padding: 10px; color: white; margin-bottom: 12px; }
+        button.btn-primary { width: 100%; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-subtle); text-align: left; }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        .badge-entrada { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+        .badge-saida { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
         @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
     <div class="topbar">
         <div class="topbar-inner">
-            <div class="logo-container">
-                <div class="logo-icon">S</div>
-                <h1 style="font-size: 18px; margin: 0; font-weight: 700; letter-spacing: -0.5px;">Santa Helena</h1>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:30px; height:30px; background:#3b82f6; border-radius:8px;"></div>
+                <h1 style="font-size:18px; margin:0;">Santa Helena</h1>
             </div>
-            <div style="display: flex; gap: 12px; align-items: center;">
-                <select id="companySelect" style="margin-bottom: 0; width: 180px;"></select>
-                <button onclick="addCompany()" class="btn-primary" style="padding: 8px 12px; width: auto; margin-bottom: 0;">+</button>
+            <div style="display:flex; gap:10px;">
+                <select id="companySelect" style="margin:0; width:150px;"></select>
+                <button onclick="addCompany()" style="padding:5px 10px; border-radius:8px; background:#3b82f6; border:none; color:white; cursor:pointer;">+</button>
             </div>
         </div>
     </div>
 
     <div class="main-container">
         <div class="card">
-            <h2 style="font-size: 18px; margin: 0 0 20px 0;">Nova Transação</h2>
+            <h2 style="font-size:18px; margin-bottom:20px;">Nova Transação</h2>
             <form id="financeForm">
-                <input type="hidden" id="idHidden" />
-                <label>Data</label>
-                <input type="date" id="date" required />
-
+                <input type="hidden" id="idHidden">
+                <label>Data</label><input type="date" id="date" required>
                 <label>Tipo</label>
-                <select id="type">
-                    <option value="entrada">Entrada</option>
-                    <option value="saida">Saída</option>
-                </select>
-
-                <label>Descrição</label>
-                <input type="text" id="description" placeholder="Ex: Venda de Produto" required />
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                    <div>
-                        <label>Qtd</label>
-                        <input type="number" id="quantity" value="1" min="1" step="1" required />
-                    </div>
-                    <div>
-                        <label>Valor Unit.</label>
-                        <input type="number" id="value" step="0.01" placeholder="0,00" required />
+                <select id="type"><option value="entrada">Entrada</option><option value="saida">Saída</option></select>
+                <label>Descrição</label><input type="text" id="description" required>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <input type="number" id="quantity" value="1" placeholder="Qtd">
+                    <input type="number" id="value" step="0.01" placeholder="Valor Unit.">
+                </div>
+                <label>Responsável</label><input type="text" id="responsible">
+                <label>Observações</label><textarea id="notes" rows="2"></textarea>
+                
+                <div style="background:#0b1220; padding:15px; border-radius:12px; border:1px solid #1e293b;">
+                    <p style="font-size:12px; margin-top:0;">Forma de Pagamento</p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                        <input type="number" class="pay-input" data-method="Dinheiro" placeholder="Dinheiro" value="0">
+                        <input type="number" class="pay-input" data-method="Pix" placeholder="Pix" value="0">
+                        <input type="number" class="pay-input" data-method="Crédito" placeholder="Crédito" value="0">
+                        <input type="number" class="pay-input" data-method="Débito" placeholder="Débito" value="0">
                     </div>
                 </div>
-
-                <label>Responsável</label>
-                <input type="text" id="responsible" placeholder="Nome do funcionário" />
-
-                <label>Observações</label>
-                <textarea id="notes" rows="2" placeholder="Detalhes adicionais..."></textarea>
-
-                <div style="margin-top: 10px; padding: 15px; background: var(--bg-card-soft); border-radius: 12px; border: 1px solid var(--border-subtle);">
-                    <label style="margin-bottom: 12px; display: block; color: var(--text-main);">Forma de Pagamento</label>
-                    <div id="paymentMethods" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <div>
-                            <label style="font-size: 11px;">Dinheiro</label>
-                            <input type="number" class="pay-input" data-method="Dinheiro" step="0.01" value="0" />
-                        </div>
-                        <div>
-                            <label style="font-size: 11px;">Pix</label>
-                            <input type="number" class="pay-input" data-method="Pix" step="0.01" value="0" />
-                        </div>
-                        <div>
-                            <label style="font-size: 11px;">Crédito</label>
-                            <input type="number" class="pay-input" data-method="Crédito" step="0.01" value="0" />
-                        </div>
-                        <div>
-                            <label style="font-size: 11px;">Débito</label>
-                            <input type="number" class="pay-input" data-method="Débito" step="0.01" value="0" />
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-primary" id="btnSubmit" style="margin-top: 20px;">Salvar Lançamento</button>
-                <button type="button" id="btnCancel" onclick="resetForm()" style="display: none; background: transparent; color: var(--text-soft); border: 1px solid var(--border-subtle); margin-top: 10px; width: 100%; padding: 10px; border-radius: 10px; cursor: pointer;">Cancelar Edição</button>
+                <button type="submit" class="btn-primary" id="btnSubmit" style="margin-top:20px;">Salvar Lançamento</button>
             </form>
         </div>
 
         <div>
             <div class="summary-grid">
-                <div class="summary-item">
-                    <label>Entradas</label>
-                    <div id="summaryIncomes" style="font-size: 20px; font-weight: 700; color: var(--positive);">R$ 0,00</div>
-                </div>
-                <div class="summary-item">
-                    <label>Saídas</label>
-                    <div id="summaryExpenses" style="font-size: 20px; font-weight: 700; color: var(--negative);">R$ 0,00</div>
-                </div>
-                <div class="summary-item">
-                    <label>Saldo Líquido</label>
-                    <div id="summaryTotal" style="font-size: 20px; font-weight: 700;">R$ 0,00</div>
-                </div>
+                <div class="summary-item"><small>Entradas</small><div id="summaryIncomes" style="font-size:20px; color:#22c55e; font-weight:700;">R$ 0,00</div></div>
+                <div class="summary-item"><small>Saídas</small><div id="summaryExpenses" style="font-size:20px; color:#ef4444; font-weight:700;">R$ 0,00</div></div>
+                <div class="summary-item"><small>Saldo Atual</small><div id="summaryTotal" style="font-size:20px; font-weight:700;">R$ 0,00</div></div>
             </div>
-
-            <div class="card" style="width: 100%;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="font-size: 18px; margin: 0;">Histórico Recente</h2>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="date" id="filterStart" style="margin-bottom: 0; padding: 6px; font-size: 12px; width: 130px;" />
-                        <button onclick="applyFilters()" class="btn-primary" style="padding: 6px 12px; width: auto; margin-bottom: 0; font-size: 12px;">Filtrar</button>
-                        <button onclick="clearFilters()" style="background: transparent; color: var(--text-soft); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 12px;">Limpar</button>
-                    </div>
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h2 style="font-size:18px; margin:0;">Histórico</h2>
+                    <input type="date" id="filterStart" style="margin:0; width:130px; padding:5px;">
                 </div>
-
-                <div style="overflow-x: auto;">
+                <div style="overflow-x:auto;">
                     <table id="transactionsTable">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Tipo</th>
-                                <th>Descrição</th>
-                                <th>Total</th>
-                                <th>Responsável</th>
-                                <th style="text-align: right;">Ações</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Total</th><th>Resp.</th><th style="text-align:right;">Ações</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-        // Sua configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAReZ9r9rC_l8zraJrxumcNwVE1OM9OMtI",
             authDomain: "caixasantahelena.firebaseapp.com",
@@ -204,190 +110,94 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // VARIÁVEIS DE CONTROLE
         let transactions = [];
         let companies = JSON.parse(localStorage.getItem('companies') || '["Matriz"]');
         let currentCompany = localStorage.getItem('currentCompany') || 'Matriz';
 
-        // ELEMENTOS
-        const form = document.getElementById('financeForm');
-        const companySelect = document.getElementById('companySelect');
-        const tableBody = document.querySelector('#transactionsTable tbody');
-
-        // MANTIVE SUAS FUNÇÕES ORIGINAIS DE EMPRESA
-        function updateCompanySelect() {
-            companySelect.innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join('');
-        }
-
+        // Lógica de Empresa (Mantida igual ao seu original)
+        window.updateCompanySelect = () => {
+            const sel = document.getElementById('companySelect');
+            sel.innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join('');
+        };
         window.addCompany = () => {
-            const name = prompt('Nome da nova empresa/filial:');
-            if (name && !companies.includes(name)) {
-                companies.push(name);
-                localStorage.setItem('companies', JSON.stringify(companies));
-                updateCompanySelect();
-            }
+            const n = prompt('Nome da empresa:');
+            if(n && !companies.includes(n)){ companies.push(n); localStorage.setItem('companies', JSON.stringify(companies)); updateCompanySelect(); }
+        };
+        document.getElementById('companySelect').onchange = (e) => {
+            currentCompany = e.target.value; localStorage.setItem('currentCompany', currentCompany); loadData();
         };
 
-        companySelect.addEventListener('change', (e) => {
-            currentCompany = e.target.value;
-            localStorage.setItem('currentCompany', currentCompany);
-            loadFromFirebase();
-        });
-
-        // CARREGAR DADOS DO FIREBASE (Sincronização em Tempo Real)
-        function loadFromFirebase() {
-            const companyRef = ref(db, 'empresas/' + currentCompany + '/transacoes');
-            onValue(companyRef, (snapshot) => {
-                const data = snapshot.val();
-                transactions = [];
-                if (data) {
-                    transactions = Object.keys(data).map(key => ({
-                        id: key,
-                        ...data[key]
-                    }));
-                }
-                applyFilters();
+        // Carregar da Nuvem
+        function loadData() {
+            onValue(ref(db, `empresas/${currentCompany}/transacoes`), (snap) => {
+                const val = snap.val();
+                transactions = val ? Object.keys(val).map(k => ({id:k, ...val[k]})) : [];
+                renderTable(transactions);
             });
         }
 
-        // SALVAR NO FIREBASE
-        form.addEventListener('submit', (e) => {
+        // Salvar na Nuvem
+        document.getElementById('financeForm').onsubmit = (e) => {
             e.preventDefault();
-            
-            const idHidden = document.getElementById('idHidden').value;
-            const date = document.getElementById('date').value;
-            const type = document.getElementById('type').value;
-            const description = document.getElementById('description').value;
-            const quantity = parseInt(document.getElementById('quantity').value);
-            const value = parseFloat(document.getElementById('value').value);
-            const responsible = document.getElementById('responsible').value;
-            const notes = document.getElementById('notes').value;
-            const total = quantity * value;
+            const id = document.getElementById('idHidden').value;
+            const q = parseInt(document.getElementById('quantity').value);
+            const v = parseFloat(document.getElementById('value').value);
+            const total = q * v;
 
-            const paymentDetails = {};
-            let sumPayments = 0;
-            document.querySelectorAll('.pay-input').forEach(input => {
-                const val = parseFloat(input.value) || 0;
-                if (val > 0) {
-                    paymentDetails[input.dataset.method] = val;
-                    sumPayments += val;
-                }
+            const pays = {}; let sum = 0;
+            document.querySelectorAll('.pay-input').forEach(i => {
+                const val = parseFloat(i.value) || 0;
+                if(val > 0){ pays[i.dataset.method] = val; sum += val; }
             });
 
-            // Validação original sua de pagamentos
-            if (sumPayments === 0) {
-                showAlert('Informe o pagamento!', 'warning');
-                return;
-            }
-            if (Math.abs(sumPayments - total) > 0.01) {
-                showAlert(`Soma incorreta! Total: R$ ${total.toFixed(2)}, Informado: R$ ${sumPayments.toFixed(2)}`, 'warning');
-                return;
-            }
+            if(sum === 0 || Math.abs(sum - total) > 0.01) { alert('Soma dos pagamentos incorreta!'); return; }
 
-            const payload = { date, type, description, quantity, value, totalAbs: total, responsible, notes, paymentDetails };
+            const data = {
+                date: document.getElementById('date').value,
+                type: document.getElementById('type').value,
+                description: document.getElementById('description').value,
+                quantity: q, value: v, totalAbs: total,
+                responsible: document.getElementById('responsible').value,
+                notes: document.getElementById('notes').value,
+                paymentDetails: pays
+            };
 
-            if (idHidden) {
-                // Editar existente
-                set(ref(db, `empresas/${currentCompany}/transacoes/${idHidden}`), payload)
-                    .then(() => { showAlert('Atualizado!', 'success'); resetForm(); });
-            } else {
-                // Novo registro
-                push(ref(db, `empresas/${currentCompany}/transacoes`), payload)
-                    .then(() => { showAlert('Salvo na Nuvem!', 'success'); resetForm(); });
-            }
-        });
-
-        // EXCLUIR REGISTRO
-        window.deleteTransaction = (id) => {
-            if (confirm('Deseja excluir este registro permanentemente da nuvem?')) {
-                remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`))
-                    .then(() => showAlert('Removido!', 'success'));
-            }
+            if(id) set(ref(db, `empresas/${currentCompany}/transacoes/${id}`), data);
+            else push(ref(db, `empresas/${currentCompany}/transacoes`), data);
+            
+            e.target.reset(); document.getElementById('idHidden').value = '';
         };
 
-        // MANTIVE TODO O RESTO DO SEU CÓDIGO (FILTROS, ALERTAS, FORMATAÇÃO)
-        window.applyFilters = () => {
-            const start = document.getElementById('filterStart').value;
-            let filtered = [...transactions];
-            if (start) filtered = filtered.filter(t => t.date === start);
-            renderTable(filtered);
-        };
-
-        window.clearFilters = () => {
-            document.getElementById('filterStart').value = '';
-            applyFilters();
-        };
+        window.deleteTransaction = (id) => { if(confirm('Excluir?')) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`)); };
 
         function renderTable(data) {
-            tableBody.innerHTML = '';
+            const tbody = document.querySelector('#transactionsTable tbody');
+            tbody.innerHTML = '';
             let inc = 0, exp = 0;
 
             data.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(t => {
-                if (t.type === 'entrada') inc += t.totalAbs; else exp += t.totalAbs;
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${t.date.split('-').reverse().join('/')}</td>
-                    <td><span class="badge badge-${t.type}">${t.type}</span></td>
-                    <td><div style="font-weight:600">${t.description}</div><div style="font-size:11px; color:var(--text-muted)">${Object.entries(t.paymentDetails).map(([k,v]) => `${k}: R$${v.toFixed(2)}`).join(' | ')}</div></td>
-                    <td>R$ ${t.totalAbs.toFixed(2)}</td>
-                    <td>${t.responsible || '-'}</td>
-                    <td style="text-align:right;">
-                        <button onclick="editTransaction('${t.id}')" style="background:none; border:none; color:var(--primary); cursor:pointer; margin-right:10px;">✎</button>
-                        <button onclick="deleteTransaction('${t.id}')" style="background:none; border:none; color:var(--negative); cursor:pointer;">✕</button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
+                if(t.type === 'entrada') inc += t.totalAbs; else exp += t.totalAbs;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${t.date.split('-').reverse().join('/')}</td>
+                        <td><span class="badge badge-${t.type}">${t.type}</span></td>
+                        <td>${t.description}</td>
+                        <td>R$ ${t.totalAbs.toFixed(2)}</td>
+                        <td>${t.responsible || '-'}</td>
+                        <td style="text-align:right;">
+                            <button onclick="deleteTransaction('${t.id}')" style="background:none; border:none; color:#ef4444; cursor:pointer;">✕</button>
+                        </td>
+                    </tr>`;
             });
-
             document.getElementById('summaryIncomes').innerText = `R$ ${inc.toFixed(2)}`;
             document.getElementById('summaryExpenses').innerText = `R$ ${exp.toFixed(2)}`;
-            const total = inc - exp;
-            document.getElementById('summaryTotal').innerText = `R$ ${total.toFixed(2)}`;
-            document.getElementById('summaryTotal').style.color = total >= 0 ? 'var(--positive)' : 'var(--negative)';
+            const tot = inc - exp;
+            document.getElementById('summaryTotal').innerText = `R$ ${tot.toFixed(2)}`;
+            document.getElementById('summaryTotal').style.color = tot >= 0 ? '#22c55e' : '#ef4444';
         }
 
-        window.editTransaction = (id) => {
-            const t = transactions.find(item => item.id === id);
-            if (!t) return;
-            document.getElementById('idHidden').value = t.id;
-            document.getElementById('date').value = t.date;
-            document.getElementById('type').value = t.type;
-            document.getElementById('description').value = t.description;
-            document.getElementById('quantity').value = t.quantity;
-            document.getElementById('value').value = t.value;
-            document.getElementById('responsible').value = t.responsible;
-            document.getElementById('notes').value = t.notes;
-
-            document.querySelectorAll('.pay-input').forEach(input => {
-                input.value = t.paymentDetails[input.dataset.method] || 0;
-            });
-
-            document.getElementById('btnSubmit').innerText = 'Salvar Alteração';
-            document.getElementById('btnCancel').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        window.resetForm = () => {
-            form.reset();
-            document.getElementById('idHidden').value = '';
-            document.getElementById('btnSubmit').innerText = 'Salvar Lançamento';
-            document.getElementById('btnCancel').style.display = 'none';
-        };
-
-        function showAlert(msg, type) {
-            const div = document.createElement('div');
-            div.className = 'alert';
-            div.style.backgroundColor = type === 'success' ? '#065f46' : '#991b1b';
-            div.style.color = 'white';
-            div.innerText = msg;
-            document.body.appendChild(div);
-            setTimeout(() => div.remove(), 3000);
-        }
-
-        // INICIALIZAÇÃO
         updateCompanySelect();
-        loadFromFirebase();
+        loadData();
     </script>
 </body>
 </html>
