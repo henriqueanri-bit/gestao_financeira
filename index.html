@@ -25,9 +25,10 @@
         .pay-card small { color: var(--text-soft); font-size: 11px; }
         .pay-card div { font-weight: bold; font-size: 14px; margin-top: 4px; }
         input, select, textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px; color: white; margin-bottom: 12px; }
-        button.btn-primary { width: 100%; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th, td { padding: 12px; border-bottom: 1px solid var(--border-subtle); text-align: left; }
+        button { cursor: pointer; transition: 0.2s; }
+        button.btn-primary { width: 100%; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-subtle); text-align: left; vertical-align: top; }
         .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .badge-entrada { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
         .badge-saida { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
@@ -40,7 +41,7 @@
             <h1 style="font-size:18px; margin:0;">Santa Helena - Gestão</h1>
             <div style="display:flex; gap:10px;">
                 <select id="companySelect" style="margin:0; width:150px;"></select>
-                <button onclick="addCompany()" style="padding:8px 12px; border-radius:8px; background:#3b82f6; border:none; color:white; cursor:pointer;">+</button>
+                <button onclick="addCompany()" style="padding:8px 12px; border-radius:8px; background:#3b82f6; border:none; color:white;">+</button>
             </div>
         </div>
     </div>
@@ -53,14 +54,16 @@
                 <label>Data</label><input type="date" id="date" required>
                 <label>Tipo</label>
                 <select id="type"><option value="entrada">Entrada</option><option value="saida">Saída</option></select>
-                <label>Descrição</label><input type="text" id="description" required>
+                <label>Descrição</label><input type="text" id="description" required placeholder="Ex: Venda de Peças">
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                     <div><label>Qtd</label><input type="number" id="quantity" value="1"></div>
-                    <div><label>Valor Unit.</label><input type="number" id="value" step="0.01"></div>
+                    <div><label>Valor Unit.</label><input type="number" id="value" step="0.01" placeholder="0,00"></div>
                 </div>
+                <label>Responsável</label><input type="text" id="responsible" placeholder="Quem lançou?">
+                <label>Observações</label><textarea id="notes" rows="2" placeholder="Detalhes adicionais..."></textarea>
                 
                 <div style="background:#0b1220; padding:15px; border-radius:12px; border:1px solid #1e293b; margin-top:10px;">
-                    <p style="font-size:12px; margin:0 0 10px 0; color:var(--text-soft);">Detalhamento de Recebimento</p>
+                    <p style="font-size:12px; margin:0 0 10px 0; color:var(--text-soft);">Detalhamento de Pagamento</p>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                         <div><small>Dinheiro</small><input type="number" class="pay-input" data-method="Dinheiro" step="0.01" value="0"></div>
                         <div><small>Pix</small><input type="number" class="pay-input" data-method="Pix" step="0.01" value="0"></div>
@@ -80,24 +83,27 @@
             </div>
 
             <div class="payment-summary">
-                <div class="pay-card"><small>PIX</small><div id="sumPix">R$ 0,00</div></div>
-                <div class="pay-card"><small>DINHEIRO</small><div id="sumDinheiro">R$ 0,00</div></div>
-                <div class="pay-card"><small>C. CRÉDITO</small><div id="sumCredito">R$ 0,00</div></div>
-                <div class="pay-card"><small>C. DÉBITO</small><div id="sumDebito">R$ 0,00</div></div>
+                <div class="pay-card"><small>PIX</small><div id="sumPix" style="color:#22c55e;">R$ 0,00</div></div>
+                <div class="pay-card"><small>DINHEIRO</small><div id="sumDinheiro" style="color:#22c55e;">R$ 0,00</div></div>
+                <div class="pay-card"><small>C. CRÉDITO</small><div id="sumCredito" style="color:#22c55e;">R$ 0,00</div></div>
+                <div class="pay-card"><small>C. DÉBITO</small><div id="sumDebito" style="color:#22c55e;">R$ 0,00</div></div>
             </div>
 
             <div class="card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                    <h2 style="font-size:18px; margin:0;">Histórico</h2>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+                    <h2 style="font-size:18px; margin:0;">Histórico de Lançamentos</h2>
                     <div style="display:flex; gap:8px;">
                         <input type="date" id="filterStart" onchange="applyFilters()" style="margin:0; width:140px;">
-                        <button onclick="imprimirRelatorio()" style="background:#10b981; color:white; border:none; border-radius:8px; padding:6px 12px; cursor:pointer;">Imprimir</button>
+                        <button onclick="imprimirRelatorio()" style="background:#10b981; color:white; border:none; border-radius:8px; padding:6px 12px; font-weight:bold;">Imprimir</button>
+                        <button onclick="exportarExcel()" style="background:#059669; color:white; border:none; border-radius:8px; padding:6px 12px; font-weight:bold;">Excel</button>
                     </div>
                 </div>
-                <table id="transactionsTable">
-                    <thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Total</th><th style="text-align:right;">Ações</th></tr></thead>
-                    <tbody></tbody>
-                </table>
+                <div style="overflow-x:auto;">
+                    <table id="transactionsTable">
+                        <thead><tr><th>Data</th><th>Tipo</th><th>Descrição / Obs</th><th>Total</th><th>Resp.</th><th style="text-align:right;">Ações</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -123,111 +129,106 @@
         let companies = JSON.parse(localStorage.getItem('companies') || '["Matriz"]');
         let currentCompany = localStorage.getItem('currentCompany') || 'Matriz';
 
-        window.updateCompanySelect = function() {
-            const select = document.getElementById('companySelect');
-            select.innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join('');
+        window.updateCompanySelect = () => {
+            document.getElementById('companySelect').innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join('');
         };
 
-        window.addCompany = function() {
+        window.addCompany = () => {
             const name = prompt('Nome da filial:');
             if (name) { companies.push(name); localStorage.setItem('companies', JSON.stringify(companies)); updateCompanySelect(); }
         };
 
-        window.applyFilters = function() {
+        window.applyFilters = () => {
             const date = document.getElementById('filterStart').value;
-            let filtered = transactions;
-            if (date) filtered = transactions.filter(t => t.date === date);
-            renderTable(filtered);
+            renderTable(date ? transactions.filter(t => t.date === date) : transactions);
         };
 
-        window.imprimirRelatorio = function() { window.print(); };
+        window.imprimirRelatorio = () => { window.print(); };
+
+        window.exportarExcel = () => {
+            let csv = '\uFEFFData;Tipo;Descricao;Observacao;Responsavel;Dinheiro;Pix;Credito;Debito;Total\n';
+            transactions.forEach(t => {
+                const p = t.paymentDetails || {};
+                csv += `${t.date.split('-').reverse().join('/')};${t.type};${t.description};${t.notes || ''};${t.responsible || ''};${(p.Dinheiro||0).toFixed(2)};${(p.Pix||0).toFixed(2)};${(p.Crédito||0).toFixed(2)};${(p.Débito||0).toFixed(2)};${t.totalAbs.toFixed(2)}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `caixa_${currentCompany}.csv`;
+            link.click();
+        };
 
         function loadData() {
-            onValue(ref(db, `empresas/${currentCompany}/transacoes`), (snapshot) => {
-                const data = snapshot.val();
-                transactions = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+            onValue(ref(db, `empresas/${currentCompany}/transacoes`), (snap) => {
+                const val = snap.val();
+                transactions = val ? Object.keys(val).map(k => ({ id: k, ...val[k] })) : [];
                 window.applyFilters();
             });
         }
 
-        document.getElementById('financeForm').onsubmit = function(e) {
+        document.getElementById('financeForm').onsubmit = (e) => {
             e.preventDefault();
             const id = document.getElementById('idHidden').value;
             const q = parseInt(document.getElementById('quantity').value) || 1;
             const v = parseFloat(document.getElementById('value').value) || 0;
-            const total = q * v;
-
             const pays = {};
-            document.querySelectorAll('.pay-input').forEach(i => {
-                const val = parseFloat(i.value) || 0;
-                if(val > 0) pays[i.dataset.method] = val;
-            });
+            document.querySelectorAll('.pay-input').forEach(i => { if(parseFloat(i.value)>0) pays[i.dataset.method] = parseFloat(i.value); });
 
-            const trans = {
+            const data = {
                 date: document.getElementById('date').value,
                 type: document.getElementById('type').value,
                 description: document.getElementById('description').value,
-                quantity: q, value: v, totalAbs: total,
+                responsible: document.getElementById('responsible').value,
+                notes: document.getElementById('notes').value,
+                quantity: q, value: v, totalAbs: q * v,
                 paymentDetails: pays
             };
 
-            if (id) set(ref(db, `empresas/${currentCompany}/transacoes/${id}`), trans);
-            else push(ref(db, `empresas/${currentCompany}/transacoes`), trans);
+            if(id) set(ref(db, `empresas/${currentCompany}/transacoes/${id}`), data);
+            else push(ref(db, `empresas/${currentCompany}/transacoes`), data);
             e.target.reset();
         };
 
         function renderTable(data) {
             const tbody = document.querySelector('#transactionsTable tbody');
             tbody.innerHTML = '';
-            let inc = 0, exp = 0;
-            // Zera o relatório de pagamentos
-            let pPix = 0, pDin = 0, pCre = 0, pDeb = 0;
+            let inc=0, exp=0, pPix=0, pDin=0, pCre=0, pDeb=0;
 
             data.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(t => {
                 if (t.type === 'entrada') {
                     inc += t.totalAbs;
-                    // Soma os detalhes de pagamento apenas das ENTRADAS
-                    if(t.paymentDetails) {
-                        pPix += t.paymentDetails['Pix'] || 0;
-                        pDin += t.paymentDetails['Dinheiro'] || 0;
-                        pCre += t.paymentDetails['Crédito'] || 0;
-                        pDeb += t.paymentDetails['Débito'] || 0;
-                    }
-                } else {
-                    exp += t.totalAbs;
-                }
+                    pPix += (t.paymentDetails?.Pix || 0);
+                    pDin += (t.paymentDetails?.Dinheiro || 0);
+                    pCre += (t.paymentDetails?.Crédito || 0);
+                    pDeb += (t.paymentDetails?.Débito || 0);
+                } else exp += t.totalAbs;
 
                 tbody.innerHTML += `<tr>
                     <td>${t.date.split('-').reverse().join('/')}</td>
                     <td><span class="badge badge-${t.type}">${t.type}</span></td>
-                    <td>${t.description}</td>
-                    <td>R$ ${t.totalAbs.toFixed(2)}</td>
-                    <td style="text-align:right;">
-                        <button onclick="deleteItem('${t.id}')" style="background:none; border:none; color:#ef4444; cursor:pointer;">✕</button>
+                    <td>
+                        <div style="font-weight:700">${t.description}</div>
+                        <div style="font-size:11px; color:var(--text-soft)">${t.notes || ''}</div>
                     </td>
+                    <td>R$ ${t.totalAbs.toFixed(2)}</td>
+                    <td>${t.responsible || '-'}</td>
+                    <td style="text-align:right;"><button onclick="deleteItem('${t.id}')" style="background:none; border:none; color:#ef4444; font-weight:bold;">✕</button></td>
                 </tr>`;
             });
 
-            // Atualiza os cards de resumo de pagamento
             document.getElementById('sumPix').innerText = `R$ ${pPix.toFixed(2)}`;
             document.getElementById('sumDinheiro').innerText = `R$ ${pDin.toFixed(2)}`;
             document.getElementById('sumCredito').innerText = `R$ ${pCre.toFixed(2)}`;
             document.getElementById('sumDebito').innerText = `R$ ${pDeb.toFixed(2)}`;
-
             document.getElementById('summaryIncomes').innerText = `R$ ${inc.toFixed(2)}`;
             document.getElementById('summaryExpenses').innerText = `R$ ${exp.toFixed(2)}`;
-            document.getElementById('summaryTotal').innerText = `R$ ${(inc - exp).toFixed(2)}`;
+            const total = inc - exp;
+            document.getElementById('summaryTotal').innerText = `R$ ${total.toFixed(2)}`;
+            document.getElementById('summaryTotal').style.color = total >= 0 ? '#22c55e' : '#ef4444';
         }
 
-        window.deleteItem = function(id) {
-            if(confirm('Excluir?')) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`));
-        };
-
-        document.getElementById('companySelect').onchange = (e) => {
-            currentCompany = e.target.value;
-            localStorage.setItem('currentCompany', currentCompany);
-            loadData();
-        };
+        window.deleteItem = (id) => { if(confirm('Excluir este lançamento?')) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`)); };
+        document.getElementById('companySelect').onchange = (e) => { currentCompany = e.target.value; localStorage.setItem('currentCompany', currentCompany); loadData(); };
 
         updateCompanySelect();
         loadData();
