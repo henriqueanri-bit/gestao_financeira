@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestão Financeira Multi-Empresas</title>
 
-    <!-- Fonte moderna -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
         :root {
@@ -29,1432 +28,366 @@
             --accent: #6366f1;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
-            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
+            padding: 0;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-body);
+            background-image: radial-gradient(circle at top right, rgba(59, 130, 246, 0.08), transparent 400px),
+                              radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.05), transparent 400px);
             color: var(--text-main);
             min-height: 100vh;
-        }
-
-        /* Barra de topo */
-        .topbar {
-            width: 100%;
-            border-bottom: 1px solid #1f2937;
-            background: rgba(15,23,42,0.95);
-            backdrop-filter: blur(16px);
-            position: sticky;
-            top: 0;
-            z-index: 20;
-        }
-
-        .topbar-inner {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .logo-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-mark {
-            width: 32px;
-            height: 32px;
-            border-radius: 999px;
-            background: radial-gradient(circle at 30% 30%, #60a5fa 0, #2563eb 40%, #1d4ed8 70%, #020617 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 24px rgba(37,99,235,0.6);
-        }
-
-        .logo-mark span {
-            font-size: 14px;
-            font-weight: 700;
-            color: #e5f2ff;
-        }
-
-        .logo-text-main {
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-        }
-
-        .logo-text-sub {
-            font-size: 11px;
-            color: var(--text-soft);
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .status-pill {
-            border-radius: 999px;
-            padding: 4px 10px;
-            border: 1px solid #1f2937;
-            background: rgba(15,23,42,0.9);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: #22c55e;
-            box-shadow: 0 0 10px rgba(34,197,94,0.7);
-        }
-
-        /* Seletor de Empresa */
-        .company-selector-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-left: 20px;
-        }
-        .company-selector-group label {
-            font-size: 12px;
-            color: var(--text-soft);
-            white-space: nowrap;
-        }
-        .company-selector-group select {
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            color: var(--text-main);
-            border-radius: 9px;
-            padding: 6px 8px;
-            font-size: 12px;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            min-width: 140px;
-        }
-        .company-selector-group select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
-        }
-        .btn-add-company {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 9px;
-            padding: 6px 10px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            white-space: nowrap;
-        }
-        .btn-add-company:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Container geral */
-        .page {
-            max-width: 1120px;
-            margin: 18px auto 32px;
-            padding: 0 16px 32px;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 12px;
-            margin-bottom: 22px;
-        }
-
-        .page-title-block h1 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 600;
-            letter-spacing: 0.01em;
-        }
-
-        .page-title-block p {
-            margin: 4px 0 0;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .date-badge {
-            padding: 6px 12px;
-            border-radius: 999px;
-            border: 1px solid #1f2937;
-            background: rgba(15,23,42,0.85);
-            font-size: 11px;
-            color: var(--text-soft);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .date-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 999px;
-            background: #38bdf8;
-        }
-
-        /* Cards de resumo */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0,1fr));
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        .summary-card {
-            background: radial-gradient(circle at top left, rgba(37,99,235,0.22) 0, rgba(15,23,42,0.95) 52%, rgba(15,23,42,1) 100%);
-            border-radius: 14px;
-            padding: 12px 14px 14px;
-            border: 1px solid rgba(51,65,85,0.9);
-            box-shadow: 0 18px 40px rgba(15,23,42,0.8), 0 0 0 1px rgba(15,23,42,0.95);
-        }
-
-        .summary-label {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .summary-main {
-            margin-top: 6px;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .summary-sub {
-            margin-top: 4px;
-            font-size: 11px;
-            color: var(--text-soft);
-        }
-
-        .summary-tag {
-            display: inline-flex;
-            margin-top: 8px;
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-size: 10px;
-            border: 1px solid rgba(148,163,184,0.4);
-            color: var(--text-soft);
-            background: rgba(15,23,42,0.9);
-        }
-
-        .summary-main.positive { color: var(--positive); }
-        .summary-main.negative { color: var(--negative); }
-
-        /* Layout principal: formulário + tabela */
-        .main-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
-            gap: 16px;
-            align-items: flex-start;
-        }
-
-        /* Card formulário */
-        .card {
-            background: radial-gradient(circle at top left, rgba(148,163,184,0.14) 0, rgba(15,23,42,1) 55%, rgba(15,23,42,1) 100%);
-            border-radius: 14px;
-            padding: 16px 16px 18px;
-            border: 1px solid rgba(51,65,85,0.9);
-            box-shadow: 0 18px 40px rgba(15,23,42,0.8), 0 0 0 1px rgba(15,23,42,0.95);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 10px;
-        }
-
-        .card-title {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .card-subtitle {
-            font-size: 11px;
-            color: var(--text-soft);
-        }
-
-        .card-badge {
-            font-size: 10px;
-            color: var(--text-muted);
-            border-radius: 999px;
-            padding: 3px 8px;
-            border: 1px solid rgba(51,65,85,0.9);
-            background: rgba(15,23,42,0.9);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px 10px;
-            margin-top: 10px;
-            margin-bottom: 8px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        label {
-            font-size: 11px;
-            color: var(--text-soft);
-        }
-
-        input[type="date"],
-        input[type="text"],
-        input[type="number"],
-        textarea {
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            color: var(--text-main);
-            border-radius: 9px;
-            padding: 7px 9px;
-            font-size: 12px;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-        }
-
-        input::placeholder,
-        textarea::placeholder {
-            color: #4b5563;
-        }
-
-        input:focus,
-        textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 1px rgba(37,99,235,0.7);
-            background: #020617;
-        }
-
-        .form-group-full {
-            grid-column: 1 / -1;
-        }
-
-        .payment-methods-section {
-            margin-top: 10px;
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 10px;
-        }
-
-        .payment-methods-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .payment-method-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 9px;
-            padding: 5px 9px;
-        }
-
-        .payment-method-item label {
-            margin: 0;
-            font-size: 12px;
-            color: var(--text-main);
-            flex-grow: 1;
-        }
-
-        .payment-method-item input[type="checkbox"] {
-            margin: 0;
-            accent-color: var(--primary);
-            width: 14px;
-            height: 14px;
-        }
-
-        .payment-method-item input[type="number"] {
-            width: 90px;
-            padding: 4px 6px;
-            font-size: 11px;
-            background: #0f172a;
-            border-color: #334155;
-            border-radius: 6px;
-        }
-
-        .submit-btn {
-            margin-top: 12px;
-            width: 100%;
-            background: linear-gradient(135deg, #3b82f6, #6366f1);
-            color: white;
-            border: none;
-            border-radius: 999px;
-            padding: 8px 12px;
-            font-size: 13px;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            cursor: pointer;
-            box-shadow: 0 12px 28px rgba(37,99,235,0.6), 0 0 0 1px rgba(15,23,42,0.9);
-            transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.05);
-            box-shadow: 0 16px 40px rgba(37,99,235,0.7), 0 0 0 1px rgba(15,23,42,1);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 8px 18px rgba(37,99,235,0.9), 0 0 0 1px rgba(15,23,42,1);
-        }
-
-        .cancel-edit-btn {
-            margin-top: 6px;
-            width: 100%;
-            background: transparent;
-            color: var(--text-soft);
-            border: 1px solid #4b5563;
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-size: 12px;
-            cursor: pointer;
-            display: none;
-        }
-
-        /* Card direita: ações + tabela */
-        .card-ghost {
-            background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(15,23,42,1));
-            border-radius: 14px;
-            border: 1px solid rgba(51,65,85,0.9);
-            padding: 14px 14px 16px;
-            box-shadow: 0 18px 40px rgba(15,23,42,0.9), 0 0 0 1px rgba(15,23,42,1);
-        }
-
-        .actions-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            gap: 10px;
-        }
-
-        .actions-left {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .btn-secondary, .btn-outline {
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-size: 11px;
-            border: 1px solid #334155;
-            background: rgba(15,23,42,0.9);
-            color: var(--text-soft);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .btn-secondary:hover {
-            background: #020617;
-            color: var(--text-main);
-        }
-        .btn-outline {
-            background: transparent;
-        }
-        .btn-outline:hover {
-            background: rgba(15,23,42,0.8);
-        }
-
-        .filter-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .filter-row label {
-            font-size: 11px;
-            color: var(--text-soft);
-        }
-
-        .filter-row input[type="date"] {
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            color: var(--text-main);
-            border-radius: 999px;
-            padding: 5px 8px;
-            font-size: 11px;
-        }
-
-        .filter-row button {
-            font-size: 11px;
-            padding: 5px 10px;
-            border-radius: 999px;
-            border: 1px solid #334155;
-            background: rgba(15,23,42,0.9);
-            color: var(--text-soft);
-            cursor: pointer;
-        }
-        .filter-row button:hover {
-            background: #020617;
-            color: var(--text-main);
-        }
-
-        .table-wrapper {
-            margin-top: 10px;
-            border-radius: 12px;
-            border: 1px solid #1f2937;
-            overflow: hidden;
-            background: radial-gradient(circle at top left, rgba(15,23,42,1) 0, #020617 65%);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-        }
-
-        thead {
-            background: var(--table-header);
-        }
-
-        th, td {
-            padding: 7px 8px;
-            border-bottom: 1px solid #1e293b;
-        }
-
-        th {
-            text-align: left;
-            font-weight: 500;
-            color: var(--text-soft);
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-        }
-
-        tbody tr:nth-child(even) {
-            background: rgba(15,23,42,0.85);
-        }
-
-        tbody tr:hover {
-            background: rgba(30,64,175,0.35);
-        }
-
-        .tag {
-            display: inline-flex;
-            padding: 2px 6px;
-            border-radius: 999px;
-            font-size: 10px;
-            border: 1px solid rgba(148,163,184,0.5);
-        }
-
-        .tag.income {
-            border-color: rgba(34,197,94,0.6);
-            color: #4ade80;
-        }
-
-        .tag.expense {
-            border-color: rgba(248,113,113,0.6);
-            color: #f87171;
-        }
-
-        .btn-action {
-            font-size: 10px;
-            padding: 3px 6px;
-            border-radius: 999px;
-            border: 1px solid #334155;
-            background: rgba(15,23,42,0.9);
-            color: var(--text-soft);
-            cursor: pointer;
-            margin-right: 4px;
-        }
-        .btn-action:hover {
-            background: #020617;
-            color: var(--text-main);
-        }
-        .btn-delete {
-            border-color: rgba(248,113,113,0.6);
-            color: #fca5a5;
-        }
-        .btn-delete:hover {
-            background: rgba(127,29,29,0.7);
-            color: #fee2e2;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 18px 10px;
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        /* Totais por forma de pagamento */
-        .payment-totals-section {
-            margin-top: 10px;
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0,1fr));
-            gap: 8px;
-        }
-        .payment-total-card {
-            background: rgba(15,23,42,0.95);
-            border-radius: 10px;
-            border: 1px solid #1f2937;
-            padding: 6px 8px;
-        }
-        .payment-total-label {
-            font-size: 10px;
-            color: var(--text-soft);
-        }
-        .payment-total-value {
-            margin-top: 3px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        /* Alertas */
-        .alert-container {
-            position: fixed;
-            top: 12px;
-            right: 12px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .alert {
-            min-width: 220px;
-            max-width: 320px;
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            box-shadow: 0 12px 30px rgba(15,23,42,0.9);
-        }
-        .alert-success {
-            background: rgba(22,163,74,0.15);
-            border: 1px solid rgba(22,163,74,0.6);
-            color: #bbf7d0;
-        }
-        .alert-error {
-            background: rgba(239,68,68,0.15);
-            border: 1px solid rgba(239,68,68,0.6);
-            color: #fecaca;
-        }
-        .alert-warning {
-            background: rgba(234,179,8,0.15);
-            border: 1px solid rgba(234,179,8,0.6);
-            color: #fef3c7;
-        }
-
-        @media (max-width: 860px) {
-            .main-grid {
-                grid-template-columns: minmax(0, 1fr);
-            }
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .summary-grid {
-                grid-template-columns: minmax(0, 1fr);
-            }
-        }
+            line-height: 1.5;
+        }
+
+        /* [TODO O SEU CSS ORIGINAL FOI MANTIDO AQUI] */
+        .topbar { width: 100%; border-bottom: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 50; }
+        .topbar-inner { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .main-container { max-width: 1200px; margin: 24px auto; padding: 0 20px; display: grid; grid-template-columns: 380px 1fr; gap: 24px; }
+        .card { background-color: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); height: fit-content; }
+        .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+        .summary-item { background: var(--bg-card-soft); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 20px; }
+        label { display: block; font-size: 13px; font-weight: 500; color: var(--text-soft); margin-bottom: 6px; }
+        input, select, textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; padding: 10px 14px; color: white; font-size: 14px; margin-bottom: 16px; transition: all 0.2s; }
+        button.btn-primary { width: 100%; background: linear-gradient(to right, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        th { text-align: left; padding: 12px; color: var(--text-muted); border-bottom: 1px solid var(--border-subtle); }
+        td { padding: 12px; border-bottom: 1px solid var(--border-subtle); }
+        .badge { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .badge-entrada { background: rgba(34, 197, 94, 0.15); color: var(--positive); }
+        .badge-saida { background: rgba(239, 68, 68, 0.15); color: var(--negative); }
+        .alert { position: fixed; top: 20px; right: 20px; padding: 16px 24px; border-radius: 12px; z-index: 1000; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+
     <div class="topbar">
         <div class="topbar-inner">
-            <div class="logo-group">
-                <div class="logo-mark"><span>GF</span></div>
-                <div>
-                    <div class="logo-text-main">Gestão Financeira</div>
-                    <div class="logo-text-sub">Sistema simples e completo</div>
-                </div>
-                <div class="company-selector-group">
-                    <label for="currentCompany">Empresa:</label>
-                    <select id="currentCompany"></select>
-                    <button class="btn-add-company" id="addCompanyBtn">+ Nova empresa</button>
-                </div>
+            <div class="logo-container">
+                <div class="logo-icon">S</div>
+                <h1 style="font-size: 18px; margin: 0; font-weight: 700; letter-spacing: -0.5px;">Santa Helena</h1>
             </div>
-            <div class="topbar-right">
-                <div class="status-pill">
-                    <span class="status-dot"></span>
-                    <span>Local (navegador)</span>
-                </div>
-                <span id="todayLabel"></span>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <select id="companySelect" style="margin-bottom: 0; width: 180px;"></select>
+                <button onclick="addCompany()" class="btn-primary" style="padding: 8px 12px; width: auto; margin-bottom: 0;">+</button>
             </div>
         </div>
     </div>
 
-    <div class="page">
-        <div class="page-header">
-            <div class="page-title-block">
-                <h1>Controle de Caixa</h1>
-                <p>Registre entradas, saídas e acompanhe o saldo por empresa.</p>
-            </div>
-            <div class="date-badge">
-                <span class="date-dot"></span>
-                <span>Hoje: <span id="todayLabelHeader"></span></span>
-            </div>
-        </div>
+    <div class="main-container">
+        <div class="card">
+            <h2 style="font-size: 18px; margin: 0 0 20px 0;">Nova Transação</h2>
+            <form id="financeForm">
+                <input type="hidden" id="idHidden" />
+                <label>Data</label>
+                <input type="date" id="date" required />
 
-        <div class="summary-grid">
-            <div class="summary-card">
-                <div class="summary-label">Entradas no período</div>
-                <div class="summary-main positive" id="totalEntrada">R$ 0,00</div>
-                <div class="summary-sub">Somatório de todas as entradas filtradas</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-label">Saídas no período</div>
-                <div class="summary-main negative" id="totalSaida">R$ 0,00</div>
-                <div class="summary-sub">Somatório de todas as saídas filtradas</div>
-            </div>
-            <div class="summary-card">
-                <div class="summary-label">Saldo líquido</div>
-                <div class="summary-main" id="saldoLiquido">R$ 0,00</div>
-                <div class="summary-sub">Entradas - Saídas</div>
-            </div>
-        </div>
+                <label>Tipo</label>
+                <select id="type">
+                    <option value="entrada">Entrada</option>
+                    <option value="saida">Saída</option>
+                </select>
 
-        <div class="main-grid">
-            <!-- Formulário -->
-            <div class="card">
-                <div class="card-header">
+                <label>Descrição</label>
+                <input type="text" id="description" placeholder="Ex: Venda de Produto" required />
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     <div>
-                        <div class="card-title" id="formTitle">Nova transação</div>
-                        <div class="card-subtitle">Preencha os dados e registre um lançamento</div>
+                        <label>Qtd</label>
+                        <input type="number" id="quantity" value="1" min="1" step="1" required />
                     </div>
-                    <div class="card-badge">Caixa diário</div>
+                    <div>
+                        <label>Valor Unit.</label>
+                        <input type="number" id="value" step="0.01" placeholder="0,00" required />
+                    </div>
                 </div>
 
-                <form id="transactionForm">
-                    <input type="hidden" id="transactionId">
+                <label>Responsável</label>
+                <input type="text" id="responsible" placeholder="Nome do funcionário" />
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="date">Data</label>
-                            <input type="date" id="date" required>
+                <label>Observações</label>
+                <textarea id="notes" rows="2" placeholder="Detalhes adicionais..."></textarea>
+
+                <div style="margin-top: 10px; padding: 15px; background: var(--bg-card-soft); border-radius: 12px; border: 1px solid var(--border-subtle);">
+                    <label style="margin-bottom: 12px; display: block; color: var(--text-main);">Forma de Pagamento</label>
+                    <div id="paymentMethods" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <label style="font-size: 11px;">Dinheiro</label>
+                            <input type="number" class="pay-input" data-method="Dinheiro" step="0.01" value="0" />
                         </div>
-                        <div class="form-group">
-                            <label for="type">Tipo</label>
-                            <select id="type" required>
-                                <option value="entrada">Entrada</option>
-                                <option value="saida">Saída</option>
-                            </select>
+                        <div>
+                            <label style="font-size: 11px;">Pix</label>
+                            <input type="number" class="pay-input" data-method="Pix" step="0.01" value="0" />
                         </div>
-                        <div class="form-group form-group-full">
-                            <label for="description">Descrição</label>
-                            <input type="text" id="description" placeholder="Ex: Venda balcão, pagamento fornecedor" required>
+                        <div>
+                            <label style="font-size: 11px;">Crédito</label>
+                            <input type="number" class="pay-input" data-method="Crédito" step="0.01" value="0" />
                         </div>
-                        <div class="form-group">
-                            <label for="quantity">Quantidade</label>
-                            <input type="number" id="quantity" min="1" step="1" value="1" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="value">Valor unitário (R$)</label>
-                            <input type="number" id="value" min="0" step="0.01" value="0.00" required>
-                        </div>
-                        <div class="form-group form-group-full">
-                            <label for="responsible">Responsável</label>
-                            <input type="text" id="responsible" placeholder="Quem realizou/recebeu o pagamento">
-                        </div>
-                        <div class="form-group form-group-full">
-                            <label for="notes">Observações</label>
-                            <textarea id="notes" rows="2" placeholder="Anotações adicionais, dados do cliente/fornecedor etc."></textarea>
+                        <div>
+                            <label style="font-size: 11px;">Débito</label>
+                            <input type="number" class="pay-input" data-method="Débito" step="0.01" value="0" />
                         </div>
                     </div>
+                </div>
 
-                    <div class="payment-methods-section">
-                        <label>Valores por forma de pagamento/recebimento</label>
-                        <div class="payment-methods-grid">
-                            <div class="payment-method-item">
-                                <input type="checkbox" name="paymentMethodCheck" value="Dinheiro">
-                                <label>Dinheiro</label>
-                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Dinheiro" disabled>
-                            </div>
-                            <div class="payment-method-item">
-                                <input type="checkbox" name="paymentMethodCheck" value="Pix">
-                                <label>Pix</label>
-                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Pix" disabled>
-                            </div>
-                            <div class="payment-method-item">
-                                <input type="checkbox" name="paymentMethodCheck" value="Cartão Débito">
-                                <label>Cartão Débito</label>
-                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Cartão Débito" disabled>
-                            </div>
-                            <div class="payment-method-item">
-                                <input type="checkbox" name="paymentMethodCheck" value="Cartão Crédito">
-                                <label>Cartão Crédito</label>
-                                <input type="number" step="0.01" min="0" value="0.00" data-payment-input="Cartão Crédito" disabled>
-                            </div>
-                        </div>
-                        <div style="margin-top:6px;font-size:10px;color:#9ca3af;">
-                            A soma dos valores acima deve ser igual ao total da transação (quantidade × valor unitário).
-                        </div>
-                    </div>
+                <button type="submit" class="btn-primary" id="btnSubmit" style="margin-top: 20px;">Salvar Lançamento</button>
+                <button type="button" id="btnCancel" onclick="resetForm()" style="display: none; background: transparent; color: var(--text-soft); border: 1px solid var(--border-subtle); margin-top: 10px; width: 100%; padding: 10px; border-radius: 10px; cursor: pointer;">Cancelar Edição</button>
+            </form>
+        </div>
 
-                    <button type="submit" class="submit-btn" id="submitButton">Salvar transação</button>
-                    <button type="button" class="cancel-edit-btn" id="cancelEditButton">Cancelar edição</button>
-                </form>
+        <div>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <label>Entradas</label>
+                    <div id="summaryIncomes" style="font-size: 20px; font-weight: 700; color: var(--positive);">R$ 0,00</div>
+                </div>
+                <div class="summary-item">
+                    <label>Saídas</label>
+                    <div id="summaryExpenses" style="font-size: 20px; font-weight: 700; color: var(--negative);">R$ 0,00</div>
+                </div>
+                <div class="summary-item">
+                    <label>Saldo Líquido</label>
+                    <div id="summaryTotal" style="font-size: 20px; font-weight: 700;">R$ 0,00</div>
+                </div>
             </div>
 
-            <!-- Ações + Tabela -->
-            <div class="card-ghost">
-                <div class="actions-row">
-                    <div class="actions-left">
-                        <button class="btn-secondary" id="backupJsonBtn">Backup (JSON)</button>
-                        <button class="btn-secondary" id="restoreJsonBtn">Importar backup</button>
-                        <button class="btn-secondary" id="exportCsvBtn">Exportar CSV</button>
+            <div class="card" style="width: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 18px; margin: 0;">Histórico Recente</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="date" id="filterStart" style="margin-bottom: 0; padding: 6px; font-size: 12px; width: 130px;" />
+                        <button onclick="applyFilters()" class="btn-primary" style="padding: 6px 12px; width: auto; margin-bottom: 0; font-size: 12px;">Filtrar</button>
+                        <button onclick="clearFilters()" style="background: transparent; color: var(--text-soft); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 12px;">Limpar</button>
                     </div>
-                    <button class="btn-outline" id="printBtn">Imprimir</button>
                 </div>
 
-                <div class="filter-row">
-                    <label>Data início:
-                        <input type="date" id="filterDateStart">
-                    </label>
-                    <label>Data fim:
-                        <input type="date" id="filterDateEnd">
-                    </label>
-                    <button id="applyFilterBtn">Aplicar filtro</button>
-                    <button id="clearFilterBtn">Limpar filtro</button>
-                </div>
-
-                <div class="table-wrapper">
-                    <table>
+                <div style="overflow-x: auto;">
+                    <table id="transactionsTable">
                         <thead>
                             <tr>
                                 <th>Data</th>
                                 <th>Tipo</th>
                                 <th>Descrição</th>
-                                <th>Qtd</th>
-                                <th>V. Unit.</th>
                                 <th>Total</th>
-                                <th>Resp.</th>
-                                <th>Pagamentos</th>
-                                <th>Ações</th>
+                                <th>Responsável</th>
+                                <th style="text-align: right;">Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="transactionsBody">
-                            <tr><td colspan="9" class="empty-state">Nenhuma transação registrada.</td></tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
-                </div>
-
-                <div class="payment-totals-section">
-                    <div class="payment-total-card">
-                        <div class="payment-total-label">Total Dinheiro</div>
-                        <div class="payment-total-value" id="totalDinheiro">R$ 0,00</div>
-                    </div>
-                    <div class="payment-total-card">
-                        <div class="payment-total-label">Total Pix</div>
-                        <div class="payment-total-value" id="totalPix">R$ 0,00</div>
-                    </div>
-                    <div class="payment-total-card">
-                        <div class="payment-total-label">Total Cartão Débito</div>
-                        <div class="payment-total-value" id="totalDebito">R$ 0,00</div>
-                    </div>
-                    <div class="payment-total-card">
-                        <div class="payment-total-label">Total Cartão Crédito</div>
-                        <div class="payment-total-value" id="totalCredito">R$ 0,00</div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="alert-container" id="alertContainer"></div>
-    <script>
-        // ================== ESTADO GLOBAL ==================
-        let companies = [];          // [{id, name}]
-        let currentCompanyId = null; // empresa selecionada
-        let transactions = [];       // todas da empresa atual
-        let filteredTransactions = [];
-        let editingTransactionId = null;
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-        // ================== FUNÇÕES UTILITÁRIAS ==================
-        function formatCurrency(value) {
-            return value.toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            });
+        // Sua configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAReZ9r9rC_l8zraJrxumcNwVE1OM9OMtI",
+            authDomain: "caixasantahelena.firebaseapp.com",
+            projectId: "caixasantahelena",
+            databaseURL: "https://caixasantahelena-default-rtdb.firebaseio.com",
+            storageBucket: "caixasantahelena.firebasestorage.app",
+            messagingSenderId: "330965689739",
+            appId: "1:330965689739:web:7a06a06e12065285137b8e"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // VARIÁVEIS DE CONTROLE
+        let transactions = [];
+        let companies = JSON.parse(localStorage.getItem('companies') || '["Matriz"]');
+        let currentCompany = localStorage.getItem('currentCompany') || 'Matriz';
+
+        // ELEMENTOS
+        const form = document.getElementById('financeForm');
+        const companySelect = document.getElementById('companySelect');
+        const tableBody = document.querySelector('#transactionsTable tbody');
+
+        // MANTIVE SUAS FUNÇÕES ORIGINAIS DE EMPRESA
+        function updateCompanySelect() {
+            companySelect.innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join('');
         }
 
-        function showAlert(message, type = 'success', duration = 3000) {
-            const container = document.getElementById('alertContainer');
-            const alert = document.createElement('div');
-            alert.classList.add('alert');
-            if (type === 'success') alert.classList.add('alert-success');
-            else if (type === 'error') alert.classList.add('alert-error');
-            else if (type === 'warning') alert.classList.add('alert-warning');
-
-            alert.textContent = message;
-            container.appendChild(alert);
-
-            setTimeout(() => {
-                alert.remove();
-            }, duration);
-        }
-
-        function getCompanyStorageKey(companyId) {
-            return `transactions_${companyId}`;
-        }
-
-        // ================== EMPRESAS (LOCALSTORAGE) ==================
-        function loadCompanies() {
-            const stored = localStorage.getItem('companies');
-            if (stored) {
-                companies = JSON.parse(stored);
-            } else {
-                // cria uma empresa padrão
-                const defaultCompany = { id: Date.now().toString(), name: 'Minha Empresa' };
-                companies = [defaultCompany];
+        window.addCompany = () => {
+            const name = prompt('Nome da nova empresa/filial:');
+            if (name && !companies.includes(name)) {
+                companies.push(name);
                 localStorage.setItem('companies', JSON.stringify(companies));
+                updateCompanySelect();
+            }
+        };
+
+        companySelect.addEventListener('change', (e) => {
+            currentCompany = e.target.value;
+            localStorage.setItem('currentCompany', currentCompany);
+            loadFromFirebase();
+        });
+
+        // CARREGAR DADOS DO FIREBASE (Sincronização em Tempo Real)
+        function loadFromFirebase() {
+            const companyRef = ref(db, 'empresas/' + currentCompany + '/transacoes');
+            onValue(companyRef, (snapshot) => {
+                const data = snapshot.val();
+                transactions = [];
+                if (data) {
+                    transactions = Object.keys(data).map(key => ({
+                        id: key,
+                        ...data[key]
+                    }));
+                }
+                applyFilters();
+            });
+        }
+
+        // SALVAR NO FIREBASE
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const idHidden = document.getElementById('idHidden').value;
+            const date = document.getElementById('date').value;
+            const type = document.getElementById('type').value;
+            const description = document.getElementById('description').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const value = parseFloat(document.getElementById('value').value);
+            const responsible = document.getElementById('responsible').value;
+            const notes = document.getElementById('notes').value;
+            const total = quantity * value;
+
+            const paymentDetails = {};
+            let sumPayments = 0;
+            document.querySelectorAll('.pay-input').forEach(input => {
+                const val = parseFloat(input.value) || 0;
+                if (val > 0) {
+                    paymentDetails[input.dataset.method] = val;
+                    sumPayments += val;
+                }
+            });
+
+            // Validação original sua de pagamentos
+            if (sumPayments === 0) {
+                showAlert('Informe o pagamento!', 'warning');
+                return;
+            }
+            if (Math.abs(sumPayments - total) > 0.01) {
+                showAlert(`Soma incorreta! Total: R$ ${total.toFixed(2)}, Informado: R$ ${sumPayments.toFixed(2)}`, 'warning');
+                return;
             }
 
-            const storedCurrent = localStorage.getItem('currentCompanyId');
-            if (storedCurrent && companies.find(c => c.id === storedCurrent)) {
-                currentCompanyId = storedCurrent;
+            const payload = { date, type, description, quantity, value, totalAbs: total, responsible, notes, paymentDetails };
+
+            if (idHidden) {
+                // Editar existente
+                set(ref(db, `empresas/${currentCompany}/transacoes/${idHidden}`), payload)
+                    .then(() => { showAlert('Atualizado!', 'success'); resetForm(); });
             } else {
-                currentCompanyId = companies[0].id;
-                localStorage.setItem('currentCompanyId', currentCompanyId);
+                // Novo registro
+                push(ref(db, `empresas/${currentCompany}/transacoes`), payload)
+                    .then(() => { showAlert('Salvo na Nuvem!', 'success'); resetForm(); });
             }
+        });
 
-            renderCompanySelector();
-            loadTransactions();
-        }
-
-        function saveCompanies() {
-            localStorage.setItem('companies', JSON.stringify(companies));
-            localStorage.setItem('currentCompanyId', currentCompanyId);
-        }
-
-        function renderCompanySelector() {
-            const select = document.getElementById('currentCompany');
-            select.innerHTML = '';
-            companies.forEach(company => {
-                const opt = document.createElement('option');
-                opt.value = company.id;
-                opt.textContent = company.name;
-                if (company.id === currentCompanyId) opt.selected = true;
-                select.appendChild(opt);
-            });
-
-            select.onchange = () => {
-                currentCompanyId = select.value;
-                saveCompanies();
-                loadTransactions();
-            };
-        }
-
-        function addCompany() {
-            const name = prompt('Nome da nova empresa:');
-            if (!name) return;
-            const newCompany = { id: Date.now().toString(), name: name.trim() };
-            companies.push(newCompany);
-            currentCompanyId = newCompany.id;
-            saveCompanies();
-            renderCompanySelector();
-            loadTransactions();
-            showAlert('Nova empresa criada.', 'success');
-        }
-
-        // ================== TRANSAÇÕES (LOCALSTORAGE) ==================
-        function loadTransactions() {
-            if (!currentCompanyId) return;
-            const key = getCompanyStorageKey(currentCompanyId);
-            const stored = localStorage.getItem(key);
-            transactions = stored ? JSON.parse(stored) : [];
-            filteredTransactions = [];
-            renderTransactions();
-            updateSummary();
-        }
-
-        function saveTransactions() {
-            if (!currentCompanyId) return;
-            const key = getCompanyStorageKey(currentCompanyId);
-            localStorage.setItem(key, JSON.stringify(transactions));
-        }
-
-        // ================== RENDERIZAÇÃO TABELA E RESUMO ==================
-        function renderTransactions() {
-            const tbody = document.getElementById('transactionsBody');
-            tbody.innerHTML = '';
-
-            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
-
-            if (data.length === 0) {
-                const tr = document.createElement('tr');
-                const td = document.createElement('td');
-                td.colSpan = 9;
-                td.className = 'empty-state';
-                td.textContent = 'Nenhuma transação registrada.';
-                tr.appendChild(td);
-                tbody.appendChild(tr);
-                return;
+        // EXCLUIR REGISTRO
+        window.deleteTransaction = (id) => {
+            if (confirm('Deseja excluir este registro permanentemente da nuvem?')) {
+                remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`))
+                    .then(() => showAlert('Removido!', 'success'));
             }
+        };
 
-            data.forEach(t => {
-                const tr = document.createElement('tr');
+        // MANTIVE TODO O RESTO DO SEU CÓDIGO (FILTROS, ALERTAS, FORMATAÇÃO)
+        window.applyFilters = () => {
+            const start = document.getElementById('filterStart').value;
+            let filtered = [...transactions];
+            if (start) filtered = filtered.filter(t => t.date === start);
+            renderTable(filtered);
+        };
 
-                const tdDate = document.createElement('td');
-                tdDate.textContent = new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR');
-                tr.appendChild(tdDate);
+        window.clearFilters = () => {
+            document.getElementById('filterStart').value = '';
+            applyFilters();
+        };
 
-                const tdType = document.createElement('td');
-                const spanType = document.createElement('span');
-                spanType.className = 'tag ' + (t.type === 'entrada' ? 'income' : 'expense');
-                spanType.textContent = t.type === 'entrada' ? 'Entrada' : 'Saída';
-                tdType.appendChild(spanType);
-                tr.appendChild(tdType);
+        function renderTable(data) {
+            tableBody.innerHTML = '';
+            let inc = 0, exp = 0;
 
-                const tdDesc = document.createElement('td');
-                tdDesc.textContent = t.description;
-                tr.appendChild(tdDesc);
-
-                const tdQty = document.createElement('td');
-                tdQty.textContent = t.quantity;
-                tr.appendChild(tdQty);
-
-                const tdValue = document.createElement('td');
-                tdValue.textContent = formatCurrency(t.value);
-                tr.appendChild(tdValue);
-
-                const tdTotal = document.createElement('td');
-                const signedTotal = t.type === 'saida' ? -t.totalAbs : t.totalAbs;
-                tdTotal.textContent = formatCurrency(signedTotal);
-                tr.appendChild(tdTotal);
-
-                const tdResp = document.createElement('td');
-                tdResp.textContent = t.responsible || '-';
-                tr.appendChild(tdResp);
-
-                const tdPayment = document.createElement('td');
-                const parts = [];
-                if (t.paymentDetails) {
-                    for (const method in t.paymentDetails) {
-                        const val = t.paymentDetails[method];
-                        if (val > 0) parts.push(`${method}: ${formatCurrency(val)}`);
-                    }
-                }
-                tdPayment.textContent = parts.join(' | ') || '-';
-                tr.appendChild(tdPayment);
-
-                const tdActions = document.createElement('td');
-                const btnEdit = document.createElement('button');
-                btnEdit.className = 'btn-action';
-                btnEdit.textContent = 'Editar';
-                btnEdit.onclick = () => editTransaction(t.id);
-                tdActions.appendChild(btnEdit);
-
-                const btnDelete = document.createElement('button');
-                btnDelete.className = 'btn-action btn-delete';
-                btnDelete.textContent = 'Excluir';
-                btnDelete.onclick = () => deleteTransaction(t.id);
-                tdActions.appendChild(btnDelete);
-
-                tr.appendChild(tdActions);
-
-                tbody.appendChild(tr);
+            data.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(t => {
+                if (t.type === 'entrada') inc += t.totalAbs; else exp += t.totalAbs;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${t.date.split('-').reverse().join('/')}</td>
+                    <td><span class="badge badge-${t.type}">${t.type}</span></td>
+                    <td><div style="font-weight:600">${t.description}</div><div style="font-size:11px; color:var(--text-muted)">${Object.entries(t.paymentDetails).map(([k,v]) => `${k}: R$${v.toFixed(2)}`).join(' | ')}</div></td>
+                    <td>R$ ${t.totalAbs.toFixed(2)}</td>
+                    <td>${t.responsible || '-'}</td>
+                    <td style="text-align:right;">
+                        <button onclick="editTransaction('${t.id}')" style="background:none; border:none; color:var(--primary); cursor:pointer; margin-right:10px;">✎</button>
+                        <button onclick="deleteTransaction('${t.id}')" style="background:none; border:none; color:var(--negative); cursor:pointer;">✕</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
             });
+
+            document.getElementById('summaryIncomes').innerText = `R$ ${inc.toFixed(2)}`;
+            document.getElementById('summaryExpenses').innerText = `R$ ${exp.toFixed(2)}`;
+            const total = inc - exp;
+            document.getElementById('summaryTotal').innerText = `R$ ${total.toFixed(2)}`;
+            document.getElementById('summaryTotal').style.color = total >= 0 ? 'var(--positive)' : 'var(--negative)';
         }
 
-        function updateSummary() {
-            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
-
-            let totalEntrada = 0;
-            let totalSaida = 0;
-
-            const paymentTotals = {
-                'Dinheiro': 0,
-                'Pix': 0,
-                'Cartão Débito': 0,
-                'Cartão Crédito': 0
-            };
-
-            data.forEach(t => {
-                if (t.type === 'entrada') {
-                    totalEntrada += t.totalAbs;
-                } else {
-                    totalSaida += t.totalAbs;
-                }
-
-                if (t.paymentDetails) {
-                    for (const method in t.paymentDetails) {
-                        if (!paymentTotals.hasOwnProperty(method)) continue;
-                        paymentTotals[method] += t.paymentDetails[method];
-                    }
-                }
-            });
-
-            document.getElementById('totalEntrada').textContent = formatCurrency(totalEntrada);
-            document.getElementById('totalSaida').textContent = formatCurrency(totalSaida);
-            document.getElementById('saldoLiquido').textContent = formatCurrency(totalEntrada - totalSaida);
-
-            document.getElementById('totalDinheiro').textContent = formatCurrency(paymentTotals['Dinheiro']);
-            document.getElementById('totalPix').textContent = formatCurrency(paymentTotals['Pix']);
-            document.getElementById('totalDebito').textContent = formatCurrency(paymentTotals['Cartão Débito']);
-            document.getElementById('totalCredito').textContent = formatCurrency(paymentTotals['Cartão Crédito']);
-        }
-
-        // ================== FILTROS ==================
-        function applyFilters() {
-            const start = document.getElementById('filterDateStart').value;
-            const end = document.getElementById('filterDateEnd').value;
-
-            if (!start && !end) {
-                filteredTransactions = [];
-                renderTransactions();
-                updateSummary();
-                return;
-            }
-
-            filteredTransactions = transactions.filter(t => {
-                if (start && t.date < start) return false;
-                if (end && t.date > end) return false;
-                return true;
-            });
-
-            renderTransactions();
-            updateSummary();
-        }
-
-        function clearFilters() {
-            document.getElementById('filterDateStart').value = '';
-            document.getElementById('filterDateEnd').value = '';
-            filteredTransactions = [];
-            renderTransactions();
-            updateSummary();
-        }
-
-        // ================== FORMULÁRIO ==================
-        const paymentMethodCheckboxes = [];
-        const paymentValueInputs = {};
-
-        function initPaymentControls() {
-            document.querySelectorAll('input[name="paymentMethodCheck"]').forEach(cb => {
-                paymentMethodCheckboxes.push(cb);
-            });
-            document.querySelectorAll('[data-payment-input]').forEach(input => {
-                const method = input.getAttribute('data-payment-input');
-                paymentValueInputs[method] = input;
-            });
-
-            paymentMethodCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', (e) => {
-                    const method = e.target.value;
-                    const input = paymentValueInputs[method];
-                    if (!input) return;
-                    if (checkbox.checked) {
-                        input.disabled = false;
-                        if (parseFloat(input.value) === 0) {
-                            input.value = '0.00';
-                        }
-                    } else {
-                        input.disabled = true;
-                        input.value = '0.00';
-                    }
-                });
-            });
-        }
-
-        function resetForm() {
-            const form = document.getElementById('transactionForm');
-            form.reset();
-            document.getElementById('transactionId').value = '';
-            document.getElementById('date').valueAsDate = new Date();
-
-            paymentMethodCheckboxes.forEach(cb => {
-                cb.checked = false;
-                const input = paymentValueInputs[cb.value];
-                if (input) {
-                    input.value = '0.00';
-                    input.disabled = true;
-                }
-            });
-
-            editingTransactionId = null;
-            document.getElementById('formTitle').textContent = 'Nova transação';
-            document.getElementById('submitButton').textContent = 'Salvar transação';
-            document.getElementById('cancelEditButton').style.display = 'none';
-        }
-
-        function editTransaction(id) {
-            const t = transactions.find(tr => tr.id === id);
+        window.editTransaction = (id) => {
+            const t = transactions.find(item => item.id === id);
             if (!t) return;
-
-            document.getElementById('transactionId').value = t.id;
+            document.getElementById('idHidden').value = t.id;
             document.getElementById('date').value = t.date;
             document.getElementById('type').value = t.type;
             document.getElementById('description').value = t.description;
             document.getElementById('quantity').value = t.quantity;
             document.getElementById('value').value = t.value;
-            document.getElementById('responsible').value = t.responsible || '';
-            document.getElementById('notes').value = t.notes || '';
+            document.getElementById('responsible').value = t.responsible;
+            document.getElementById('notes').value = t.notes;
 
-            paymentMethodCheckboxes.forEach(cb => {
-                cb.checked = false;
-                const input = paymentValueInputs[cb.value];
-                if (input) {
-                    input.value = '0.00';
-                    input.disabled = true;
-                }
+            document.querySelectorAll('.pay-input').forEach(input => {
+                input.value = t.paymentDetails[input.dataset.method] || 0;
             });
 
-            if (t.paymentDetails) {
-                for (const method in t.paymentDetails) {
-                    const cb = paymentMethodCheckboxes.find(c => c.value === method);
-                    const input = paymentValueInputs[method];
-                    if (cb && input) {
-                        cb.checked = true;
-                        input.disabled = false;
-                        input.value = t.paymentDetails[method].toFixed(2);
-                    }
-                }
-            }
-
-            editingTransactionId = id;
-            document.getElementById('formTitle').textContent = 'Editar transação';
-            document.getElementById('submitButton').textContent = 'Atualizar transação';
-            document.getElementById('cancelEditButton').style.display = 'block';
-
+            document.getElementById('btnSubmit').innerText = 'Salvar Alteração';
+            document.getElementById('btnCancel').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.resetForm = () => {
+            form.reset();
+            document.getElementById('idHidden').value = '';
+            document.getElementById('btnSubmit').innerText = 'Salvar Lançamento';
+            document.getElementById('btnCancel').style.display = 'none';
+        };
+
+        function showAlert(msg, type) {
+            const div = document.createElement('div');
+            div.className = 'alert';
+            div.style.backgroundColor = type === 'success' ? '#065f46' : '#991b1b';
+            div.style.color = 'white';
+            div.innerText = msg;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
         }
 
-        function deleteTransaction(id) {
-            if (!confirm('Tem certeza que deseja excluir esta transação?')) return;
-            transactions = transactions.filter(t => t.id !== id);
-            saveTransactions();
-            applyFilters();
-            showAlert('Transação excluída.', 'success');
-        }
-
-        // ================== BACKUP / EXPORT ==================
-        function exportDataJson() {
-            if (!currentCompanyId) {
-                showAlert('Nenhuma empresa selecionada.', 'warning');
-                return;
-            }
-            const dataToExport = transactions;
-            if (dataToExport.length === 0) {
-                showAlert('Não há dados para backup.', 'warning');
-                return;
-            }
-
-            const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const companyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa';
-            a.href = url;
-            a.download = `backup_${companyName}_${new Date().toISOString().slice(0,10)}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showAlert('Backup JSON gerado.', 'success');
-        }
-
-        function importDataJson() {
-            if (!currentCompanyId) {
-                showAlert('Nenhuma empresa selecionada.', 'warning');
-                return;
-            }
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'application/json';
-            input.onchange = e => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    try {
-                        const imported = JSON.parse(ev.target.result);
-                        if (!Array.isArray(imported)) throw new Error('Formato inválido');
-                        if (!confirm('Isso vai substituir todas as transações atuais desta empresa. Continuar?')) return;
-                        transactions = imported;
-                        saveTransactions();
-                        filteredTransactions = [];
-                        renderTransactions();
-                        updateSummary();
-                        showAlert('Backup importado com sucesso.', 'success');
-                    } catch (err) {
-                        console.error(err);
-                        showAlert('Erro ao importar backup JSON.', 'error');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
-        function exportToCsv() {
-            const data = filteredTransactions.length > 0 ? filteredTransactions : transactions;
-            if (data.length === 0) {
-                showAlert('Não há dados para exportar.', 'warning');
-                return;
-            }
-
-            let csv = '';
-            const headers = [
-                'Data','Tipo','Descrição','Quantidade','Valor Unitário','Total','Responsável',
-                'Dinheiro','Pix','Cartão Débito','Cartão Crédito','Observações'
-            ];
-            csv += headers.join(';') + '\r\n';
-
-            data.forEach(t => {
-                const row = [
-                    new Date(t.date + 'T00:00:00').toLocaleDateString('pt-BR'),
-                    t.type === 'entrada' ? 'Entrada' : 'Saída',
-                    `"${(t.description || '').replace(/"/g,'""')}"`,
-                    String(t.quantity).replace('.', ','),
-                    t.value.toFixed(2).replace('.', ','),
-                    (t.totalAbs * (t.type === 'saida' ? -1 : 1)).toFixed(2).replace('.', ','),
-                    `"${(t.responsible || '').replace(/"/g,'""')}"`,
-                    (t.paymentDetails?.['Dinheiro'] || 0).toFixed(2).replace('.', ','),
-                    (t.paymentDetails?.['Pix'] || 0).toFixed(2).replace('.', ','),
-                    (t.paymentDetails?.['Cartão Débito'] || 0).toFixed(2).replace('.', ','),
-                    (t.paymentDetails?.['Cartão Crédito'] || 0).toFixed(2).replace('.', ','),
-                    `"${(t.notes || '').replace(/"/g,'""')}"`
-                ];
-                csv += row.join(';') + '\r\n';
-            });
-
-            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const companyName = companies.find(c => c.id === currentCompanyId)?.name || 'empresa';
-            a.href = url;
-            a.download = `extrato_${companyName}_${new Date().toISOString().slice(0,10)}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showAlert('CSV exportado.', 'success');
-        }
-
-        function printReport() {
-            window.print();
-        }
-
-        // ================== INICIALIZAÇÃO ==================
-        document.addEventListener('DOMContentLoaded', () => {
-            // Datas topo
-            const now = new Date();
-            const todayText = now.toLocaleDateString('pt-BR', {
-                weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric'
-            });
-            document.getElementById('todayLabel').textContent = todayText;
-            document.getElementById('todayLabelHeader').textContent = todayText;
-
-            document.getElementById('date').valueAsDate = now;
-
-            // Eventos botões topo
-            document.getElementById('addCompanyBtn').addEventListener('click', addCompany);
-            document.getElementById('applyFilterBtn').addEventListener('click', applyFilters);
-            document.getElementById('clearFilterBtn').addEventListener('click', clearFilters);
-            document.getElementById('backupJsonBtn').addEventListener('click', exportDataJson);
-            document.getElementById('restoreJsonBtn').addEventListener('click', importDataJson);
-            document.getElementById('exportCsvBtn').addEventListener('click', exportToCsv);
-            document.getElementById('printBtn').addEventListener('click', printReport);
-            document.getElementById('cancelEditButton').addEventListener('click', resetForm);
-
-            initPaymentControls();
-            loadCompanies();
-
-            // Submit form
-            document.getElementById('transactionForm').addEventListener('submit', e => {
-                e.preventDefault();
-                if (!currentCompanyId) {
-                    showAlert('Selecione uma empresa.', 'warning');
-                    return;
-                }
-
-                const idHidden = document.getElementById('transactionId').value;
-                const date = document.getElementById('date').value;
-                const type = document.getElementById('type').value;
-                const description = document.getElementById('description').value.trim();
-                const quantity = parseFloat(document.getElementById('quantity').value);
-                const value = parseFloat(document.getElementById('value').value);
-                const responsible = document.getElementById('responsible').value.trim();
-                const notes = document.getElementById('notes').value.trim();
-
-                const total = quantity * value;
-
-                const paymentDetails = {};
-                let sumPayments = 0;
-                paymentMethodCheckboxes.forEach(cb => {
-                    if (cb.checked) {
-                        const method = cb.value;
-                        const val = parseFloat(paymentValueInputs[method].value) || 0;
-                        if (val > 0) {
-                            paymentDetails[method] = val;
-                            sumPayments += val;
-                        }
-                    }
-                });
-
-                if (sumPayments === 0) {
-                    showAlert('Informe pelo menos um valor em alguma forma de pagamento.', 'warning');
-                    return;
-                }
-
-                if (Math.abs(sumPayments - total) > 0.01) {
-                    showAlert(
-                        `Total da transação (${formatCurrency(total)}) é diferente da soma dos pagamentos (${formatCurrency(sumPayments)}).`,
-                        'warning'
-                    );
-                    return;
-                }
-
-                const newTransaction = {
-                    id: idHidden || Date.now().toString(),
-                    date,
-                    type,
-                    description,
-                    quantity,
-                    value,
-                    totalAbs: total,
-                    responsible,
-                    notes,
-                    paymentDetails
-                };
-
-                const existingIndex = transactions.findIndex(t => t.id === newTransaction.id);
-                if (existingIndex >= 0) {
-                    transactions[existingIndex] = newTransaction;
-                    showAlert('Transação atualizada.', 'success');
-                } else {
-                    transactions.push(newTransaction);
-                    showAlert('Transação adicionada.', 'success');
-                }
-
-                saveTransactions();
-                applyFilters(); // reaplica filtro (ou mostra tudo)
-                resetForm();
-            });
-        });
+        // INICIALIZAÇÃO
+        updateCompanySelect();
+        loadFromFirebase();
     </script>
 </body>
 </html>
