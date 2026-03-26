@@ -1,203 +1,190 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestão Financeira Multi-Empresas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-        :root {
-            --bg-body: #0f172a; --bg-main: #020617; --bg-card: #020617; --bg-card-soft: #0b1220;
-            --border-subtle: #1e293b; --primary: #3b82f6; --primary-dark: #2563eb;
-            --positive: #22c55e; --negative: #ef4444; --text-main: #e5e7eb;
-            --text-soft: #9ca3af; --text-muted: #6b7280; --input-bg: #020617;
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+    // Configuração do seu Banco (Já com as suas chaves)
+    const firebaseConfig = {
+        apiKey: "AIzaSyAReZ9r9rC_l8zraJrxumcNwVE1OM9OMtI",
+        authDomain: "caixasantahelena.firebaseapp.com",
+        projectId: "caixasantahelena",
+        databaseURL: "https://caixasantahelena-default-rtdb.firebaseio.com",
+        storageBucket: "caixasantahelena.firebasestorage.app",
+        messagingSenderId: "330965689739",
+        appId: "1:330965689739:web:7a06a06e12065285137b8e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Variáveis Globais (Mantendo sua lógica)
+    let transactions = [];
+    let companies = JSON.parse(localStorage.getItem('companies') || '["Matriz"]');
+    let currentCompany = localStorage.getItem('currentCompany') || 'Matriz';
+
+    const companySelect = document.getElementById('companySelect');
+    const financeForm = document.getElementById('financeForm');
+    const tableBody = document.querySelector('#transactionsTable tbody');
+
+    // --- FUNÇÕES DE EMPRESA (IDÊNTICAS ÀS SUAS) ---
+    window.updateCompanySelect = function() {
+        companySelect.innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join('');
+    };
+
+    window.addCompany = function() {
+        const name = prompt('Nome da nova empresa/filial:');
+        if (name && !companies.includes(name)) {
+            companies.push(name);
+            localStorage.setItem('companies', JSON.stringify(companies));
+            updateCompanySelect();
         }
-        * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; font-family: "Inter", sans-serif; background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; }
-        .topbar { width: 100%; border-bottom: 1px solid var(--border-subtle); background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 50; }
-        .topbar-inner { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
-        .main-container { max-width: 1200px; margin: 24px auto; padding: 0 20px; display: grid; grid-template-columns: 380px 1fr; gap: 24px; }
-        .card { background-color: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); }
-        .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-        .summary-item { background: var(--bg-card-soft); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 20px; }
-        input, select, textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; padding: 10px; color: white; margin-bottom: 12px; }
-        button.btn-primary { width: 100%; background: #3b82f6; color: white; border: none; border-radius: 10px; padding: 12px; font-weight: 600; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th, td { padding: 12px; border-bottom: 1px solid var(--border-subtle); text-align: left; }
-        .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        .badge-entrada { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
-        .badge-saida { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-        @media (max-width: 900px) { .main-container { grid-template-columns: 1fr; } }
-    </style>
-</head>
-<body>
-    <div class="topbar">
-        <div class="topbar-inner">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <div style="width:30px; height:30px; background:#3b82f6; border-radius:8px;"></div>
-                <h1 style="font-size:18px; margin:0;">Santa Helena</h1>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <select id="companySelect" style="margin:0; width:150px;"></select>
-                <button onclick="addCompany()" style="padding:5px 10px; border-radius:8px; background:#3b82f6; border:none; color:white; cursor:pointer;">+</button>
-            </div>
-        </div>
-    </div>
+    };
 
-    <div class="main-container">
-        <div class="card">
-            <h2 style="font-size:18px; margin-bottom:20px;">Nova Transação</h2>
-            <form id="financeForm">
-                <input type="hidden" id="idHidden">
-                <label>Data</label><input type="date" id="date" required>
-                <label>Tipo</label>
-                <select id="type"><option value="entrada">Entrada</option><option value="saida">Saída</option></select>
-                <label>Descrição</label><input type="text" id="description" required>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    <input type="number" id="quantity" value="1" placeholder="Qtd">
-                    <input type="number" id="value" step="0.01" placeholder="Valor Unit.">
-                </div>
-                <label>Responsável</label><input type="text" id="responsible">
-                <label>Observações</label><textarea id="notes" rows="2"></textarea>
-                
-                <div style="background:#0b1220; padding:15px; border-radius:12px; border:1px solid #1e293b;">
-                    <p style="font-size:12px; margin-top:0;">Forma de Pagamento</p>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                        <input type="number" class="pay-input" data-method="Dinheiro" placeholder="Dinheiro" value="0">
-                        <input type="number" class="pay-input" data-method="Pix" placeholder="Pix" value="0">
-                        <input type="number" class="pay-input" data-method="Crédito" placeholder="Crédito" value="0">
-                        <input type="number" class="pay-input" data-method="Débito" placeholder="Débito" value="0">
-                    </div>
-                </div>
-                <button type="submit" class="btn-primary" id="btnSubmit" style="margin-top:20px;">Salvar Lançamento</button>
-            </form>
-        </div>
+    companySelect.addEventListener('change', (e) => {
+        currentCompany = e.target.value;
+        localStorage.setItem('currentCompany', currentCompany);
+        conectarFirebase();
+    });
 
-        <div>
-            <div class="summary-grid">
-                <div class="summary-item"><small>Entradas</small><div id="summaryIncomes" style="font-size:20px; color:#22c55e; font-weight:700;">R$ 0,00</div></div>
-                <div class="summary-item"><small>Saídas</small><div id="summaryExpenses" style="font-size:20px; color:#ef4444; font-weight:700;">R$ 0,00</div></div>
-                <div class="summary-item"><small>Saldo Atual</small><div id="summaryTotal" style="font-size:20px; font-weight:700;">R$ 0,00</div></div>
-            </div>
-            <div class="card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                    <h2 style="font-size:18px; margin:0;">Histórico</h2>
-                    <input type="date" id="filterStart" style="margin:0; width:130px; padding:5px;">
-                </div>
-                <div style="overflow-x:auto;">
-                    <table id="transactionsTable">
-                        <thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Total</th><th>Resp.</th><th style="text-align:right;">Ações</th></tr></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, remove, set } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    // --- CONEXÃO EM TEMPO REAL ---
+    function conectarFirebase() {
+        const transRef = ref(db, `empresas/${currentCompany}/transacoes`);
+        onValue(transRef, (snapshot) => {
+            const data = snapshot.val();
+            transactions = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+            window.applyFilters(); // Usa sua função de filtro original
+        });
+    }
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAReZ9r9rC_l8zraJrxumcNwVE1OM9OMtI",
-            authDomain: "caixasantahelena.firebaseapp.com",
-            projectId: "caixasantahelena",
-            databaseURL: "https://caixasantahelena-default-rtdb.firebaseio.com",
-            storageBucket: "caixasantahelena.firebasestorage.app",
-            messagingSenderId: "330965689739",
-            appId: "1:330965689739:web:7a06a06e12065285137b8e"
-        };
+    // --- SALVAR LANÇAMENTO (COM SUAS VALIDAÇÕES) ---
+    financeForm.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        const idHidden = document.getElementById('idHidden').value;
+        const date = document.getElementById('date').value;
+        const type = document.getElementById('type').value;
+        const description = document.getElementById('description').value;
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const value = parseFloat(document.getElementById('value').value);
+        const total = quantity * value;
+        const responsible = document.getElementById('responsible').value;
+        const notes = document.getElementById('notes').value;
 
-        let transactions = [];
-        let companies = JSON.parse(localStorage.getItem('companies') || '["Matriz"]');
-        let currentCompany = localStorage.getItem('currentCompany') || 'Matriz';
+        const paymentDetails = {};
+        let sumPayments = 0;
+        document.querySelectorAll('.pay-input').forEach(input => {
+            const val = parseFloat(input.value) || 0;
+            if (val > 0) {
+                paymentDetails[input.dataset.method] = val;
+                sumPayments += val;
+            }
+        });
 
-        // Lógica de Empresa (Mantida igual ao seu original)
-        window.updateCompanySelect = () => {
-            const sel = document.getElementById('companySelect');
-            sel.innerHTML = companies.map(c => `<option value="${c}" ${c === currentCompany ? 'selected' : ''}>${c}</option>`).join('');
-        };
-        window.addCompany = () => {
-            const n = prompt('Nome da empresa:');
-            if(n && !companies.includes(n)){ companies.push(n); localStorage.setItem('companies', JSON.stringify(companies)); updateCompanySelect(); }
-        };
-        document.getElementById('companySelect').onchange = (e) => {
-            currentCompany = e.target.value; localStorage.setItem('currentCompany', currentCompany); loadData();
-        };
-
-        // Carregar da Nuvem
-        function loadData() {
-            onValue(ref(db, `empresas/${currentCompany}/transacoes`), (snap) => {
-                const val = snap.val();
-                transactions = val ? Object.keys(val).map(k => ({id:k, ...val[k]})) : [];
-                renderTable(transactions);
-            });
+        // Suas mensagens de alerta originais
+        if (sumPayments === 0) {
+            window.showAlert('Por favor, informe um valor em alguma forma de pagamento.', 'warning');
+            return;
+        }
+        if (Math.abs(sumPayments - total) > 0.01) {
+            window.showAlert(`Total (R$ ${total.toFixed(2)}) é diferente da soma dos pagamentos (R$ ${sumPayments.toFixed(2)}).`, 'warning');
+            return;
         }
 
-        // Salvar na Nuvem
-        document.getElementById('financeForm').onsubmit = (e) => {
-            e.preventDefault();
-            const id = document.getElementById('idHidden').value;
-            const q = parseInt(document.getElementById('quantity').value);
-            const v = parseFloat(document.getElementById('value').value);
-            const total = q * v;
+        const transacao = { date, type, description, quantity, value, totalAbs: total, responsible, notes, paymentDetails };
 
-            const pays = {}; let sum = 0;
-            document.querySelectorAll('.pay-input').forEach(i => {
-                const val = parseFloat(i.value) || 0;
-                if(val > 0){ pays[i.dataset.method] = val; sum += val; }
-            });
+        if (idHidden) {
+            set(ref(db, `empresas/${currentCompany}/transacoes/${idHidden}`), transacao)
+                .then(() => { window.showAlert('Transação atualizada na nuvem!', 'success'); window.resetForm(); });
+        } else {
+            push(ref(db, `empresas/${currentCompany}/transacoes`), transacao)
+                .then(() => { window.showAlert('Transação salva na nuvem!', 'success'); window.resetForm(); });
+        }
+    });
 
-            if(sum === 0 || Math.abs(sum - total) > 0.01) { alert('Soma dos pagamentos incorreta!'); return; }
+    // --- FUNÇÕES DE INTERFACE (MANTIDAS EXATAMENTE COMO VOCÊ GOSTA) ---
+    window.renderTable = function(data) {
+        tableBody.innerHTML = '';
+        let inc = 0, exp = 0;
 
-            const data = {
-                date: document.getElementById('date').value,
-                type: document.getElementById('type').value,
-                description: document.getElementById('description').value,
-                quantity: q, value: v, totalAbs: total,
-                responsible: document.getElementById('responsible').value,
-                notes: document.getElementById('notes').value,
-                paymentDetails: pays
-            };
-
-            if(id) set(ref(db, `empresas/${currentCompany}/transacoes/${id}`), data);
-            else push(ref(db, `empresas/${currentCompany}/transacoes`), data);
+        data.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(t => {
+            if (t.type === 'entrada') inc += t.totalAbs; else exp += t.totalAbs;
             
-            e.target.reset(); document.getElementById('idHidden').value = '';
-        };
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${t.date.split('-').reverse().join('/')}</td>
+                <td><span class="badge badge-${t.type}">${t.type}</span></td>
+                <td>
+                    <div style="font-weight:600">${t.description}</div>
+                    <div style="font-size:11px; color:var(--text-muted)">
+                        ${Object.entries(t.paymentDetails).map(([k,v]) => `${k}: R$${v.toFixed(2)}`).join(' | ')}
+                    </div>
+                </td>
+                <td>R$ ${t.totalAbs.toLocaleString('pt-BR', {minimumFractionDigits:2})}</td>
+                <td>${t.responsible || '-'}</td>
+                <td style="text-align:right;">
+                    <button onclick="editTransaction('${t.id}')" style="background:none; border:none; color:var(--primary); cursor:pointer; margin-right:10px;">✎</button>
+                    <button onclick="deleteTransaction('${t.id}')" style="background:none; border:none; color:var(--negative); cursor:pointer;">✕</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
 
-        window.deleteTransaction = (id) => { if(confirm('Excluir?')) remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`)); };
+        document.getElementById('summaryIncomes').innerText = `R$ ${inc.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+        document.getElementById('summaryExpenses').innerText = `R$ ${exp.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+        const totalFinal = inc - exp;
+        const summaryTotal = document.getElementById('summaryTotal');
+        summaryTotal.innerText = `R$ ${totalFinal.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+        summaryTotal.style.color = totalFinal >= 0 ? 'var(--positive)' : 'var(--negative)';
+    };
 
-        function renderTable(data) {
-            const tbody = document.querySelector('#transactionsTable tbody');
-            tbody.innerHTML = '';
-            let inc = 0, exp = 0;
+    window.editTransaction = (id) => {
+        const t = transactions.find(item => item.id === id);
+        if (!t) return;
+        document.getElementById('idHidden').value = t.id;
+        document.getElementById('date').value = t.date;
+        document.getElementById('type').value = t.type;
+        document.getElementById('description').value = t.description;
+        document.getElementById('quantity').value = t.quantity;
+        document.getElementById('value').value = t.value;
+        document.getElementById('responsible').value = t.responsible;
+        document.getElementById('notes').value = t.notes;
+        document.querySelectorAll('.pay-input').forEach(input => {
+            input.value = t.paymentDetails[input.dataset.method] || 0;
+        });
+        document.getElementById('btnSubmit').innerText = 'Salvar Alteração';
+        document.getElementById('btnCancel').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
-            data.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(t => {
-                if(t.type === 'entrada') inc += t.totalAbs; else exp += t.totalAbs;
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${t.date.split('-').reverse().join('/')}</td>
-                        <td><span class="badge badge-${t.type}">${t.type}</span></td>
-                        <td>${t.description}</td>
-                        <td>R$ ${t.totalAbs.toFixed(2)}</td>
-                        <td>${t.responsible || '-'}</td>
-                        <td style="text-align:right;">
-                            <button onclick="deleteTransaction('${t.id}')" style="background:none; border:none; color:#ef4444; cursor:pointer;">✕</button>
-                        </td>
-                    </tr>`;
-            });
-            document.getElementById('summaryIncomes').innerText = `R$ ${inc.toFixed(2)}`;
-            document.getElementById('summaryExpenses').innerText = `R$ ${exp.toFixed(2)}`;
-            const tot = inc - exp;
-            document.getElementById('summaryTotal').innerText = `R$ ${tot.toFixed(2)}`;
-            document.getElementById('summaryTotal').style.color = tot >= 0 ? '#22c55e' : '#ef4444';
+    window.deleteTransaction = (id) => {
+        if (confirm('Deseja excluir este registro da nuvem?')) {
+            remove(ref(db, `empresas/${currentCompany}/transacoes/${id}`));
         }
+    };
 
-        updateCompanySelect();
-        loadData();
-    </script>
-</body>
-</html>
+    window.applyFilters = () => {
+        const start = document.getElementById('filterStart').value;
+        let filtered = [...transactions];
+        if (start) filtered = filtered.filter(t => t.date === start);
+        window.renderTable(filtered);
+    };
+
+    window.resetForm = () => {
+        financeForm.reset();
+        document.getElementById('idHidden').value = '';
+        document.getElementById('btnSubmit').innerText = 'Salvar Lançamento';
+        document.getElementById('btnCancel').style.display = 'none';
+    };
+
+    window.showAlert = (msg, type) => {
+        const div = document.createElement('div');
+        div.className = 'alert';
+        div.style.cssText = `position:fixed; top:20px; right:20px; padding:16px 24px; border-radius:12px; z-index:1000; color:white; font-weight:600; background:${type === 'success' ? '#059669' : '#dc2626'}`;
+        div.innerText = msg;
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 3000);
+    };
+
+    // Inicialização
+    updateCompanySelect();
+    conectarFirebase();
+</script>
